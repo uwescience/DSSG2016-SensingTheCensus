@@ -1,7 +1,10 @@
 #Cython specific files
-src/CDR_process/*.so
-src/CDR_process/*.c
+*.so
+*.c
 src/CDR_process/build/
 
 # Mac files
 .DS_Store
+
+# IPython notebook checkpoints
+.ipynb_checkpoints
