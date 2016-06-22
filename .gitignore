@@ -5,3 +5,12 @@ src/CDR_process/build/
 
 # Mac files
 .DS_Store
+
+# Census files
+data/census/*
+
+# Milan shp
+data/milan_sez_2011/Milano*
+
+# Always include .md
+!*.md
