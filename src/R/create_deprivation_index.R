@@ -5,7 +5,6 @@ library(sp)
 library(rgdal)
 library(leaflet)
 
-
 setwd("~/Documents/git/DSSG2016-SensingTheCensus/")
 source("src/R/utils.R")
 

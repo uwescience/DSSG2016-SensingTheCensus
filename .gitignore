@@ -17,3 +17,6 @@ data/milan_sez_2011/Milano*
 
 # IPython notebook checkpoints
 .ipynb_checkpoints
+
+# R project user settings
+.Rproj.user
