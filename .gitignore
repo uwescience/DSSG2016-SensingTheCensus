@@ -1,6 +1,6 @@
 #Cython specific files
-src/CDR_process/*.so
-src/CDR_process/*.c
+*.so
+*.c
 src/CDR_process/build/
 
 # Mac files
@@ -9,8 +9,11 @@ src/CDR_process/build/
 # Census files
 data/census/*
 
-# Milan shp
+# Milan shapefiles
 data/milan_sez_2011/Milano*
 
 # Always include .md
 !*.md
+
+# IPython notebook checkpoints
+.ipynb_checkpoints
