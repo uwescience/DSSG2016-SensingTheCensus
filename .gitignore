@@ -8,6 +8,7 @@ src/CDR_process/build/
 
 # Census files
 data/census/*
+data/CDR/*
 
 # Milan shapefiles
 data/milan_sez_2011/Milano*
@@ -17,3 +18,4 @@ data/milan_sez_2011/Milano*
 
 # IPython notebook checkpoints
 .ipynb_checkpoints
+!data/CDR/README.md
