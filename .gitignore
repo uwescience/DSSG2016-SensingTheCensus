@@ -19,3 +19,6 @@ data/milan_sez_2011/Milano*
 # IPython notebook checkpoints
 .ipynb_checkpoints
 !data/CDR/README.md
+
+# Cache files
+__pycache__
