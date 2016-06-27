@@ -2,9 +2,11 @@ multmerge = function(mypath, pattern, read_function){
   filenames = list.files(path=mypath, full.names=TRUE)
   filenames = filenames[grepl(pattern,filenames)]
   datalist = lapply(filenames, function(x){
+    print(paste("Reading.....", x))
     read_function(x)
   })
   # datalist
+  print(paste("Merging datasets..."))
   Reduce(function(x,y) {bind_rows(x,y)}, datalist) %>% tbl_df()
 }
 
