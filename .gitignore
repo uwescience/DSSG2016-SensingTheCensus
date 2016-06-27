@@ -10,6 +10,10 @@ src/CDR_process/build/
 data/census/*
 
 # Milan shapefiles
+data/milan_sez_2011/*
+data/milan_ace_2011/*
+
+# Milan shapefiles
 data/milan_sez_2011/Milano*
 
 # Always include .md
