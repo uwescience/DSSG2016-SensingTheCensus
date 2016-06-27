@@ -15,10 +15,11 @@ data/milan_sez_2011/Milano*
 
 # Always include .md
 !*.md
+!data/CDR/README.md
+!data/CDR/generated/README.md
 
 # IPython notebook checkpoints
 .ipynb_checkpoints
-!data/CDR/README.md
 
 # Cache files
 __pycache__
