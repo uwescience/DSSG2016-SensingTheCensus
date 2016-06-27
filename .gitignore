@@ -8,6 +8,7 @@ src/CDR_process/build/
 
 # Census files
 data/census/*
+data/CDR/*
 
 # Milan shapefiles
 data/milan_sez_2011/*
@@ -18,9 +19,14 @@ data/milan_sez_2011/Milano*
 
 # Always include .md
 !*.md
+!data/CDR/README.md
+!data/CDR/generated/README.md
 
 # IPython notebook checkpoints
 .ipynb_checkpoints
 
 # R project user settings
 .Rproj.user
+
+# Cache files
+__pycache__
