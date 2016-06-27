@@ -21,8 +21,6 @@ def df_to_geojson(df, properties):
     Returns
     -------
     geojson : dict
-
-
     """
     geojson = {'crs': {'type': 'name', 
                        'properties': {"name": "urn:ogc:def:crs:EPSG::4326"}}, 
@@ -55,8 +53,6 @@ def join_cdr_grid(cdr, grid):
     Returns
     -------
     geojson : dict
-
-
     """
     
 
