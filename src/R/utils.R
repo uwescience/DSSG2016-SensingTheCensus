@@ -26,3 +26,7 @@ read_census_data = function(file_path) {
     "CODASC"= col_character()
   ))
 }
+
+
+pal <- function(x) {colorBin("YlGnBu", x, bins=quantile(x, probs = seq(0, 1, 0.20), na.rm=TRUE))}
+# pal <- function(x) {colorBin("YlGnBu", x, bins=10)}
