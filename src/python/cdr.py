@@ -92,8 +92,8 @@ def calculate_cosine_similarity(grid, dfs, reference_day='1101'):
 
     Returns
     -------
-    smsIn, smsOut, callIn, callOut, internet : Five dicts that contain
-    {day : consine_similarity}
+    smsIn, smsOut, callIn, callOut, internet : lists 
+        Contain {day : consine_similarity} values, sorted by date
     """
     smsIn = {}
     smsOut = {}
@@ -133,6 +133,8 @@ def calculate_cosine_similarity(grid, dfs, reference_day='1101'):
             except:
                 print (key)
                 continue
+        print("processed", key)
+
     #sorting
     smsIn = sorted(smsIn.items(), key=lambda s: s[0])
     smsOut = sorted(smsOut.items(), key=lambda s: s[0])
