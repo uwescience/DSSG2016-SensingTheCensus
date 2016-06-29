@@ -92,8 +92,9 @@ def test_join_cdr_grid():
 
   df = pd.DataFrame(df)
   grid = pd.Series(grid)
-  geojson = cdr.join_cdr_grid(df, grid)
+  joined_df = cdr.join_cdr_grid(df, grid)
+  cols = ['cellId','smsIn','smsOut','callIn','callOut','internet']
+  geojson = cdr.df_to_geojson(joined_df, cols)
 
   nt.assert_equal(geojson["features"][0]["properties"]["internet"], 5)
   nt.assert_equal(geojson["features"][0]["properties"]["smsIn"], 5)
-
