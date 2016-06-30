@@ -7,6 +7,7 @@ library(leaflet)
 library(GGally)
 library(ggplot2)
 library(rgeos)
+library(geojsonio)
 
 source("src/R/utils.R")
 
@@ -28,13 +29,7 @@ proj4string(milano_ace) = CRS("+proj=tmerc +lat_0=0 +lon_0=9 +k=0.9996 +x_0=1500
 milano_ace = spTransform(milano_ace, CRS("+init=epsg:4326"))
 
 
-# italy_sez = readShapePoly("data/Italy_SezC_2011/Italy_SezC_2011.shp")
-# proj4string(italy) = CRS("+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
-# italy = spTransform(italy, CRS("+init=epsg:4326"))
-
-
-
-#### Build Deprivation Index using PCA 
+## Build Deprivation Index using PCA 
 census_depriv = census %>% 
   transmute(high_school = P48/P1, 
             illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
@@ -67,16 +62,15 @@ cum_variance = cumsum(props)
 ## Print PCA results
 data.frame(proportion = props, cumulative_proportion = cum_variance) %>% filter(row_number() %in% 1:10)
 biplot(depriv_pca)
-# ggbiplot(depriv_pca) + theme_fivethirtyeight()
 feature_importance = depriv_pca$rotation %>% as.data.frame() %>% select(PC1) %>% add_rownames()%>% arrange(desc(abs(PC1)))
 feature_importance 
 depriv_index = depriv_pca$x[,1]
 
-census$deprivation = census_depriv
 if(granularity_level == "Block"){
   depriv_df =  data.frame(SEZ2011 = names(depriv_index), deprivation = unname(depriv_index))
 }else if(granularity_level == "Census Area"){
   depriv_df =  data.frame(ACE = names(depriv_index), deprivation = unname(depriv_index))
+  # census = census %>% left_join(depriv_df, by = "ACE")
 }
 
 
@@ -94,16 +88,7 @@ if(granularity_level == "Block"){
 }
 
 
-
-# italy@data = italy@data %>%
-#   mutate(SEZ2011 = as.character(SEZ2011)) %>%
-#   left_join(depriv_df, by = c("SEZ2011"))
-
-# writePolyShape(italy, "italy.shp")
-
 ## Map the index 
-pal <- function(x) {colorBin("YlGnBu", depriv_index, bins=quantile(depriv_index, probs = seq(0, 1, 0.15), na.rm=TRUE))}
-
 
 if(granularity_level == "Block"){
   leaflet(milano_sez) %>% addProviderTiles("CartoDB.Positron") %>% 
@@ -117,14 +102,16 @@ if(granularity_level == "Block"){
     addPolygons(fillColor = ~pal(deprivation)(deprivation), weight = .2, color="white",fillOpacity = 0.6) %>%
     addLegend(pal = pal(milano_ace$deprivation),
               values = ~deprivation,
-              position = "bottomleft"
+              position = "bottomleft",title = "Social well-being Index"
     )
 }
 
-milano_ace@data = milano_ace@data %>% left_join(depriv_df, by = "ACE")
-milano_sez@data = milano_sez@data %>% mutate(ACE = as.character(ACE)) %>% 
+milano_sez@data = milano_sez@data %>% 
+  mutate(ACE = as.character(ACE)) %>% 
   left_join(depriv_df, by = "ACE")
+milano_ace@data = milano_ace@data %>% 
+  left_join(census, by = "ACE")
 
 
-writeOGR(milano_ace, "data/GeoJSON/milano_ace", layer="census", driver="GeoJSON")
-writeOGR(milano_sez, "data/GeoJSON/milano_sez", layer="census", driver="GeoJSON")
+geojson_write(milano_ace, file = "data/GeoJSON/milano_census_ace.geojson")
+geojson_write(milano_sez, file = "data/GeoJSON/milano_census_sez.geojson")
