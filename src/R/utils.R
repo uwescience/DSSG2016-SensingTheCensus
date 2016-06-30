@@ -5,7 +5,6 @@ multmerge = function(mypath, pattern, read_function){
     print(paste("Reading.....", x))
     read_function(x)
   })
-  # datalist
   print(paste("Merging datasets..."))
   Reduce(function(x,y) {bind_rows(x,y)}, datalist) %>% tbl_df()
 }
@@ -29,4 +28,21 @@ read_census_data = function(file_path) {
 
 
 pal <- function(x) {colorBin("YlGnBu", x, bins=quantile(x, probs = seq(0, 1, 0.20), na.rm=TRUE))}
-# pal <- function(x) {colorBin("YlGnBu", x, bins=10)}
+# pal <- function(x) {colorBin("YlGnBu", x, bins=5)}
+
+
+leaflet_map = function(spatialDf, var, legend_title){
+  library(rgdal)
+
+  spatialDf = cdr_shape
+  feature = unlist(spatialDf@data[var])
+  
+  spatialDf = spTransform(spatialDf, CRS("+init=epsg:4326"))
+
+  leaflet(spatialDf) %>% addProviderTiles("CartoDB.Positron") %>% 
+    addPolygons(fillColor = pal(feature)(feature), weight = .2, color="white",fillOpacity = 0.6) %>%
+    addLegend(pal = pal(feature),
+              values = feature,
+              position = "bottomleft",title = legend_title
+    )
+}

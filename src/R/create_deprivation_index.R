@@ -89,8 +89,6 @@ if(granularity_level == "Block"){
 
 
 ## Map the index 
-pal <- function(x) {colorBin("YlGnBu", depriv_index, bins=quantile(depriv_index, probs = seq(0, 1, 0.15), na.rm=TRUE))}
-
 
 if(granularity_level == "Block"){
   leaflet(milano_sez) %>% addProviderTiles("CartoDB.Positron") %>% 
