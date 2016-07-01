@@ -4,7 +4,6 @@ sys.path.append('../python/')
 import pandas as pd
 import imp
 import cdr
-import csv
 import json
 import os.path
 from scipy.spatial.distance import cosine
@@ -21,8 +20,8 @@ print ("Libraries loaded")
 dfs = {}
 
 # Read all the files in Milano
-for month in {"11","12"}:
-    for day in range(1,32):
+for month in {"11", "12"}:
+    for day in range(1, 32):
         to_read = '../../data/CDR/sms-call-internet-mi-2013-' + month + '-' +\
                     str(day).zfill(2) + '.txt'
         
@@ -54,11 +53,6 @@ df = pd.merge(left=df, right=pd.DataFrame(internet, columns=['Date', 'internet']
 output_filename = '../../data/CDR/generated/similarity.csv'
 df.to_csv(output_filename, encoding='utf-8', index=False)
 
-# pandas tiem-series plotting
-# print("plotting a graph")
-# plt.figure()
-# df.plot()
-# plt.show()
 
 #unit testing
 # cdrr = pd.read_csv('../../data/CDR/sms-call-internet-mi-2013-12-01.txt', delimiter='\t', header=None)
