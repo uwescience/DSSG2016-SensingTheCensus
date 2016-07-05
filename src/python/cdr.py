@@ -58,28 +58,28 @@ def join_cdr_grid_by_time(cdr, grid):
     m_weekday, d_weekday, e_weekday, m_weekend, d_weekend, e_weekend : pandas DataFrames
         Each DataFrame has a different time period and weekday/weekend attribute.
     """
-
-    cdr.columns = ["cellId", "time", "countryCode", "smsIn", "smsOut",
+    cdrr = cdr.copy()
+    cdrr.columns = ["cellId", "time", "countryCode", "smsIn", "smsOut",
                    "callIn", "callOut", "internet"]
     norm_grid = json_normalize(grid['features'])
 
     # change miliseconds to datetime
-    cdr.index = pd.to_datetime(cdr['time'],unit='ms',utc=True)
-    cdr.index = cdr.index.tz_localize('UTC').tz_convert('Europe/Rome')
-    cdr['date'] = cdr.index
-    cdr['time_hour'] = cdr.index.hour
-    cdr['weekday'] = cdr.index.weekday
+    cdrr.index = pd.to_datetime(cdrr['time'],unit='ms',utc=True)
+    cdrr.index = cdrr.index.tz_localize('UTC').tz_convert('Europe/Rome')
+    cdrr['date'] = cdrr.index
+    cdrr['time_hour'] = cdrr.index.hour
+    cdrr['weekday'] = cdrr.index.weekday
 
     # returning Booleans
-    cdr['morning_weekday'] = (cdr['time_hour'] >= 0) & (cdr['time_hour'] < 8) & (cdr['weekday'] != 6) & (cdr['weekday'] != 5)
-    cdr['day_weekday'] = (cdr['time_hour'] >= 8) & (cdr['time_hour'] < 16) & (cdr['weekday'] != 6) & (cdr['weekday'] != 5)
-    cdr['evening_weekday'] = (cdr['time_hour'] >= 16) & (cdr['time_hour'] < 24) & (cdr['weekday'] != 6) & (cdr['weekday'] != 5)
-    cdr['morning_weekend'] = (cdr['time_hour'] >= 0) & (cdr['time_hour'] < 8) & ((cdr['weekday'] == 6) | (cdr['weekday'] == 5))
-    cdr['day_weekend'] = (cdr['time_hour'] >= 8) & (cdr['time_hour'] < 16) & ((cdr['weekday'] == 6) | (cdr['weekday'] == 5))
-    cdr['evening_weekend'] = (cdr['time_hour'] >= 16) & (cdr['time_hour'] < 24) & ((cdr['weekday'] == 6) | (cdr['weekday'] == 5))
+    cdrr['morning_weekday'] = (cdrr['time_hour'] >= 0) & (cdrr['time_hour'] < 8) & (cdrr['weekday'] != 6) & (cdrr['weekday'] != 5)
+    cdrr['day_weekday'] = (cdrr['time_hour'] >= 8) & (cdrr['time_hour'] < 16) & (cdrr['weekday'] != 6) & (cdrr['weekday'] != 5)
+    cdrr['evening_weekday'] = (cdrr['time_hour'] >= 16) & (cdrr['time_hour'] < 24) & (cdrr['weekday'] != 6) & (cdrr['weekday'] != 5)
+    cdrr['morning_weekend'] = (cdrr['time_hour'] >= 0) & (cdrr['time_hour'] < 8) & ((cdrr['weekday'] == 6) | (cdrr['weekday'] == 5))
+    cdrr['day_weekend'] = (cdrr['time_hour'] >= 8) & (cdrr['time_hour'] < 16) & ((cdrr['weekday'] == 6) | (cdrr['weekday'] == 5))
+    cdrr['evening_weekend'] = (cdrr['time_hour'] >= 16) & (cdrr['time_hour'] < 24) & ((cdrr['weekday'] == 6) | (cdrr['weekday'] == 5))
 
     #aggregations for each time/day slots
-    morning_weekday = cdr[(cdr['countryCode'] != 0) & (cdr['morning_weekday'] == True)].groupby('cellId').agg({
+    morning_weekday = cdrr[(cdrr['countryCode'] != 0) & (cdrr['morning_weekday'] == True)].groupby('cellId').agg({
                         'cellId': 'first',
                         'time': 'first',
                         'smsIn': 'sum',
@@ -88,7 +88,7 @@ def join_cdr_grid_by_time(cdr, grid):
                         'callOut': 'sum',
                         'internet': 'sum'
                     })
-    day_weekday = cdr[(cdr['countryCode'] != 0) & (cdr['day_weekday'] == True)].groupby('cellId').agg({
+    day_weekday = cdrr[(cdrr['countryCode'] != 0) & (cdrr['day_weekday'] == True)].groupby('cellId').agg({
                         'cellId': 'first',
                         'time': 'first',
                         'smsIn': 'sum',
@@ -97,7 +97,7 @@ def join_cdr_grid_by_time(cdr, grid):
                         'callOut': 'sum',
                         'internet': 'sum'
                     })
-    evening_weekday = cdr[(cdr['countryCode'] != 0) & (cdr['evening_weekday'] == True)].groupby('cellId').agg({
+    evening_weekday = cdrr[(cdrr['countryCode'] != 0) & (cdrr['evening_weekday'] == True)].groupby('cellId').agg({
                         'cellId': 'first',
                         'time': 'first',
                         'smsIn': 'sum',
@@ -106,7 +106,7 @@ def join_cdr_grid_by_time(cdr, grid):
                         'callOut': 'sum',
                         'internet': 'sum'
                     })
-    morning_weekend = cdr[(cdr['countryCode'] != 0) & (cdr['morning_weekend'] == True)].groupby('cellId').agg({
+    morning_weekend = cdrr[(cdrr['countryCode'] != 0) & (cdrr['morning_weekend'] == True)].groupby('cellId').agg({
                         'cellId': 'first',
                         'time': 'first',
                         'smsIn': 'sum',
@@ -115,7 +115,7 @@ def join_cdr_grid_by_time(cdr, grid):
                         'callOut': 'sum',
                         'internet': 'sum'
                     })
-    day_weekend = cdr[(cdr['countryCode'] != 0) & (cdr['day_weekend'] == True)].groupby('cellId').agg({
+    day_weekend = cdrr[(cdrr['countryCode'] != 0) & (cdrr['day_weekend'] == True)].groupby('cellId').agg({
                         'cellId': 'first',
                         'time': 'first',
                         'smsIn': 'sum',
@@ -124,7 +124,7 @@ def join_cdr_grid_by_time(cdr, grid):
                         'callOut': 'sum',
                         'internet': 'sum'
                     })
-    evening_weekend = cdr[(cdr['countryCode'] != 0) & (cdr['evening_weekend'] == True)].groupby('cellId').agg({
+    evening_weekend = cdrr[(cdrr['countryCode'] != 0) & (cdrr['evening_weekend'] == True)].groupby('cellId').agg({
                         'cellId': 'first',
                         'time': 'first',
                         'smsIn': 'sum',
@@ -142,6 +142,13 @@ def join_cdr_grid_by_time(cdr, grid):
     d_weekend = pd.merge(left=norm_grid, right=day_weekend, how='left', left_on='properties.cellId', right_on='cellId')
     e_weekend = pd.merge(left=norm_grid, right=evening_weekend, how='left', left_on='properties.cellId', right_on='cellId')
 
+    #filling NaN values with 0's
+    m_weekday.fillna(0, inplace=True)
+    d_weekday.fillna(0, inplace=True)
+    e_weekday.fillna(0, inplace=True)
+    m_weekend.fillna(0, inplace=True)
+    d_weekend.fillna(0, inplace=True)
+    e_weekend.fillna(0, inplace=True)
 
     return m_weekday, d_weekday, e_weekday, m_weekend, d_weekend, e_weekend
 
