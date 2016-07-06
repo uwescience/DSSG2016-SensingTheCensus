@@ -98,3 +98,4 @@ def test_join_cdr_grid():
 
   nt.assert_equal(geojson["features"][0]["properties"]["internet"], 5)
   nt.assert_equal(geojson["features"][0]["properties"]["smsIn"], 5)
+

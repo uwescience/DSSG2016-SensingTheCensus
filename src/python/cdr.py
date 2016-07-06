@@ -40,6 +40,119 @@ def df_to_geojson(df, properties):
     return geojson
 
 
+def join_cdr_grid_by_time(cdr, grid):
+    """
+    A function that outputs a joined table (DataFrame) from CDR and GRID data.
+    The properties are more granular in time and day.
+    e.g., CDR acitivities are aggregated by time period and day (weekday vs. weekend)
+
+    Parameters
+    ----------
+    cdr : pandas DataFrame
+       CDR data loaded in a pandas DataFrame.
+    grid : pandas Series
+       A pandas Series data of a city grid.
+
+    Returns
+    -------
+    m_weekday, d_weekday, e_weekday, m_weekend, d_weekend, e_weekend : pandas DataFrames
+        Each DataFrame has a different time period and weekday/weekend attribute.
+    """
+    cdrr = cdr.copy()
+    cdrr.columns = ["cellId", "time", "countryCode", "smsIn", "smsOut",
+                   "callIn", "callOut", "internet"]
+    norm_grid = json_normalize(grid['features'])
+
+    # change miliseconds to datetime
+    cdrr.index = pd.to_datetime(cdrr['time'],unit='ms',utc=True)
+    cdrr.index = cdrr.index.tz_localize('UTC').tz_convert('Europe/Rome')
+    cdrr['date'] = cdrr.index
+    cdrr['time_hour'] = cdrr.index.hour
+    cdrr['weekday'] = cdrr.index.weekday
+
+    # returning Booleans
+    cdrr['morning_weekday'] = (cdrr['time_hour'] >= 0) & (cdrr['time_hour'] < 8) & (cdrr['weekday'] != 6) & (cdrr['weekday'] != 5)
+    cdrr['day_weekday'] = (cdrr['time_hour'] >= 8) & (cdrr['time_hour'] < 16) & (cdrr['weekday'] != 6) & (cdrr['weekday'] != 5)
+    cdrr['evening_weekday'] = (cdrr['time_hour'] >= 16) & (cdrr['time_hour'] < 24) & (cdrr['weekday'] != 6) & (cdrr['weekday'] != 5)
+    cdrr['morning_weekend'] = (cdrr['time_hour'] >= 0) & (cdrr['time_hour'] < 8) & ((cdrr['weekday'] == 6) | (cdrr['weekday'] == 5))
+    cdrr['day_weekend'] = (cdrr['time_hour'] >= 8) & (cdrr['time_hour'] < 16) & ((cdrr['weekday'] == 6) | (cdrr['weekday'] == 5))
+    cdrr['evening_weekend'] = (cdrr['time_hour'] >= 16) & (cdrr['time_hour'] < 24) & ((cdrr['weekday'] == 6) | (cdrr['weekday'] == 5))
+
+    #aggregations for each time/day slots
+    morning_weekday = cdrr[(cdrr['countryCode'] != 0) & (cdrr['morning_weekday'] == True)].groupby('cellId').agg({
+                        'cellId': 'first',
+                        'time': 'first',
+                        'smsIn': 'sum',
+                        'smsOut': 'sum',
+                        'callIn': 'sum',
+                        'callOut': 'sum',
+                        'internet': 'sum'
+                    })
+    day_weekday = cdrr[(cdrr['countryCode'] != 0) & (cdrr['day_weekday'] == True)].groupby('cellId').agg({
+                        'cellId': 'first',
+                        'time': 'first',
+                        'smsIn': 'sum',
+                        'smsOut': 'sum',
+                        'callIn': 'sum',
+                        'callOut': 'sum',
+                        'internet': 'sum'
+                    })
+    evening_weekday = cdrr[(cdrr['countryCode'] != 0) & (cdrr['evening_weekday'] == True)].groupby('cellId').agg({
+                        'cellId': 'first',
+                        'time': 'first',
+                        'smsIn': 'sum',
+                        'smsOut': 'sum',
+                        'callIn': 'sum',
+                        'callOut': 'sum',
+                        'internet': 'sum'
+                    })
+    morning_weekend = cdrr[(cdrr['countryCode'] != 0) & (cdrr['morning_weekend'] == True)].groupby('cellId').agg({
+                        'cellId': 'first',
+                        'time': 'first',
+                        'smsIn': 'sum',
+                        'smsOut': 'sum',
+                        'callIn': 'sum',
+                        'callOut': 'sum',
+                        'internet': 'sum'
+                    })
+    day_weekend = cdrr[(cdrr['countryCode'] != 0) & (cdrr['day_weekend'] == True)].groupby('cellId').agg({
+                        'cellId': 'first',
+                        'time': 'first',
+                        'smsIn': 'sum',
+                        'smsOut': 'sum',
+                        'callIn': 'sum',
+                        'callOut': 'sum',
+                        'internet': 'sum'
+                    })
+    evening_weekend = cdrr[(cdrr['countryCode'] != 0) & (cdrr['evening_weekend'] == True)].groupby('cellId').agg({
+                        'cellId': 'first',
+                        'time': 'first',
+                        'smsIn': 'sum',
+                        'smsOut': 'sum',
+                        'callIn': 'sum',
+                        'callOut': 'sum',
+                        'internet': 'sum'
+                    })
+
+    # merge with grid
+    m_weekday = pd.merge(left=norm_grid, right=morning_weekday, how='left', left_on='properties.cellId', right_on='cellId')
+    d_weekday = pd.merge(left=norm_grid, right=day_weekday, how='left', left_on='properties.cellId', right_on='cellId')
+    e_weekday = pd.merge(left=norm_grid, right=evening_weekday, how='left', left_on='properties.cellId', right_on='cellId')
+    m_weekend = pd.merge(left=norm_grid, right=morning_weekend, how='left', left_on='properties.cellId', right_on='cellId')
+    d_weekend = pd.merge(left=norm_grid, right=day_weekend, how='left', left_on='properties.cellId', right_on='cellId')
+    e_weekend = pd.merge(left=norm_grid, right=evening_weekend, how='left', left_on='properties.cellId', right_on='cellId')
+
+    #filling NaN values with 0's
+    m_weekday.fillna(0, inplace=True)
+    d_weekday.fillna(0, inplace=True)
+    e_weekday.fillna(0, inplace=True)
+    m_weekend.fillna(0, inplace=True)
+    d_weekend.fillna(0, inplace=True)
+    e_weekend.fillna(0, inplace=True)
+
+    return m_weekday, d_weekday, e_weekday, m_weekend, d_weekend, e_weekend
+
+
 def join_cdr_grid(cdr, grid):
     """
     A function that outputs a joined table (DataFrame) from CDR and GRID data.
@@ -84,16 +197,19 @@ def calculate_cosine_similarity(grid, dfs, reference_day='1101'):
     
     Parameters
     ----------
-    grid : pandas Series
+    grid : a pandas Series
         A pandas Series data of a city grid.
     dfs : a dict of pandas Series
-        Each element of a dict has a key for a reference day (e.g., '1101')
+        Each element of a dict has a key for a day (e.g., '1101')
         and a value for a DataFrame of joined table for that day.
+    reference_day : a string
+        A string of 'mm/dd' that provides a reference day to compare
+        with other days.
 
     Returns
     -------
-    smsIn, smsOut, callIn, callOut, internet : Five dicts that contain
-    {day : consine_similarity}
+    smsIn, smsOut, callIn, callOut, internet : lists 
+        Contain {day : consine_similarity} values, sorted by date
     """
     smsIn = {}
     smsOut = {}
@@ -133,6 +249,8 @@ def calculate_cosine_similarity(grid, dfs, reference_day='1101'):
             except:
                 print (key)
                 continue
+        print("processed", key)
+
     #sorting
     smsIn = sorted(smsIn.items(), key=lambda s: s[0])
     smsOut = sorted(smsOut.items(), key=lambda s: s[0])
