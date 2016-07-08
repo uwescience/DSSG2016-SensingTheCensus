@@ -28,30 +28,31 @@ aggr_cdr = intersection@data %>% dplyr::select(ACE, internet:area, -cellId) %>% 
 #' Join data to census polygons
 census@data = census@data %>% left_join(aggr_cdr, by = "ACE")
 
-census = spTransform(census, CRS("+init=epsg:4326"))
-
 #' Map aggregated data
-leaflet_map(census, "call_out", "Call Out")
-leaflet_map(census, "call_in", "Call In")
-leaflet_map(census, "internet", "Internet")
+# leaflet_map(census, "call_out", "Call Out")
+# leaflet_map(census, "call_in", "Call In")
+# leaflet_map(census, "internet", "Internet")
 
 
 #' Create correlation plot between relevant features
-census@data = census@data %>% mutate(high_school = P48/P1, 
-                                 illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
-                                 foreigners = ST15/P1,
-                                 rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
-                                 unemployment = P62/P60,
-                                 work_force = P60/(P17 + P18 + P19 + P20 + P21 + P22 + P23 + P24 + P25 + P26 + P27 + P28 + P29),
-                                 call_ratio = callIn/callOut
-)
+census@data = census@data %>% 
+  mutate(census_area = area(census),
+    high_school = P48/P1, 
+    illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
+    foreigners = ST15/P1,
+    rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
+    unemployment = P62/P60,
+    work_force = P60/(P17 + P18 + P19 + P20 + P21 + P22 + P23 + P24 + P25 + P26 + P27 + P28 + P29),
+    call_ratio = callIn/callOut
+    )%>%
+  mutate_each(funs(norm(., P1), dens(., P1, census_area)), internet:callOut)
 
 
-png("/data/doc/plots/census_cdr_corr.png", height = 1000, width = 1000)
-corr_plot = ggpairs(census@data %>% select(internet:callOut, deprivation, high_school:work_force))
-print(corr_plot)
-dev.off()
+corr_plot = ggpairs(census@data %>% select(internet:callOut_dens, deprivation),
+                    lower = list(continuous = wrap("points", alpha = 0.3)))
+ggsave("doc/plots/census_cdr_corr.png", corr_plot, dpi = 300, scale=1.2)
 
+cor(census@data$deprivation,census@data %>% select(internet_norm:callOut_dens))
 ## Try some regresions
 summary(lm(deprivation ~  call_ratio, census@data))
 summary(lm(deprivation ~ callIn, census@data))

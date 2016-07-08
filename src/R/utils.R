@@ -34,7 +34,6 @@ pal <- function(x) {colorBin("YlGnBu", x, bins=quantile(x, probs = seq(0, 1, 0.2
 leaflet_map = function(spatialDf, var, legend_title){
   library(rgdal)
 
-  spatialDf = cdr_shape
   feature = unlist(spatialDf@data[var])
   
   spatialDf = spTransform(spatialDf, CRS("+init=epsg:4326"))
@@ -46,3 +45,10 @@ leaflet_map = function(spatialDf, var, legend_title){
               position = "bottomleft",title = legend_title
     )
 }
+
+
+grid.draw.gg <- function(x){print(x)}
+
+norm = function(x,p){x/p}
+
+dens = function(x,p,a){x/(p/a)}
