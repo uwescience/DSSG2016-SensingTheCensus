@@ -30,3 +30,10 @@ data/milan_sez_2011/Milano*
 
 # Cache files
 __pycache__
+
+# log files
+derby.log
+metastore_db
+
+# include hash files
+!data/CDR/hash
