@@ -62,5 +62,5 @@ corr_plot = ggpairs(census@data %>% select(high_school:internet_evening_weekday_
                     lower = list(continuous = wrap("points", alpha = 0.3)))
 ggsave("doc/plots/census_cdr_corr_2.png", corr_plot, dpi = 400, scale=4,height = 15, width = 15, limitsize = FALSE)
 
-min(cor(census@data$deprivation, census@data %>% select(smsIn_morning_weekend_norm:internet_evening_weekday_dens)))
-corr[,which.max(corr)]
+cor(census@data$deprivation, census@data %>% select(smsIn_morning_weekend_norm:internet_evening_weekday_dens))
+# corr[,which.max(corr)]
