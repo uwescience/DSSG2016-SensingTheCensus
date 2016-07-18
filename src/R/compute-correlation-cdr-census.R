@@ -42,25 +42,15 @@ for(day in time_day){
 }
 
 
-census@data = census@data %>% 
-  mutate(census_area = area(census),
-    high_school = P48/P1, 
-    illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
-    foreigners = ST15/P1,
-    rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
-    unemployment = P62/P60,
-    work_force = P60/(P17 + P18 + P19 + P20 + P21 + P22 + P23 + P24 + P25 + P26 + P27 + P28 + P29)
-  ) %>%
+census@data = get_deprivation_features(census) %>%
   mutate_each(funs(norm(., P1), dens(., P1, census_area)), smsIn_morning_weekend:internet_evening_weekday)
 
 
 census = spTransform(census, CRS("+init=epsg:4326"))
 
+# corr_plot = ggpairs(census@data %>% dplyr::select(high_school:internet_evening_weekday_dens, deprivation),
+                    # lower = list(continuous = wrap("points", alpha = 0.3)))
+# ggsave("doc/plots/census_cdr_corr_2.png", corr_plot, dpi = 400, scale=4,height = 15, width = 15, limitsize = FALSE)
 
-
-corr_plot = ggpairs(census@data %>% select(high_school:internet_evening_weekday_dens, deprivation),
-                    lower = list(continuous = wrap("points", alpha = 0.3)))
-ggsave("doc/plots/census_cdr_corr_2.png", corr_plot, dpi = 400, scale=4,height = 15, width = 15, limitsize = FALSE)
-
-cor(census@data$deprivation, census@data %>% select(smsIn_morning_weekend_norm:internet_evening_weekday_dens))
+cor(census@data$deprivation, census@data %>% dplyr::select(smsIn_morning_weekend_norm:internet_evening_weekday_dens))
 # corr[,which.max(corr)]

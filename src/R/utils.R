@@ -31,7 +31,7 @@ pal <- function(x) {colorBin("YlGnBu", x, bins=quantile(x, probs = seq(0, 1, 0.2
 # pal <- function(x) {colorBin("YlGnBu", x, bins=5)}
 
 
-leaflet_map = function(spatialDf, var, legend_title){
+leaflet_map = function(spatialDf, var, legend_title) {
   library(rgdal)
 
   feature = unlist(spatialDf@data[var])
@@ -52,3 +52,15 @@ grid.draw.gg <- function(x){print(x)}
 norm = function(x,p){x/p}
 
 dens = function(x,p,a){x/(p/a)}
+
+get_deprivation_features = function(census){
+  census@data %>% 
+    mutate(census_area = area(census),
+           high_school = P48/P1, 
+           illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
+           foreigners = ST15/P1,
+           rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
+           unemployment = P62/P60,
+           work_force = P60/(P17 + P18 + P19 + P20 + P21 + P22 + P23 + P24 + P25 + P26 + P27 + P28 + P29)
+    )
+}

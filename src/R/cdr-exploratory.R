@@ -73,13 +73,7 @@ leaflet_map(census, "call_in_pca", "Aggr Call In PCA")
 plot(census$call_in_pca, census$deprivation)
 cor(census$call_in_pca, census$deprivation)
 
-census@data = census@data %>% mutate(high_school = P48/P1, 
-                                     illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
-                                     foreigners = ST15/P1,
-                                     rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
-                                     unemployment = P62/P60,
-                                     work_force = P60/(P17 + P18 + P19 + P20 + P21 + P22 + P23 + P24 + P25 + P26 + P27 + P28 + P29))
-
+census@data = get_deprivation_features(census) 
 # corr_plot = ggpairs(census@data %>% dplyr::select(call_in_pca, deprivation, high_school:work_force) %>%
                       # mutate(log_call_in_pca = log1p(call_in_pca)))
 
