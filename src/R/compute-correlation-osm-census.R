@@ -58,6 +58,7 @@ ggplot(census@data) +  geom_point(aes(x = bar, y = deprivation))+
   labs(x="bar offering", y = "well-being", title = "Bar offering vs well-being") + 
   theme_fivethirtyeight()
 ggsave(filename = "doc/plots/bar_deprivation.png")
+
 ggplot(census@data) +  geom_point(aes(x = marketplace, y = deprivation))
 
 ggplot(census@data) +  geom_point(aes(x = bbq, y = deprivation))
