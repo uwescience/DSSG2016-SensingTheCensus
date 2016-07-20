@@ -36,16 +36,7 @@ leaflet_map(census, "internet", "Internet")
 
 
 #' Create correlation plot between relevant features
-census@data = census@data %>% 
-  mutate(census_area = area(census),
-    high_school = P48/P1, 
-    illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
-    foreigners = ST15/P1,
-    rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
-    unemployment = P62/P60,
-    work_force = P60/(P17 + P18 + P19 + P20 + P21 + P22 + P23 + P24 + P25 + P26 + P27 + P28 + P29),
-    call_ratio = callIn/callOut
-    )%>%
+census@data = get_deprivation_features(census) %>%
   mutate_each(funs(norm(., P1), dens(., P1, census_area)), internet:callOut)
 
 
@@ -55,27 +46,50 @@ census@data = census@data %>%
 
 library(pander)
 
-cor(census@data %>% select(deprivation, high_school:work_force),census@data %>% select(internet:callOut))%>%
-  pander(caption = "Correlation between CDR features and deprivation features")
+cor_df= cor(census@data %>% dplyr::select(deprivation, high_school:work_force),
+    census@data %>% dplyr::select(internet:callOut))
 
-cor_table_norm = cor(census@data %>% select(deprivation, high_school:work_force),
-                     census@data %>% select(internet_norm:callOut_norm)) %>%
+cor_df %>% pander(caption = "Correlation between CDR features and deprivation features")
+
+cor_table_norm = cor(census@data %>% dplyr::select(deprivation, high_school:work_force),
+                     census@data %>% dplyr::select(internet_norm:callOut_norm)) %>%
   as.data.frame()
-names(cor_table_norm) = census@data %>% select(internet:callOut) %>% names()
+names(cor_table_norm) = census@data %>% dplyr::select(internet:callOut) %>% names()
 cor_table_norm %>% pander(caption = "Correlation between normalized CDR by population size and deprivation features")
 
 
-cor_table_dens = cor(census@data %>% select(deprivation, high_school:work_force),
-                     census@data %>% select(internet_dens:callOut_dens)) %>%
+cor_table_dens = cor(census@data %>% dplyr::select(deprivation, high_school:work_force),
+                     census@data %>% dplyr::select(internet_dens:callOut_dens)) %>%
   as.data.frame()
-names(cor_table_dens) = census@data %>% select(internet:callOut) %>% names()
+names(cor_table_dens) = census@data %>% dplyr::select(internet:callOut) %>% names()
 cor_table_dens %>% pander(caption = "Correlation between normalized CDR by population density and deprivation features")
+
+cor_table_dens %<>% add_rownames("census") %>%
+  gather(cdr, correlation, internet:callOut)
+
+corr_plot = ggplot(cor_table_dens)+aes(x = cdr, y=census) + geom_tile(aes(fill= correlation)) + coord_fixed()+
+  geom_text(aes(label = round(correlation,2)))+
+  scale_fill_gradient2(low="#e41a1c",mid = "white", high = "#377eb8", limits=c(-1, 1))+
+  labs(title="CDR normalized by density vs Census") + 
+  # guide = guide_legend(direction = "vertical")) +
+  theme_fivethirtyeight() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_blank(),
+        legend.position="right",legend.direction = "vertical")
+
+corr_plot
+ggsave("doc/plots/correlation_cdr_deprivation.png", corr_plot, scale=1.5)
 
 
 ggplot(census@data) +  geom_point(aes(x = smsOut_dens, y = deprivation))+ 
   labs(x="smsOut_norm", y = "well-being", title = "smsOut_norm vs well-being") + 
   theme_fivethirtyeight()
 # ggsave(filename = "doc/plots/fast-food_deprivation.png")
+
+
+
+
+
 
 ## Try some regresions
 summary(lm(deprivation ~  call_ratio, census@data))
