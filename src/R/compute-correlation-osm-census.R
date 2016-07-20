@@ -13,6 +13,7 @@ library(pander)
 library(RColorBrewer)
 library(corrplot)
 library(leaflet)
+library(ggthemes)
 
 source("src/R/utils.R")
 
@@ -67,10 +68,26 @@ moran.mc(census$deprivation,listw = nblist, 9999)
 corr_depriv_cat = cor(census@data %>% mutate(well_being = deprivation) %>% dplyr::select(well_being, high_school:unemployment), 
                       census@data %>% dplyr::select(arts_centre:wifi))
 
-png(height=600, width=1200, pointsize=25, file="doc/plots/correlation_osm_deprivation.png")
-corrplot(corr_depriv_cat[,abs(corr_depriv_cat["well_being",] )>.1] , method="color", tl.col="black", tl.srt=60, number.font = 1)
-dev.off()
+# png(height=600, width=1200, pointsize=25, file="doc/plots/correlation_osm_deprivation.png")
+# corrplot(corr_depriv_cat[,abs(corr_depriv_cat["well_being",] )>.1] , method="color", tl.col="black", tl.srt=60, number.font = 1,
+#          col = colorRampPalette(c("red","white","blue"))(14))
+# dev.off()
 
+corr_df = corr_depriv_cat[,abs(corr_depriv_cat["well_being",] )>.1] %>% as.data.frame() %>% add_rownames("census") %>%
+  gather(osm, correlation, bar:waste_disposal)
+
+corr_plot = ggplot(corr_df)+aes(x = osm, y=census) + geom_tile(aes(fill= correlation)) + coord_fixed()+
+  geom_text(aes(label = round(correlation,2)))+
+  scale_fill_gradient2(low="#e41a1c",mid = "white", high = "#377eb8", limits=c(-1, 1))+
+  labs(title="OSM Offering Advantage vs Census") + 
+                       # guide = guide_legend(direction = "vertical")) +
+  theme_fivethirtyeight() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_blank(),
+        legend.position="right",legend.direction = "vertical")
+
+corr_plot
+ggsave("doc/plots/correlation_osm_deprivation.png", corr_plot, scale=1.5)
 
 ggplot(census@data) +  geom_point(aes(x = bar, y = deprivation))+ 
   labs(x="bar offering", y = "well-being", title = "Bar offering vs well-being") + 
@@ -109,3 +126,8 @@ leaflet_map(census, "deprivation", "Well-being") %>%
             position = "bottomright",title = "POI's",
             opacity = 0.95
   )
+
+leaflet_map(census, "bar", "Bar Offering Advantage", "PuBuGn", "equal")
+leaflet_map(census, "bicycle_parking", "Bicycle Parking <br>Offering Advantage", "PuBuGn", "equal")
+
+# leaflet_map(census, "deprivation", "Bar offering Advantage", "PuBuGn")

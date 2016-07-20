@@ -4,6 +4,8 @@ library(rgdal)
 library(leaflet)
 library(GGally)
 library(ggplot2)
+library(ggthemes)
+library
 
 source("src/R/utils.R")
 
@@ -52,5 +54,40 @@ census = spTransform(census, CRS("+init=epsg:4326"))
                     # lower = list(continuous = wrap("points", alpha = 0.3)))
 # ggsave("doc/plots/census_cdr_corr_2.png", corr_plot, dpi = 400, scale=4,height = 15, width = 15, limitsize = FALSE)
 
-cor(census@data$deprivation, census@data %>% dplyr::select(smsIn_morning_weekend_norm:internet_evening_weekday_dens))
+corr_df = cor(census@data %>% mutate(well_being = deprivation) %>% dplyr::select(well_being, high_school:unemployment),  
+              dplyr::select(census@data,smsIn_morning_weekend:internet_evening_weekday_dens)) %>% 
+  as.data.frame() %>% add_rownames("census") %>%
+  gather(cdr, correlation, smsIn_morning_weekend_dens:internet_evening_weekday_dens)
 # corr[,which.max(corr)]
+
+
+corr_plot = ggplot(corr_df)+aes(x = cdr, y=census) + geom_tile(aes(fill= correlation)) + coord_fixed()+
+  geom_text(aes(label = round(correlation,2)))+
+  scale_fill_gradient2(low="#e41a1c",mid = "white", high = "#377eb8", limits=c(-1, 1))+
+  labs(title="CDR vs Census Correlation") + 
+  # guide = guide_legend(direction = "vertical")) +
+  theme_fivethirtyeight() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title = element_blank(),
+        legend.position="right",legend.direction = "vertical")
+
+corr_plot
+ggsave("doc/plots/correlation_cdr_deprivation.png", corr_plot, scale=2)
+
+
+census_corr_plot = ggpairs(census@data %>% mutate(well_being = deprivation) %>% 
+                             dplyr::select(well_being, high_school:unemployment),
+                           title = "Well-being index vs Census Variables")+
+  theme_fivethirtyeight() 
+census_corr_plot
+
+ggsave("doc/plots/correlation_deprivation_census.png", census_corr_plot, scale=1.5)
+
+
+density_corr_plot = ggpairs(census@data %>% 
+                             dplyr::select(density, smsIn_morning_weekend:callOut_morning_weekday),
+                           title = "Well-being index vs Census Variables")+
+  theme_fivethirtyeight() 
+
+ggsave("doc/plots/correlation_density.png", density_corr_plot, scale=1.5)
+
