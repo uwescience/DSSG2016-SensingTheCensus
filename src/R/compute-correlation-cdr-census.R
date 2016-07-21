@@ -5,7 +5,7 @@ library(leaflet)
 library(GGally)
 library(ggplot2)
 library(ggthemes)
-library
+library(tidyr)
 
 source("src/R/utils.R")
 
