@@ -3,9 +3,8 @@ library(XML)
 library(magrittr)
 library(dplyr)
 
-xmlfile <- xmlTreeParse(xml.url)
 
-raw_xml <- read_xml("planet_8.623,45.245_9.656,45.712.osm", options = c("HUGE"))
+raw_xml <- read_xml("data/OSM/planet_8.623,45.245_9.656,45.712.osm", options = c("HUGE"))
 
 tags = raw_xml %>% xml_find_all("//tag")
 
