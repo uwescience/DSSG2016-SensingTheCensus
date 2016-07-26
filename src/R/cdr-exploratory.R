@@ -15,7 +15,7 @@ cdr_shape = readOGR("data/GeoJSON/CDR_join_output.geojson", "OGRGeoJSON")
 
 # dates = first + (1:(144*32))*hours(6)
 cdr %<>% transmute(cell_id = X1, 
-                    date = as.POSIXct(as.numeric(as.character(X2))/1000,origin="1970-01-01",tz = "GMT"),
+                    date = as.POSIXct(as.numeric(as.character(X2))/1000,origin="1970-01-01",tz = "Europe/Rome"),
                     # date =X2,
                     day = day(date),
                     hour = hour(date),

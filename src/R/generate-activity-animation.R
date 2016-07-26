@@ -23,7 +23,7 @@ census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
 
 
 cdr %<>% transmute(cell_id = X1, 
-                   date = as.POSIXct(as.numeric(as.character(X2))/1000,origin="1970-01-01",tz = "GMT"),
+                   date = as.POSIXct(as.numeric(as.character(X2))/1000,origin="1970-01-01",tz = "Europe/Rome"),
                    # date =X2,
                    day = day(date),
                    hour = hour(date),
@@ -33,7 +33,7 @@ cdr %<>% transmute(cell_id = X1,
                    callIn = X6,
                    callOut = X7,
                    internet = X8
-) 
+                   ) 
 
 
 wday_tower_activity_hour = cdr %>% group_by(day, hour, cell_id, weekday) %>%
