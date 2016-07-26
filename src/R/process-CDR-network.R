@@ -21,6 +21,8 @@ library(lubridate)
 library(rgdal)
 library(raster)
 
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+
 #' Load census and CDR geojson
 census = readOGR("../../data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
