@@ -15,7 +15,7 @@ library(RColorBrewer)
 source("src/R/utils.R")
 
 #' Read Street network shapefile
-streets = readOGR("data/census/milroads/milroads.shp",layer = "milroads" ) %>%
+streets = readOGR("data/OSM/milroads/milroads.shp",layer = "milroads" ) %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84 +units=m")) 
 
 #' Remove unwanted paths
@@ -85,7 +85,7 @@ proj4string(intersections_data_frame ) = CRS("+proj=utm +zone=32 +datum=WGS84 +u
 intersections_data_frame %<>% spTransform(CRS("+init=epsg:4326"))
 
 #' Save SpatialPointsDataFrame
-writePointsShape(intersections_data_frame, "data/census/streets/street_intersections.shp")
+writePointsShape(intersections_data_frame, "data/OSM/streets/street_intersections.shp")
 
 ##' Convert back the graph object to a shapefile
 #' Create data frame with the information for all edges
@@ -124,7 +124,7 @@ proj4string(lines_df) = CRS("+proj=utm +zone=32 +datum=WGS84 +units=m")
 lines_df %<>% spTransform(CRS("+init=epsg:4326"))
 
 #' Save SpatialLinesDataFrame
-writeLinesShape(lines_df, "data/census/streets/streets.shp")
+writeLinesShape(lines_df, "data/OSM/streets/streets.shp")
  
 #' Plot result into a map
 palette <- rev(brewer.pal(10, "RdYlBu")) #Spectral #RdYlBu
