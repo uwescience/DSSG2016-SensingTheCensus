@@ -1,3 +1,7 @@
+library(readr)
+library(leaflet)
+library(dplyr)
+
 multmerge = function(mypath, pattern, read_function){
   filenames = list.files(path=mypath, full.names=TRUE)
   filenames = filenames[grepl(pattern,filenames)]

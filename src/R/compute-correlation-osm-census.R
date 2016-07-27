@@ -52,7 +52,8 @@ offer_advantage_wide = offer_advantage%>% dplyr::select(ACE, amenity, offer_adva
 
 census@data %<>% left_join(offer_advantage_wide, by = "ACE")
 
-
+# write_csv(census@data %>% dplyr::select(ACE, arts_centre:wifi),
+          # "data/OSM/offering_advantage.csv")
 # dudi = dudi.pca(census@data %>% select(deprivation, arts_centre:wifi),scannf = FALSE)
 
 nb = poly2nb(census)
