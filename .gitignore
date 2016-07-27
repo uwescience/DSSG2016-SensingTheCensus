@@ -27,6 +27,8 @@ data/milan_sez_2011/Milano*
 
 # R project user settings
 .Rproj.user
+.RData
+.Rhistory
 
 # Cache files
 __pycache__
