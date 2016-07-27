@@ -7,8 +7,9 @@ src/CDR_process/build/
 .DS_Store
 
 # Census files
-data/census/*
+data/census/ 
 data/CDR/*
+!data/census/streets/*
 
 # Milan shapefiles
 data/milan_sez_2011/*
