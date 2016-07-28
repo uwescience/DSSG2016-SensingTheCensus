@@ -27,8 +27,15 @@ data/milan_sez_2011/Milano*
 
 # R project user settings
 .Rproj.user
+
 .RData
 .Rhistory
+
+# bit files
+data/CDR/hash/region_network_final.csv
+
+src/notebooks/*.png
+
 
 # Cache files
 __pycache__
