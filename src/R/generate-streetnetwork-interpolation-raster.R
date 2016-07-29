@@ -14,6 +14,7 @@ library(ggplot2)
 library(gstat)
 library(sp)
 
+source("src/R/utils.R")
 #read in street intersection node data
 streets = readShapePoints("data/OSM/streets/street_intersections.shp")
 proj4string(streets) = CRS("+init=epsg:4326")
@@ -28,25 +29,66 @@ streets %<>% spTransform(.,projitaly)
 #generate grid to interpolate into from streets int
 x.range <- as.integer(range(streets@coords[,1]))
 y.range <- as.integer(range(streets@coords[,2]))
-grd <- expand.grid(x=seq(from=x.range[1], to=x.range[2], by=100), y=seq(from=y.range[1], to=y.range[2], by=100))
+grd <- expand.grid(x=seq(from=x.range[1], to=x.range[2], by=50), y=seq(from=y.range[1], to=y.range[2], by=50))
 coordinates(grd) <- ~ x+y
 gridded(grd) <- TRUE
 #project grid
 proj4string(grd) <- projitaly
 
-#plot grid with streets 
-plot(grd, cex=1.5)
-points(streets, pch=1, col='red', cex=1)
-title("interpolation streets + grid")
 
 #inverse distance weighting for interpolation w/ betweenness 
-idw<-idw(formula=streets$closeness ~ 1, locations=streets, newdata=grd)
-idw.output=as.data.frame(idw)
-names(idw.output)[1:3]<-c("long","lat","var1.pred")
+idw_close = idw(formula=streets$closeness ~ 1, locations=streets, newdata=grd)
+names(idw_close)[1] = "closeness"
+idw.output_close = as.data.frame(idw_close)
+names(idw.output_close)[1:3]<-c("long","lat","closeness")
 #glimpse(idw.output)
+
+idw_bet= idw(formula=streets$betweennes ~ 1, locations=streets, newdata=grd)
+names(idw_bet)[1] = "betweenness"
+idw.output_bet = as.data.frame(idw_bet)
+names(idw.output_bet)[1:3]<-c("long","lat","betweenness")
 
 
 #plot raster of interpolated network betweenness
-plot<-ggplot(data=idw.output,aes(x=long,y=lat))
-layer1<-c(geom_tile(data=idw.output,aes(fill=var1.pred)))
-plot+layer1+scale_fill_gradient(low="#FFFFCC", high="#000044")+coord_equal()
+plot_close = ggplot(data=idw.output_close,aes(x=long,y=lat)) +
+  geom_tile(data=idw.output,aes(fill=closeness)) +
+  scale_fill_gradient(low="#FFFFCC", high="#000044") +
+  coord_equal() + theme_nothing()
+plot_close
+
+plot_bet = ggplot(data=idw.output_close,aes(x=long,y=lat)) +
+  geom_tile(data=idw.output,aes(fill=betweenness)) +
+  scale_fill_gradient(low="#FFFFCC", high="#000044") +
+  coord_equal() + theme_nothing()
+plot_bet
+
+
+
+# Read Census Data
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
+  spTransform(projitaly) 
+census@data = get_deprivation_features(census)
+
+
+# idw_raster = raster(idw)
+# ext = extract(idw, census)
+intersection_close = over(census, idw_close, fn = median)
+intersection_bet = over(census, idw_bet, fn = median)
+
+
+census@data["closeness"] = intersection_close[,"closeness"]
+census@data["betweenness"] = intersection_bet[,"betweenness"]
+
+
+leaflet_map(census, "closeness", "closeness")
+leaflet_map(census, "betweenness", "betweenness")
+
+cor(dplyr::select(census@data,closeness,betweenness),
+    dplyr::select(census@data,deprivation, high_school:work_force))
+summary(lm(deprivation~closeness, census@data))
+
+library(GGally)
+library(ggplot2)
+ggpairs(dplyr::select(census@data,closeness,betweenness, deprivation, high_school:work_force))
+
+lm()
