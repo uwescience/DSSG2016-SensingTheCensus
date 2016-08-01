@@ -40,8 +40,7 @@ square_size = max(intersection@data$area)
 
 intersection@data %<>% dplyr::select(ACE,area, cellId)
 
-
-days = seq(ymd("2013-11-01"), ymd("2014-11-30"), by="days")
+days = seq(ymd("2013-11-01"), ymd("2014-01-01"), by="days")
 
 for(day in format(days, "%Y-%m-%d")){
   #file_path = paste("https://s3-us-west-2.amazonaws.com/census-cdr/mi-to-mi/MItoMI-", day, ".txt", sep = "")
