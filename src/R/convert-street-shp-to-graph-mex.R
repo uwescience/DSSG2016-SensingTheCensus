@@ -20,7 +20,7 @@ library(RColorBrewer)
 source("src/R/utils.R")
 
 
-streets = readOGR("data/census/mexico_city/mexico_city_streets.shp", layer = "mexico_city_streets") 
+streets = readOGR("data/geography/mexico_city/streets/mexico_city_streets.shp", layer = "mexico_city_streets") 
 # proj4string(streets) = CRS("+proj=utm +zone=14 +ellps=GRS80 +datum=NAD83 +units=m +no_defs")
 
 street_graph_list = readshpnw(streets, ELComputed=TRUE, longlat=FALSE) 
@@ -58,7 +58,7 @@ proj4string(intersections_data_frame ) = CRS("+proj=utm +zone=14 +ellps=GRS80 +d
 intersections_data_frame %<>% spTransform(CRS("+init=epsg:4326"))
 
 #' Save SpatialPointsDataFrame
-writePointsShape(intersections_data_frame, "data/census/mexico_city/street_intersections.shp")
+writePointsShape(intersections_data_frame, "data/geography/mexico_city/streets/street_intersections.shp")
 
 ##' Convert back the graph object to a shapefile
 #' Create data frame with the information for all edges
