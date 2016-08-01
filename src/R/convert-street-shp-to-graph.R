@@ -4,19 +4,24 @@ library(maptools)
 library(sp)
 library(rgdal)
 library(leaflet)
-# library(GGally)
-# library(ggplot2)
 library(rgeos)
 library(shp2graph)
 library(magrittr)
-# library(geojsonio)
 library(RColorBrewer)
+library(webshot)
+library(htmlwidgets)
+# install_github("wch/webshot")
 
 source("src/R/utils.R")
 
 #' Read Street network shapefile
 streets = readOGR("data/OSM/milroads/milroads.shp",layer = "milroads" ) %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84 +units=m")) 
+
+# streets = readOGR("data/OSM/mexico_city_streets/calle50_l.shp", "calles")
+
+# streets = readShapeSpatial("data/OSM/mexico_city_streets/calle50_l.shp")
+# prj4string = CRS("+proj=utm +zone=14 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ")
 
 #' Remove unwanted paths
 streets %<>%subset(!type %in% c("footway", "pedestrian", "cycleway", "elevator", "rest_area", "steps"))
@@ -30,8 +35,8 @@ streets %<>%subset(!type %in% c("footway", "pedestrian", "cycleway", "elevator",
 #' Create graph object from shapefile
 street_graph_list = readshpnw(streets, ELComputed=TRUE, longlat=FALSE) 
 street_graph = nel2igraph(street_graph_list[[2]],street_graph_list[[3]],
-                          weight=street_graph_list[[4]],
-                          eadf = street_graph_list[[5]])
+                          weight=street_graph_list[[4]])
+                          # eadf = street_graph_list[[5]])
 
 #' Remove self loops
 street_graph %<>% simplify()
@@ -45,8 +50,8 @@ street_graph %<>% simplify()
 #' COmpute some centrality measures
 eig = eigen_centrality(street_graph, weight=E(street_graph)$weight)$vector
 deg = degree(street_graph)
-bet = betweenness(street_graph, weight=E(street_graph)$weight)
-close = closeness(street_graph, weight=E(street_graph)$weight)
+bet = betweenness(street_graph, weight=E(street_graph)$weight, normalized = TRUE)
+close = closeness(street_graph, weight=E(street_graph)$weight, normalized = TRUE)
 
 V(street_graph)$degree = deg
 V(street_graph)$closeness = close
@@ -54,26 +59,26 @@ V(street_graph)$betweenness = bet
 V(street_graph)$eigen = eig
 
 
-#' Plot closeness centrality
-closeness_discrete = cut(close, 
-                         breaks =c(quantile(close, probs = seq(0, 1, .1), max(close)), na.rm=TRUE),
-                         right = FALSE,include.lowest=T) 
-
-pallete = rev(brewer.pal(n = length(levels(closeness_discrete)), "RdYlBu"))
-i = 1
-for (level in levels(closeness_discrete)){
-  print(i)
-  print(level)
-  level_nodes =  V(street_graph)[closeness_discrete == level]
-  E(street_graph)[ from(level_nodes) ]$color <- pallete[i]
-  i = i + 1
-}
-
-png("doc/plots/road_network_centrality_filtered.png",width = 3000, height=3000, res=500, bg = "black")
-plot(street_graph, vertex.label=NA, vertex.size=.1,vertex.size2=.1, vertex.frame.color=NA, 
-     edge.curved = FALSE, edge.color = E(street_graph)$color, edge.width = .4)
-     # vertex.color = graphCol(close)(close), )
-dev.off()
+#' Save closeness centrality as an image (no need to run it)
+# closeness_discrete = cut(close, 
+#                          breaks =c(quantile(close, probs = seq(0, 1, .1), max(close)), na.rm=TRUE),
+#                          right = FALSE,include.lowest=T) 
+# 
+# pallete = rev(brewer.pal(n = length(levels(closeness_discrete)), "RdYlBu"))
+# i = 1
+# for (level in levels(closeness_discrete)){
+#   print(i)
+#   print(level)
+#   level_nodes =  V(street_graph)[closeness_discrete == level]
+#   E(street_graph)[ from(level_nodes) ]$color <- pallete[i]
+#   i = i + 1
+# }
+# 
+# png("doc/plots/road_network_centrality_filtered.png",width = 3000, height=3000, res=500, bg = "black")
+# plot(street_graph, vertex.label=NA, vertex.size=.1,vertex.size2=.1, vertex.frame.color=NA, 
+#      edge.curved = FALSE, edge.color = E(street_graph)$color, edge.width = .4)
+#      # vertex.color = graphCol(close)(close), )
+# dev.off()
 
 
 #' Create SpatialPoints from nodes
@@ -117,25 +122,30 @@ lines_list = apply(street_data_frame, 1,function(row){
 })
 
 spatial_lines = SpatialLines(lines_list)
-lines_df = SpatialLinesDataFrame(SpatialLines(lines_list), data=street_data_frame)
-lines_df@data %<>% dplyr::select(-name)
+lines_df = SpatialLinesDataFrame(SpatialLines(lines_list), data=as.data.frame(street_data_frame))
 proj4string(lines_df) = CRS("+proj=utm +zone=32 +datum=WGS84 +units=m")
 
 lines_df %<>% spTransform(CRS("+init=epsg:4326"))
 
-#' Save SpatialLinesDataFrame
-writeLinesShape(lines_df, "data/OSM/streets/streets.shp")
+
  
 #' Plot result into a map
 palette <- rev(brewer.pal(10, "RdYlBu")) #Spectral #RdYlBu
 
 roadPal = function(x) {colorQuantile(palette = palette, domain = x, n=10)}
 
-leaflet(lines_df) %>%
+close_map = leaflet(lines_df) %>%
   addProviderTiles("CartoDB.DarkMatter") %>%
   addPolylines(weight = 1, color=~roadPal(closeness)(closeness))
-
-leaflet(lines_df) %>%
+close_map
+bet_map = leaflet(lines_df) %>%
   addProviderTiles("CartoDB.DarkMatter") %>%
   addPolylines(weight = 1, color=~roadPal(betweenness)(betweenness)) 
+# vertex.color = graphCol(close)(close), )
+bet_map
+saveWidget(close_map, paste(getwd(),"/doc/plots/street_closeness.html", sep=""), selfcontained = TRUE)
+saveWidget(bet_map, paste(getwd(),"/doc/plots/street_betweeness.html", sep=""), selfcontained = TRUE)
 
+
+#' Save SpatialLinesDataFrame
+writeLinesShape(lines_df, "data/OSM/streets/streets.shp")
