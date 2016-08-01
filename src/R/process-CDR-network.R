@@ -1,3 +1,19 @@
+pkgTest <- function(x)
+  {
+    if (!require(x,character.only = TRUE))
+    {
+      install.packages(pkgs=x,repos="http://cran.r-project.org")
+      if(!require(x,character.only = TRUE)) stop("Package not found")
+    }
+  }
+
+#pkgTest("readr")
+#pkgTest("dplyr")
+#pkgTest("magrittr")
+#pkgTest("lubridate")
+#pkgTest("rgdal")
+#pkgTest("raster")
+
 library(readr)
 library(dplyr)
 library(magrittr)
@@ -5,12 +21,12 @@ library(lubridate)
 library(rgdal)
 library(raster)
 
-
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
 
 #' Load census and CDR geojson
-census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
+census = readOGR("../../data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
-cdr = readOGR("data/GeoJSON/CDR_join_output.geojson", "OGRGeoJSON") %>%
+cdr = readOGR("../../data/GeoJSON/CDR_join_output.geojson", "OGRGeoJSON") %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
 
 #' Intersect polygons
@@ -24,20 +40,19 @@ square_size = max(intersection@data$area)
 
 intersection@data %<>% dplyr::select(ACE,area, cellId)
 
-
-days = seq(ymd("2013-11-17"), ymd("2014-01-01"), by="days")
+days = seq(ymd("2013-11-01"), ymd("2014-01-01"), by="days")
 
 for(day in format(days, "%Y-%m-%d")){
-  file_path = paste("https://s3-us-west-2.amazonaws.com/census-cdr/mi-to-mi/MItoMI-", day, ".txt", sep = "")
-  local_path =  paste("data/CDR/MitoMi-", day, ".txt", sep = "")
-  save_path = paste("data/CDR/ACEtoACE-", day, ".csv", sep = "")
+  #file_path = paste("https://s3-us-west-2.amazonaws.com/census-cdr/mi-to-mi/MItoMI-", day, ".txt", sep = "")
+  local_path =  paste("../../data/CDR/cdr_nov/MItoMI-", day, ".txt", sep = "")
+  save_path = paste("../../data/CDR/generated/ACEtoACE-", day, ".csv", sep = "")
   
   print(day)
 
   print("Reading")
   
   #' Download netwrok dataset
-  download.file(file_path, local_path, mode="wb")
+  #download.file(file_path, local_path, mode="wb")
   #' Load netwrok dataset
   cdr_network = read_delim(local_path, delim = "\t",col_names = FALSE )%>%
     transmute(date = as.POSIXct(X1/1000,origin="1970-01-01",tz = "Europe/Rome"),
@@ -59,7 +74,5 @@ for(day in format(days, "%Y-%m-%d")){
     left_join(intersection@data, by = c("target"="cellId")) %>% 
     dplyr::group_by(ACE.x, ACE.y, hour) %>% 
     summarize(calls = sum(((area.x)/(square_size))*((area.y)/(square_size)) *calls, na.rm=TRUE))
-  rm(cdr_network)
-  system(paste("rm", local_path))
   write_csv(census_network, save_path)
 }
