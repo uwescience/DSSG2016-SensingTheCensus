@@ -12,11 +12,14 @@ source("src/R/utils.R")
 census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
 
+cdr = readOGR("data/GeoJSON/CDR_join_output.geojson", "OGRGeoJSON") %>%
+  spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+
 time_day = c("morning", "day", "evening") 
 week_day = c("weekend", "weekday")
 names = c("smsIn", "smsOut","callIn","callOut","internet")
 
-cdr_week = list()
+
 for(day in time_day){
   for(week in week_day){
     cdr_name = paste(day, "_", week, sep = "")
@@ -26,6 +29,7 @@ for(day in time_day){
       spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
     names(temp_cdr@data)[names(temp_cdr@data) %in% names] = paste(names, cdr_name, sep="_")
     
+    #' Compute intersection polygons
     intersection = raster::intersect(x = census, y = temp_cdr)
     
     #' Calcualte area of each polygon
@@ -45,7 +49,13 @@ for(day in time_day){
 
 
 census@data = get_deprivation_features(census) %>%
-  mutate_each(funs(norm(., P1), dens(., P1, census_area)), smsIn_morning_weekend:internet_evening_weekday)
+  mutate_each(funs(norm(., P1), dens(., P1, census_area)), 
+              smsIn_morning_weekend:internet_evening_weekday)
+
+census@data %>% 
+  dplyr::select(ACE,smsIn_morning_weekend:internet_evening_weekday, 
+                smsIn_morning_weekend_norm:internet_evening_weekday_dens) %>%
+  write_csv("data/CDR/cdr_temporal_total_features.csv")
 
 
 census = spTransform(census, CRS("+init=epsg:4326"))
