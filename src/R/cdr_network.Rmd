@@ -1,0 +1,31 @@
+---
+title: "CDR Network Analysis"
+author: "Myeong Lee"
+date: "August 2, 2016"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(e1071)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(randomForest)
+```
+
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+networks = read_delim("data/CDR/hash/region_network_final.csv", delim = ",",col_names = TRUE ) 
+```
+
