@@ -19,7 +19,7 @@ census = readShapePoly("data/census/mexico_city/mexico_city_census.shp")
 proj4string(census) = mexicoproj
 
 #read mexico OSM amenity data
-amenities <- readOGR("data/OSM/mexico_city/amenities.shp", "amenities")
+amenities = readOGR("data/OSM/mexico_city/amenities.shp", "amenities")
 amenities %<>% spTransform(mexicoproj)
 
 #convert to dataframe
@@ -27,17 +27,20 @@ amenities %<>% as.data.frame()
 
 #aggregate and filter OSM amenity categories 
 amenities %<>% filter(!amenity %in% remove) %>% 
-  mutate(amenity=as.character(amenity),
+  mutate(amenity =  as.character(amenity)) %>%
+  mutate(
     amenity=ifelse(amenity %in% bank, "bank", 
-                        ifelse(amenity %in% casino, "casino",
-                               ifelse(amenity %in% community_center, "community_center",
-                                      ifelse(amenity %in% hospital, "hospital",
-                                             ifelse(amenity %in% marketplace, "marketplace",
-                                                    ifelse(amenity %in% parking, "parking",
-                                                           ifelse(amenity %in% place_of_worship, "place_of_worship",
-                                                                  ifelse(amenity %in% toilet, "toilet",
-                                                                         ifelse(amenity %in% waste, "waste", amenity))))))))))
- 
+            ifelse(amenity %in% casino, "casino",
+            ifelse(amenity %in% community_center, "community_center",
+            ifelse(amenity %in% hospital, "hospital",
+            ifelse(amenity %in% marketplace, "marketplace",
+            ifelse(amenity %in% parking, "parking",
+            ifelse(amenity %in% place_of_worship, "place_of_worship",
+            ifelse(amenity %in% toilet, "toilet",
+            ifelse(amenity %in% waste, "waste", 
+            ifelse(amenity %in% bicycle, "bicycle",
+            ifelse(amenity %in% bar, "bar", 
+                   amenity))))))))))))
 
 #convert to spatialpoints
 coordinates(amenities) = ~coords.x1+coords.x2
@@ -62,7 +65,7 @@ offer_advantage_wide = offer_advantage%>% dplyr::select(CVE_GEOAGE, amenity, off
 #join census and amenity data 
 census@data %<>% left_join(offer_advantage_wide, by = "CVE_GEOAGE")
 census@data[is.na(census@data)] <- 0
-dudi = dudi.pca(census@data %>% dplyr::select(IMU, arts_centre:waste),scannf = FALSE)
+# dudi = dudi.pca(census@data %>% dplyr::select(IMU, arts_centre:waste),scannf = FALSE)
 
 #calc correlation
 corr_depriv_cat = cor(census@data %>% mutate(well_being = IMU) %>% dplyr::select(well_being),
@@ -70,9 +73,9 @@ corr_depriv_cat = cor(census@data %>% mutate(well_being = IMU) %>% dplyr::select
 corr_depriv_cat = data.frame(corr_depriv_cat)
 
 #pca analysis and biplot
-osm_pca = prcomp(df1, center = TRUE, scale = TRUE, na.action = na.omit)
+osm_pca = census@data %>% dplyr::select(arts_centre:waste) %>% prcomp( center = TRUE, scale = TRUE)
 variance <- apply(osm_pca$x, 2, var)  
-osm_pca_df = as.data.frame(osm_pca$x[,1:33])
+osm_pca_df = as.data.frame(osm_pca$x[,1:36])
 props <- variance / sum(variance)
 cum_variance = cumsum(props)
 biplot(osm_pca)
