@@ -1,5 +1,3 @@
-
-
 community_center = c("art_centre", "community_centre", "culture_center", "social_center", "social_facility", "social_centre", "social_club")
 bar = c("bar", "bar;restaurant;pub", "pub")
 casino = c("casino", "gambling")
