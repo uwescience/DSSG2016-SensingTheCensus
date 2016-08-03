@@ -15,18 +15,18 @@ library(gstat)
 library(sp)
 
 source("src/R/utils.R")
-#read in street intersection node data
+#' Read in street intersection node data
 streets = readShapePoints("data/OSM/streets/street_intersections.shp")
 proj4string(streets) = CRS("+init=epsg:4326")
 projitaly <- CRS("+proj=utm +zone=32 +datum=WGS84 +units=m")
 streets %<>% spTransform(.,projitaly)
 
-#plot kernel density function
+#' Plot kernel density function
 #breach.dens = kde.points(ameni,lims=census)
 #level.plot(pt)
 
 
-#generate grid to interpolate into from streets int
+#' Generate grid to interpolate into from streets int
 x.range <- as.integer(range(streets@coords[,1]))
 y.range <- as.integer(range(streets@coords[,2]))
 grd <- expand.grid(x=seq(from=x.range[1], to=x.range[2], by=50), y=seq(from=y.range[1], to=y.range[2], by=50))
@@ -36,7 +36,7 @@ gridded(grd) <- TRUE
 proj4string(grd) <- projitaly
 
 
-#inverse distance weighting for interpolation w/ betweenness 
+#' Inverse distance weighting for interpolation w/ betweenness 
 idw_close = idw(formula=streets$closeness ~ 1, locations=streets, newdata=grd)
 names(idw_close)[1] = "closeness"
 idw.output_close = as.data.frame(idw_close)
@@ -49,15 +49,15 @@ idw.output_bet = as.data.frame(idw_bet)
 names(idw.output_bet)[1:3]<-c("long","lat","betweenness")
 
 
-#plot raster of interpolated network betweenness
+#' Plot raster of interpolated network betweenness
 plot_close = ggplot(data=idw.output_close,aes(x=long,y=lat)) +
-  geom_tile(data=idw.output,aes(fill=closeness)) +
+  geom_tile(data=idw.output_close,aes(fill=closeness)) +
   scale_fill_gradient(low="#FFFFCC", high="#000044") +
   coord_equal() + theme_nothing()
 plot_close
 
-plot_bet = ggplot(data=idw.output_close,aes(x=long,y=lat)) +
-  geom_tile(data=idw.output,aes(fill=betweenness)) +
+plot_bet = ggplot(data=idw.output_bet,aes(x=long,y=lat)) +
+  geom_tile(data=idw.output_bet,aes(fill=betweenness)) +
   scale_fill_gradient(low="#FFFFCC", high="#000044") +
   coord_equal() + theme_nothing()
 plot_bet
@@ -83,12 +83,11 @@ census@data["betweenness"] = intersection_bet[,"betweenness"]
 leaflet_map(census, "closeness", "closeness")
 leaflet_map(census, "betweenness", "betweenness")
 
-cor(dplyr::select(census@data,closeness,betweenness),
-    dplyr::select(census@data,deprivation, high_school:work_force))
+
 summary(lm(deprivation~closeness, census@data))
+summary(lm(deprivation~betweenness, census@data))
 
 library(GGally)
-library(ggplot2)
-ggpairs(dplyr::select(census@data,closeness,betweenness, deprivation, high_school:work_force))
 
-lm()
+
+ggpairs(dplyr::select(census@data,closeness,betweenness, deprivation, high_school:work_force))
