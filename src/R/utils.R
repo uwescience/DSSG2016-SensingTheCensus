@@ -31,9 +31,10 @@ read_census_data = function(file_path) {
 }
 
 
-pal <- function(x, palette = "YlGnBu",method = "quantile") {
+pal <- function(x, palette = "YlGnBu",method = "quantile", n =5) {
+  by = 1/n
   if(method == "quantile"){
-    colorBin(palette, x, bins=quantile(x, probs = seq(0, 1, 0.20), na.rm=TRUE))
+    colorBin(palette, x, bins=quantile(x, probs = seq(0, 1, by), na.rm=TRUE))
   }
   else {
     colorBin(palette, x, bins=5)
@@ -42,7 +43,7 @@ pal <- function(x, palette = "YlGnBu",method = "quantile") {
 # pal <- function(x) {colorBin("YlGnBu", x, bins=5)}
 
 
-leaflet_map = function(spatialDf, var, legend_title, palette = "YlGnBu",method = "quantile") {
+leaflet_map = function(spatialDf, var, legend_title, palette = "YlGnBu",method = "quantile", n=5) {
   library(rgdal)
 
   feature = unlist(spatialDf@data[var])
@@ -50,8 +51,8 @@ leaflet_map = function(spatialDf, var, legend_title, palette = "YlGnBu",method =
   spatialDf = spTransform(spatialDf, CRS("+init=epsg:4326"))
 
   leaflet(spatialDf) %>% addProviderTiles("CartoDB.Positron") %>% 
-    addPolygons(fillColor = pal(feature,palette,method)(feature), weight = .2, color="white",fillOpacity = 0.6) %>%
-    addLegend(pal = pal(feature, palette,method),
+    addPolygons(fillColor = pal(feature,palette,method,n)(feature), weight = .2, color="white",fillOpacity = 0.6) %>%
+    addLegend(pal = pal(feature, palette,method,n),
               values = feature,
               position = "bottomleft",title = legend_title
     )
