@@ -10,6 +10,7 @@ library(sp)
 library(tidyr)
 library(readr)
 library(corrplot)
+library(maptools)
 
 source("src/R/amenity-aggregation-info.R")
 
@@ -56,11 +57,14 @@ total_poi_cat = intersection@data %>% group_by(amenity) %>% dplyr::summarize(poi
 
 #calculate offering advantage 
 offer_advantage = count_cat %>% 
-left_join(count_geo, by ="CVE_GEOAGE") %>% 
+  left_join(count_geo, by ="CVE_GEOAGE") %>% 
   left_join(total_poi_cat, by ="amenity") %>%
   mutate(total_poi = total_poi) %>%
   mutate(offer_advantage = (count_cat/count_geo)*(total_poi/poi_cat))
-offer_advantage_wide = offer_advantage%>% dplyr::select(CVE_GEOAGE, amenity, offer_advantage) %>% spread(amenity, offer_advantage, fill = 0)
+
+offer_advantage_wide = offer_advantage%>% dplyr::select(CVE_GEOAGE, amenity, offer_advantage) %>% 
+  spread(amenity, offer_advantage, fill = 0)
+
 
 #join census and amenity data 
 census@data %<>% left_join(offer_advantage_wide, by = "CVE_GEOAGE")
@@ -82,8 +86,8 @@ biplot(osm_pca)
 summary(osm_pca)
 #create csv of amenity, pca, and deprivation
 census@data %<>% bind_cols(osm_pca_df)
-census@data %>% dplyr::select(CVE_GEOAGE, IMU, starts_with("PC"), arts_centre:waste) %>% 
-  write_csv("data/OSM/mexico_amenity_pca.csv")
+census@data %>% dplyr::select(CVE_GEOAGE, starts_with("PC"), arts_centre:waste) %>% 
+  write_csv("data/OSM/mexico_city/mexico_amenity_pca.csv")
 
 
 correlationamenity = cor(offer_advantage_wide[,2:54])
