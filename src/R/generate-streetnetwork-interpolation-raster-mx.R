@@ -93,11 +93,9 @@ leaflet_map(census, "betweenness", "betweenness")
 leaflet_map(census, "IMU", "deprivation", n=10)
 leaflet_map(census, "density", "density", n=10)
 
-o
-no_na = census@data %>% dplyr::filter(!is.na(closeness),!is.na(betweenness)) 
 
-cor(dplyr::select(no_na,closeness,betweenness) ,
-    dplyr::select(no_na,IMU))
+cor(dplyr::select(census,closeness,betweenness) ,
+    dplyr::select(cenus,IMU))
 
 summary(lm(IMU~closeness, census@data))
 summary(lm(IMU~betweenness, census@data))
@@ -118,4 +116,4 @@ qplot(x = IMU, y = closeness, data = census@data)
 
 qplot(x = betweenness, y = closeness, data = census@data)
 
-census@data %>% select(AGEB,closeness, betweenness) %>% write_csv("data/census/mexico_city/centrality_ageb.csv")
+census@data %>% select(CVE_GEOAGE,closeness, betweenness) %>% write_csv("data/census/mexico_city/centrality_ageb.csv")
