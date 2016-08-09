@@ -85,8 +85,6 @@ write.csv(corr_df, "data/milano_corr_df.csv")
 
 #extract osm public_transport data 
 public_transport = read.csv("data/OSM/public_transport.csv")
-census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
-census@data = get_deprivation_features(census)
 census %<>% spTransform(CRS("+proj=longlat"))
 coordinates(public_transport) = ~lon+lat
 proj4string(public_transport) = CRS("+proj=longlat")
