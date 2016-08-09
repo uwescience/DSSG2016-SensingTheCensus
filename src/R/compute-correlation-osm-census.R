@@ -59,7 +59,7 @@ offer_advantage = count_ace_cat %>%
   left_join(count_ace, by ="ACE") %>% 
   left_join(total_poi_cat, by ="amenity") %>% 
   mutate(total_poi = total_poi) %>%
-  mutate(offer_advantage = (count_ace_cat/count_ace)*(poi_cat/total_poi))
+  mutate(offer_advantage = (count_ace_cat/count_ace)*(total_poi/poi_cat))
 # intersection  
 # plot(intersection)
 
@@ -67,8 +67,8 @@ offer_advantage_wide = offer_advantage%>% dplyr::select(ACE, amenity, offer_adva
 
 census@data %<>% left_join(offer_advantage_wide, by = "ACE")
 
-# write_csv(census@data %>% dplyr::select(ACE, arts_centre:wifi),
-          # "data/OSM/offering_advantage.csv")
+write_csv(census@data %>% dplyr::select(ACE, arts_centre:wifi),
+          "data/OSM/offering_advantage.csv")
 osm_pca = prcomp(census@data %>% dplyr::select(arts_centre:waste), center = TRUE, scale = TRUE)
 osm_pca_df = as.data.frame(osm_pca$x[,1:20])
 biplot(osm_pca)
@@ -77,8 +77,45 @@ biplot(osm_pca)
 census@data %>% dplyr::select(ACE, starts_with("PC"), arts_centre:waste) %>% 
   write_csv("data/OSM/milano_amenity_pca.csv")
 
+correlationamenity = cor(offer_advantage_wide[,2:61])
+corrplot(correlationamenity, method = "color", tl.col="black", number.font=1, col= wes_palette("Rushmore",n=5, type = c("discrete")))
+
+corr_df = correlationamenity %>% as.data.frame()%>% add_rownames("var1") %>% gather(var2,cor,arts_centre:waste) %>% arrange(desc(cor))
+write.csv(corr_df, "data/milano_corr_df.csv")
+
+#extract osm public_transport data 
+public_transport = read.csv("data/OSM/public_transport.csv")
+census %<>% spTransform(CRS("+proj=longlat"))
+coordinates(public_transport) = ~lon+lat
+proj4string(public_transport) = CRS("+proj=longlat")
+proj4string(census) = CRS("+proj=longlat")
+
+#intersect census and public transport
+intersection = raster::intersect(y = census, x = public_transport)
+plot(intersection)
+
+#calculate offering advantage
+count_ace_cat = intersection@data %>% group_by(ACE, public_transport) %>% dplyr::summarize(count_ace_cat = n()) 
+count_ace = count_ace_cat %>% group_by(ACE) %>% dplyr::summarize(count_ace = n()) 
+total_poi = dim(intersection@data)[1]
+total_poi_cat = intersection@data %>% group_by(public_transport) %>% dplyr::summarize(poi_cat = n()) 
+
+offer_advantage = count_ace_cat %>% 
+  left_join(count_ace, by ="ACE") %>% 
+  left_join(total_poi_cat, by ="public_transport") %>% 
+  mutate(total_poi = total_poi) %>%
+  mutate(offer_advantage = (count_ace_cat/count_ace)*(total_poi/poi_cat))
+
+offer_advantage_wide = offer_advantage%>% dplyr::select(ACE, public_transport, offer_advantage) %>% spread(public_transport, offer_advantage, fill = 0)
+census@data %<>% left_join(offer_advantage_wide, by = "ACE")
+
+#generate csv of public transportation offering advantage
+write_csv(census@data %>% dplyr::select(ACE, platform, stop_position),
+          "data/OSM/offering_advantage_public_transport_milano.csv")
 
 
+#corr_df = corr_depriv_cat[,abs(corr_depriv_cat["well_being",] )>.1] %>% as.data.frame() %>% add_rownames("census") %>%
+  
 # nb = poly2nb(census)
 # nblist = nb2listw(nb, style = "W")
 # 
@@ -155,3 +192,5 @@ census@data %>% dplyr::select(ACE, starts_with("PC"), arts_centre:waste) %>%
 # leaflet_map(census, "bicycle_parking", "Bicycle Parking <br>Offering Advantage", "PuBuGn", "equal")
 # 
 # # leaflet_map(census, "deprivation", "Bar offering Advantage", "PuBuGn")
+
+
