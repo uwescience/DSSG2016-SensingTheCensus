@@ -92,3 +92,52 @@ svm.fit = train(IMU ~ ., data = train,
 plot(svm.fit)
 min(rf.fit2$results$RMSE)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################################################
+########### PENDING: Spatial Regressions ############
+#####################################################
+
+library(spdep)
+library(ggthemes)
+library(ggplot2)
+
+
+nb <- poly2nb(census,census$IMU)
+weights_list <- nb2listw(nb, style="W", zero.policy = TRUE)
+W = as.matrix(weights_list)
+ptrW = trW(W)
+
+census$IMU_lag = lag.listw(weights_list, census$IMU)
+
+moran_plot = ggplot(data = census@data, aes(x=IMU, y = IMU_lag)) + 
+  geom_vline(xintercept = 0,color="black", size=.5, alpha=.6, linetype="longdash")+
+  geom_hline(yintercept = 0,color="black", size=.5, alpha=.6, linetype="longdash")+
+  geom_point(color="#f8766d", size=1.3) +
+  geom_smooth(method = "lm") +
+  xlab("Marginalization Index") + ylab("Lagged Marginalization Index")  + theme_fivethirtyeight() + 
+  labs(title="Moran Plot Social Deprivation Index")
+moran_plot
+
+moran.test(census$IMU, weights_list, zero.policy = T)
+
+
+
+lag.fit <- lagsarlm(IMU~closeness+betweenness+PC1+PC2+PC3+PC4, data = scale(data)%>% as.data.frame(), weights_list, trs = ptrW, zero.policy = T)
+summary(lag.fit)
+
+err.fit <- errorsarlm(IMU~closeness+betweenness+PC1+PC2+PC3+PC4, data = census, listw = weights_list, zero.policy = T)
+summary(lag.fit)
