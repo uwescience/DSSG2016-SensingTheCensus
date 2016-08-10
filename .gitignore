@@ -36,7 +36,9 @@ src/notebooks/*.png
 
 # Temporary CSV files
 data/CDR/hash/region_network_final.csv
+data/CDR/hash/0805_networks.csv
 src/notebooks/*.csv
+
 
 # Rmd generated HTML files
 *.html

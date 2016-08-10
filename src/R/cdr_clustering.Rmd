@@ -1,13 +1,13 @@
 ```{r, echo=FALSE}
 library(maps)
 library(geosphere)
+library(rgeos)
 library(readr)
 library(dplyr)
 library(magrittr)
 library(lubridate)
 library(rgdal)
 library(raster)
-library(rgeos)
 require(ggplot2)
 library(e1071)
 library(cwhmisc)
@@ -41,6 +41,7 @@ pal <- c("blue", "green", "red")
 colindex <- round( (with_cluster@data$callout) )
 plot(with_cluster, col=pal[colindex], bg="white",lwd=0.2)
 text(trueCentroids@coords[,"x"],trueCentroids@coords[,"y"],row.names(trueCentroids@coords),cex=1,adj=0,col="#000000")
+
 
 ```
 
@@ -133,5 +134,25 @@ centroid_reg("data/CDR/generated/adjusted_callIn_dist.csv")
 centroid_reg("data/CDR/generated/adjusted_callOut_dist.csv")
 centroid_reg("data/CDR/generated/adjusted_smsIn_dist.csv")
 centroid_reg("data/CDR/generated/adjusted_smsOut_dist.csv")
+```
+
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+deprivation_func <- function(data){
+  distances = read_delim(data, delim = ",",col_names = TRUE ) 
+  
+  colnames(distances) <- c("region", "c1", "c2", "c3")
+  census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+  distances$region <- as.factor(distances$region)
+  
+  distances <-  distances %>% left_join(census@data, by = c("region"="ACE"))
+  print(summary(lm(deprivation ~ c1+c2+c3, data = distances)))
+}
+
+deprivation_func("data/CDR/generated/adjusted_callin_dist.csv")
+deprivation_func("data/CDR/generated/adjusted_callOut_dist.csv")
+deprivation_func("data/CDR/generated/adjusted_internet_dist.csv")
+deprivation_func("data/CDR/generated/adjusted_smsOut_dist.csv")
+deprivation_func("data/CDR/generated/adjusted_smsIn_dist.csv")
 ```
 
