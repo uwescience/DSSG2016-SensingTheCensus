@@ -51,9 +51,14 @@ html, body {width:100%;height:100%}
 .h1, .h2, .h3, h1, h2, h3 {
     color: white;
 }
-/*#variable_map {
-  float: right;
-}*/
+
+.middle {
+  left: calc(50% - 175px);
+}
+
+text {
+  fill:white;
+}
 
 /*
 .map-container {
