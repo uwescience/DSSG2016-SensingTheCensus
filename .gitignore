@@ -30,9 +30,18 @@ data/milan_sez_2011/Milano*
 .Rhistory
 
 # bit files
-data/CDR/hash/region_network_final.csv
-
 src/notebooks/*.png
+*.psd
+*.pdf
+
+# Temporary CSV files
+data/CDR/hash/region_network_final.csv
+data/CDR/hash/0805_networks.csv
+src/notebooks/*.csv
+
+
+# Rmd generated HTML files
+*.html
 
 #experiment files
 src/notebook-exp

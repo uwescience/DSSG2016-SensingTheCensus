@@ -1,0 +1,261 @@
+---
+title: "CDR Network Analysis"
+author: "Myeong Lee"
+date: "August 2, 2016"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(e1071)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(randomForest)
+library(stringr)
+```
+
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+networks = read_delim("data/CDR/hash/region_network_final.csv", delim = ",",col_names = TRUE ) 
+
+networks$time = paste(networks$month, str_pad(networks$day, 2, pad = "0"), str_pad(networks$hour, 2, pad = "0"), sep="")
+networks$time <- as.integer(networks$time)
+networks <- arrange(networks,time)
+
+```
+
+# Time-aggregated Network
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+street_centrality = read_delim("data/CDR/hash/centrality_ace.csv", delim = ",",col_names = TRUE ) 
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+deprivation = read_delim("data/census/milan_deprivation.csv", delim = ",",col_names = TRUE ) 
+census@data$density <- census@data$P1/area(census)
+deprivation$ACE <- as.factor(deprivation$ACE)
+
+time_aggregation <- function(df){
+  introvert <- df[df$source==df$dest,]
+  introvert <- introvert %>% dplyr::group_by(source) %>% summarize(sum(call))
+  
+  extrovert <- df[df$source!=df$dest,]
+  extrovert <- extrovert %>% dplyr::group_by(source) %>% summarize(sum(call))
+  
+  introvert <-  introvert %>% left_join(extrovert, by = c("source" = "source"))
+  colnames(introvert) <- c("source", "inside", "outside")
+  introvert$region_based_rate <- introvert$inside/introvert$outside
+  
+  
+  introvert$source <- as.factor(introvert$source)  
+  street_centrality$ACE <- as.factor(street_centrality$ACE)
+  introvert <-  introvert %>% left_join(street_centrality, by = c("source"="ACE"))
+    
+  
+  
+  introvert <-  introvert %>% left_join(census@data, by = c("source"="ACE"))
+  introvert <- introvert %>% left_join(deprivation, by = c("source"="ACE"))
+  
+  # introverted transactions/extroverted 
+#   print(summary(lm(betweenness ~ region_based_rate, data=introvert)))
+#   print(summary(lm(closeness ~ region_based_rate, data=introvert)))
+#   print(summary(lm(deprivation ~ region_based_rate, data=introvert)))
+  
+  # with population density
+#   print(summary(lm(deprivation ~ log(density), data=census@data)))
+#   print(summary(lm(betweenness ~ log(density), data=introvert)))
+#   print(summary(lm(closeness ~ log(density), data=introvert)))
+#   print(summary(lm(betweenness ~ density, data=introvert)))
+#   print(summary(lm(closeness ~ density, data=introvert)))
+  
+  # new deprivation measures
+  print(summary(lm(aggDeprMilano ~ log(density), data=introvert)))
+  print(summary(lm(aggDeprMilano ~ density, data=introvert)))
+  print(summary(lm(aggDeprMilano ~ region_based_rate, data=introvert)))
+  print(summary(lm(deprivationAreaMilano ~ log(density), data=introvert)))
+  print(summary(lm(deprivationAreaMilano ~ density, data=introvert)))
+  print(summary(lm(deprivationAreaMilano ~ region_based_rate, data=introvert)))
+  print(summary(lm(deprivationAreaMilano ~ betweenness, data=introvert)))
+  print(summary(lm(deprivationAreaMilano ~ closeness, data=introvert)))
+
+}
+
+```
+
+# Mexico City's OSM and Census
+```{r}
+# maxico = readOGR("data/census/mexicocity.geojson", "OGRGeoJSON") 
+# maxico@data$POB_TOT <- as.integer(maxico@data$POB_TOT)
+# maxico@data$density <- maxico@data$POB_TOT/area(maxico)
+# 
+# summary(lm(IMU ~ log(density), data=maxico@data))
+# summary(lm(IMU ~ POB_TOT, data=maxico@data))
+# 
+# attach(maxico@data)
+# plot(log(density),IMU) 
+# abline(lm(IMU ~ log(density)), col="red")
+```
+
+```{r}
+multiple.regression.with.ci <- function(regress.out, level=0.95)
+{
+  ################################################################
+  #                                                              #
+  #  This function takes the output from an lm                   #
+  #  (linear model) command in R and provides not                #
+  #  only the usual output from the summary command, but         #
+  #  adds confidence intervals for intercept and slope.          #
+  #                                                              #
+  #  This version accommodates multiple regression parameters    #
+  #                                                              #
+  ################################################################
+  usual.output <- summary(regress.out)
+  t.quantile <- qt(1-(1-level)/2, df=regress.out$df)
+  number.vars <- length(regress.out$coefficients)
+  temp.store.result <- matrix(rep(NA, number.vars*2), nrow=number.vars)
+  for(i in 1:number.vars)
+  {
+       temp.store.result[i,] <- summary(regress.out)$coefficients[i] +
+        c(-1, 1) * t.quantile * summary(regress.out)$coefficients[i+number.vars]
+  }
+  intercept.ci <- temp.store.result[1,]
+  slopes.ci <- temp.store.result[-1,]
+  output <- list(regression.table = usual.output, intercept.ci = intercept.ci,
+              slopes.ci = slopes.ci)
+return(output)
+}
+```
+
+
+# Call distancevs vs. Networkstructure
+```{r}
+# distances = read_delim("data/CDR/generated/adjusted_callOut_dist.csv", delim = ",",col_names = TRUE ) 
+# colnames(distances) <- c("region", "c1", "c2", "c3")
+# distances$region <- as.factor(distances$region)
+# 
+# introverte <-  introvert %>% left_join(distances, by = c("source"="region"))
+# clusters = read_delim("src/notebooks/cluster_analysis.csv", delim = ",",col_names = TRUE )
+# clusters$region <- as.factor(clusters$region)
+# introverte <-  introverte %>% left_join(clusters, by = c("source"="region"))
+# 
+# introverte$callout <- as.factor(introverte$callout)
+# summary(glm(betweenness ~ region_based_rate + callout, data=introverte))
+# summary(lm(closeness ~ region_based_rate + callout, data=introverte))
+# summary(glm(deprivation ~ region_based_rate + callout, data=introverte))
+# multiple.regression.with.ci(lm(exp(deprivation) ~ region_based_rate + callout, data=introverte))
+```
+
+# Network features based on time and day
+```{r}
+library(timeDate)
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+networks$date <- paste("2013", networks$month, networks$day, sep="-")
+networks$date <- as.Date(networks$date)
+networks$weekday <- isWeekday(networks$date, wday=1:5)
+
+day_night <- networks[(networks$hour >= 22 | networks$hour < 4) & (networks$weekday == TRUE),]
+day_morning <- networks[(networks$hour >= 4 & networks$hour < 10) & (networks$weekday == TRUE),]
+day_day <- networks[(networks$hour >= 10 & networks$hour < 16) & (networks$weekday == TRUE),]
+day_evening <- networks[(networks$hour >= 16 & networks$hour < 22) & (networks$weekday == TRUE),]
+
+end_night <- networks[(networks$hour >= 22 | networks$hour < 4) & (networks$weekday == FALSE),]
+end_morning <- networks[(networks$hour >= 4 & networks$hour < 10) & (networks$weekday == FALSE),]
+end_day <- networks[(networks$hour >= 10 & networks$hour < 16) & (networks$weekday == FALSE),]
+end_evening <- networks[(networks$hour >= 16 & networks$hour < 22) & (networks$weekday == FALSE),]
+
+time_aggregation(day_night)
+time_aggregation(day_morning)
+time_aggregation(day_day)
+time_aggregation(day_evening)
+time_aggregation(end_night)
+time_aggregation(end_morning)
+time_aggregation(end_day)
+time_aggregation(end_evening)
+time_aggregation(networks)
+```
+
+# Physical distance and Call amount
+```{r}
+# setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+# trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$ACE))
+# llprj <-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
+# trueCentroids <- spTransform(trueCentroids, CRS(llprj))
+# 
+# phy_dist <- data.frame(c(1:85),c(1:85),c(0)) 
+# colnames(phy_dist) <- c("source", "dest", "dist")
+# 
+# for (i in 1:85){
+#   for (j in 1:85){
+#     if (i == j) {next}
+#     temp <- data.frame(i,j, distm(
+#       c(trueCentroids$x[row.names(trueCentroids)==i], 
+#         trueCentroids$y[row.names(trueCentroids)==i]), 
+#       c(trueCentroids$x[row.names(trueCentroids)==j], 
+#         trueCentroids$y[row.names(trueCentroids)==j]), fun = distHaversine))
+#     colnames(temp) <- c("source", "dest", "dist")
+#     phy_dist <- rbind(phy_dist, temp)
+#   }
+# }
+# 
+# phy_dist$dist[(phy_dist$source == 1) & (phy_dist$dest == 2)]
+# 
+# networks$source <- as.factor(networks$source)
+# networks$dest <- as.factor(networks$dest)
+# phy_dist$source <- as.factor(phy_dist$source)
+# phy_dist$dest <- as.factor(phy_dist$dest)
+# 
+# net_with_dist <- networks  %>% dplyr::group_by(source, dest) %>% summarize(sum(call))
+# net_with_dist  <-  net_with_dist %>% left_join(phy_dist, by = c("source"="source", "dest"="dest" ))
+# 
+# clusters = read_delim("src/notebooks/intermediate2.csv", delim = ",",col_names = TRUE ) 
+# 
+# net_with_dist$type <- "rr"
+# 
+# for (i in 1:nrow(net_with_dist)){
+#   source = as.integer(net_with_dist[i,]$source)
+#   dest = as.integer(net_with_dist[i,]$dest)
+#   
+#   if (clusters[source,]$callout ==1){
+#     type = "b"
+#   } else if (clusters[source,]$callout == 2){
+#     type = "r"
+#   } else {
+#     type = "b"
+#   }
+#   
+#   if (clusters[dest,]$callout ==1){
+#     type = paste(type, "b", sep="")
+#   } else if (clusters[dest,]$callout == 2){
+#     type = paste(type, "r", sep="")
+#   } else {
+#     type = paste(type, "b", sep="")
+#   }
+#   
+#   net_with_dist[i,]$type <- type
+# }
+# 
+# colnames(net_with_dist) <- c("source","dest","call","dist","type")
+# net_with_dist$type <- as.character(net_with_dist$type)
+# 
+# pall <- rainbow(10, s = 1, v = 1, start = 0, end = 1, alpha = 1)
+# colindex <- round(as.integer(as.factor(net_with_dist$type) ))
+# # net_with_dist$type <- as.factor(net_with_dist$type)
+# ggplot(net_with_dist, aes(x = log(dist), y = call, shape=factor(type), colour=factor(type))) + geom_point()  + xlab("Physical Distance") + ylab("Call Amount") + ylim(0, 60000) + geom_smooth(method=lm) 
+# 
+# 
+# summary(lm(call ~ log(dist), data=net_with_dist[net_with_dist$type == "rr",]))
+# summary(lm(call ~ log(dist), data=net_with_dist[net_with_dist$type == "br",]))
+# summary(lm(call ~ log(dist), data=net_with_dist[net_with_dist$type == "rb",]))
+# summary(lm(call ~ log(dist), data=net_with_dist[net_with_dist$type == "bb",]))
+
+```
+

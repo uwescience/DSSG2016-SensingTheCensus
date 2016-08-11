@@ -1,0 +1,156 @@
+---
+title: "Geospatial Autocorrelation"
+author: "Myeong Lee"
+date: "August 9, 2016"
+output: html_document
+---
+
+
+
+```{r}
+library(readr)
+library(maptools)
+library(caret)
+library(dplyr)
+library(magrittr)
+library(spdep)
+library(ggthemes)
+library(ggplot2)
+library(rgdal)
+library(ncf)
+library(maps)
+library(geosphere)
+library(rgeos)
+
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+
+```
+
+# Mexico City
+```{r}
+census = readOGR("data/census/mexico_city/mexico_city_census.shp", layer="mexico_city_census")
+# census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+proj4string(census) = CRS("+proj=utm +zone=32 +datum=WGS84")
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SP_ID))
+llprj <-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
+trueCentroids <- spTransform(trueCentroids, CRS(llprj))
+
+
+ncf.cor <- correlog(trueCentroids$x, trueCentroids$y, census@data$IMU, increment=2, latlon=TRUE, resamp=100)
+plot(ncf.cor, xlab="Distance (km)")
+
+ggplot() + aes(ncf.cor$mean.of.class) + geom_point(y=ncf.cor$correlation) +
+  scale_x_continuous('Great Circle Distance (KM)',limits=c(0,60)) + scale_y_continuous('Autocorrelation',limits=c(-0.25,0.7)) 
+
+
+
+# nb <- poly2nb(census,census$IMU)
+# weights_list <- nb2listw(nb, style="W", zero.policy = TRUE)
+# W = as.matrix(weights_list)
+# ptrW = trW(W)
+# data$IMU <- data$IMU.x
+# 
+# census$IMU_lag = lag.listw(weights_list, census$IMU)
+# 
+# moran_plot = ggplot(data = census@data, aes(x=IMU, y = IMU_lag)) + 
+#   geom_vline(xintercept = 0,color="black", size=.5, alpha=.6, linetype="longdash")+
+#   geom_hline(yintercept = 0,color="black", size=.5, alpha=.6, linetype="longdash")+
+#   geom_point(color="#f8766d", size=1.3) +
+#   geom_smooth(method = "lm") +
+#   xlab("Marginalization Index") + ylab("Lagged Marginalization Index")  + theme_fivethirtyeight() + 
+#   labs(title="Moran Plot Social Deprivation Index")
+# moran_plot
+# 
+# moran.test(census$IMU, weights_list, zero.policy = T)
+
+
+```
+
+# Milano
+```{r}
+
+census = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON") 
+proj4string(census) = CRS("+proj=utm +zone=32 +datum=WGS84")
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SEZ2011))
+# llprj <-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
+# trueCentroids <- spTransform(trueCentroids, CRS(llprj))
+
+ncf.cor <- correlog(trueCentroids$x, trueCentroids$y, census@data$deprivation, increment=0.5, latlon=TRUE, resamp=100, na.rm = TRUE)
+plot(ncf.cor)
+
+
+# coords <- coordinates(census)
+# rn <- sapply(slot(census, "polygons"), function(x) slot(x, "ID"))
+# k1 <- knn2nb(knearneigh(coords))
+# all.linked <- max(unlist(nbdists(k1, coords)))
+# col.nb.0.all <- dnearneigh(coords, 0, all.linked, row.names=rn)
+# summary(col.nb.0.all, coords)
+# plot(census, border="grey")
+# plot(col.nb.0.all, coords, add=TRUE)
+# 
+# sp.cor <- sp.correlogram(col.nb.0.all, census$IMU, order=15, method="I", randomisation=FALSE)
+```
+
+
+# From-Scratch implementation
+
+```{r}
+library(fields)
+# census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+census = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON") 
+proj4string(census) = CRS("+proj=utm +zone=32 +datum=WGS84")
+# trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$ACE))
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SEZ2011))
+
+popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
+
+# w: distance-based weights matrix
+# x: the variable of intererst 
+autocorr <- function(w,x,dist=1){
+  aa <- ceiling(max(w)/dist)
+  dists <- seq(0,aa*dist,dist)
+  cors <- NULL
+  for(i in 1:aa){
+    w1 <- ifelse(w > dists[i] & w <= dists[i+1], 1, 0) 
+    w2 <- w1
+    for(j in 1:dim(w1)[1]){
+      nu <- sum(w1[j,])
+      if(nu>0){
+        w2[j,] <- w1[j,]/nu
+      }  
+    }
+    lag <- w2 %*% x
+    cors <- c(cors,cor(x,lag))
+    print(i)
+  }
+  return(cors)
+}
+
+ac1 <- autocorr(w=popdists,x=census@data$deprivation,dist=0.5)
+
+it <- 500
+mc <- matrix(NA,nrow=it,ncol=length(ac1))
+for(i in 1:it){
+  census@data$rand <- sample(census@data$deprivation,length(census@data$deprivation),replace=F)
+  mc[i,] <- autocorr(w=popdists,x=census@data$rand,dist=0.5)
+  print(i)
+}
+
+ac1 <- data.frame(cbind(ac1,seq(0,14,0.5)))
+ac1 <- cbind(ac1,t(apply(mc,2,quantile, probs = c(0.025,0.975))))
+names(ac1) <- c("ac","dist","lci","uci")
+ 
+ggplot(ac1, aes(dist, ac)) +
+  geom_point(colour = "darkblue", size = 3) +
+  geom_line(colour = "red") +
+  scale_x_continuous('Great Circle Distance (KM)',limits=c(0,15)) + 
+  scale_y_continuous('Autocorrelation',limits=c(-0.4,0.7)) +
+  theme_bw() + 
+  geom_hline(yintercept=0) +   
+  geom_smooth(aes(ymin = lci, ymax = uci), stat="identity",fill="blue",colour="darkblue")
+
+
+```
+
