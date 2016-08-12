@@ -1,0 +1,97 @@
+---
+title: "Network Regressions"
+author: "Myeong Lee"
+date: "August 10, 2016"
+output: html_document
+---
+
+This is a regression analysis for CDR and poverty data following the methods presented by Chirs (WWW 16). 
+
+```{r, echo=FALSE}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(stringr)
+library(hydroGOF)
+library(fields)
+library(MASS)
+```
+
+#Random Baseline
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+cdr = read_delim("data/CDR/hash/0727_region_time.csv", delim = ",",col_names = TRUE ) 
+deprivation = read_delim("data/census/milan_deprivation.csv", delim = ",",col_names = TRUE ) 
+deprivation$ACE <- as.character(deprivation$ACE)
+deprivation$ACE <- as.factor(deprivation$ACE)
+
+census@data <- census@data %>% left_join(deprivation, by = c("ACE"))
+
+plot(density(census@data$deprivation))
+shapiro.test(census@data$deprivation)
+
+qqnorm(census@data$deprivation)
+qqline(census@data$deprivation, col = 2)
+
+
+# generate random drwas from two distinct normal distribution -- the final vector follows the distribution of observed data (deprivation)
+rand1 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+rand2 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+rand <- c(rand1, rand2)
+rand_data <- sample(rand, length(census@data$deprivation), replace = FALSE, prob = NULL)
+
+# MAE and Spearman's rank coefficient: comparion between the data and randomly generated poverty scores
+mae <- mae(rand_data,census@data$deprivation, na.rm=TRUE)
+mae
+rho <- cor.test(rand_data,census@data$deprivation, method="spearman")
+rho$estimate
+```
+
+# Population-density baseline
+```{r}
+census@data$density <- census@data$P1/area(census)
+pca_baseline <- lm(deprivation.x ~ log(density), data=census@data)
+summary(pca_baseline)
+sez_agg_baseline <- lm(aggDeprMilano ~ log(density), data=census@data)
+summary(sez_agg_baseline)
+milano_baseline <- lm(deprivationAreaMilano ~ density, data=census@data)
+summary(milano_baseline)
+
+hist(census@data$density)
+```
+
+# Spaital-Lag Baseline
+```{r}
+census@data$spatial_lag <- NA
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$ACE))
+popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
+
+# calculating spatial lag
+for (i in 1:length(trueCentroids)){
+  k <- sapply(popdists[i,], function(x) 1/(x*x))
+  k[is.infinite(k)] <- 0 
+  k <- sapply(k, function(x) x/sum(k))  
+  
+  census@data$spatial_lag[i] <- sum(census@data$deprivation.x * k)
+}
+
+```
+
+# CDR features
+```{r}
+
+
+```
+
