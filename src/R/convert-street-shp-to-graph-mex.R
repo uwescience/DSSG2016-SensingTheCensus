@@ -23,10 +23,11 @@ source("src/R/utils.R")
 streets = readOGR("data/geography/mexico_city/streets/mexico_city_streets.shp", layer = "mexico_city_streets") 
 # proj4string(streets) = CRS("+proj=utm +zone=14 +ellps=GRS80 +datum=NAD83 +units=m +no_defs")
 
+census = spChFIDs(streets, as.character(streets@data$CVE_GEOAGE))
+
 street_graph_list = readshpnw(streets, ELComputed=TRUE, longlat=FALSE) 
 street_graph = nel2igraph(street_graph_list[[2]],street_graph_list[[3]],
-                          weight=street_graph_list[[4]])
-# eadf = street_graph_list[[5]])
+                          weight=street_graph_list[[4]], eadf = street_graph_list[[5]])
 
 #' Remove self loops
 street_graph %<>% simplify()
@@ -112,3 +113,9 @@ close_map = leaflet(lines_df) %>%
   addPolylines(weight = .5, color=~roadPal(closeness)(closeness)) 
 close_map
 saveWidget(bet_map, paste(getwd(),"/doc/plots/mex_street_betweeness.html", sep=""), selfcontained = TRUE)
+
+
+lines_df %>% writeLinesShape("data/OSM/mexico_city_streets/street_centrality.shp")
+
+
+saveRDS(lines_df, "data/OSM/mexico_city_streets/street_centrality.rds")

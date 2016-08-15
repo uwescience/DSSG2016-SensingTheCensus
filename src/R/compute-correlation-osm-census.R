@@ -67,7 +67,7 @@ offer_advantage_wide = offer_advantage%>% dplyr::select(ACE, amenity, offer_adva
 
 census@data %<>% left_join(offer_advantage_wide, by = "ACE")
 
-write_csv(census@data %>% dplyr::select(ACE, arts_centre:wifi),
+write_csv(census@data %>% dplyr::select(ACE, arts_centre:waste),
           "data/OSM/offering_advantage.csv")
 osm_pca = prcomp(census@data %>% dplyr::select(arts_centre:waste), center = TRUE, scale = TRUE)
 osm_pca_df = as.data.frame(osm_pca$x[,1:20])

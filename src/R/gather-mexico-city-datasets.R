@@ -13,15 +13,16 @@ mexicoproj = CRS("+proj=lcc +lat_1=17.5 +lat_2=29.5 +lat_0=12 +lon_0=-102 +x_0=2
 census = readShapePoly("data/census/mexico_city/mexico_city_census.shp")
 proj4string(census) = mexicoproj
 
-offering_advantage = read_csv("data/OSM/mexico_city/mexico_amenity_pca.csv")%>% 
-  dplyr::select(CVE_GEOAGE,arts_centre:waste)
+# offering_advantage = read_csv("data/OSM/mexico_city/mexico_amenity_pca.csv")%>% 
+#   dplyr::select(CVE_GEOAGE,arts_centre:waste)
+offering_advantage = read_csv("data/OSM/mexico_city/amenities_offering_advantage_idw.csv")
 street_centrality = read_csv("data/census/mexico_city/centrality_ageb.csv")
 
 
 #' Join datasets
 temp_data = census@data %>% 
   dplyr::select(CVE_GEOAGE, P6A14NAE:VSREFRI,IMU, GMU) %>%
-  left_join(offering_advantage, by = "CVE_GEOAGE") %>%
+  left_join(offering_advantage, by = "CVE_GEOAGE")
 
 
 temp_data[is.na(temp_data)] = 0
@@ -30,10 +31,10 @@ variance[is.na(variance)] = -1
 temp_data = temp_data[,variance!=0]
 
 corr_depriv_cat = cor(temp_data %>% dplyr::select(P6A14NAE:VSREFRI,IMU) %>%mutate_each(funs(as.numeric(as.character(.)))),
-                      temp_data %>% dplyr::select(arts_centre:waste))
+                      temp_data %>% dplyr::select(idw_arts_centre:idw_waste))
 
 most_correlated_amenities = 
-  corr_depriv_cat[,abs(corr_depriv_cat["IMU",] )>.065] %>% as.data.frame() %>% names()
+  corr_depriv_cat[,abs(corr_depriv_cat["IMU",] )>.205] %>% as.data.frame() %>% names()
 
 
 #' Join datasets
@@ -43,4 +44,13 @@ census@data %<>%
   # left_join(cdr, by = "ACE") %>%
   left_join(street_centrality, by = "CVE_GEOAGE")
 
+census = spChFIDs(census, as.character(census@data$CVE_GEOAGE))
+
 census %>% spTransform(CRS("+proj=longlat")) %>% saveRDS("app/mexico_city.rds")
+
+
+# streets = readOGR("data/geography/mexico_city/streets/mexico_city_streets.shp", "mexico_city_streets")
+intersection = readOGR("data/OSM/mexico_city_streets/street_intersections_census.shp", 
+                       layer = "street_intersections_census")
+proj4string(intersection) = mexicoproj
+intersection %<>% spTransform(CRS("+proj=longlat")) %>% saveRDS("app/mexico_city_street_intersection.rds")
