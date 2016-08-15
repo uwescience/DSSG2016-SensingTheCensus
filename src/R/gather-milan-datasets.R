@@ -1,11 +1,15 @@
 library(readr)
 library(rgdal)
 library(dplyr)
+library(magrittr)
 
 source("src/R/utils.R")
 
+projitaly <- CRS("+proj=utm +zone=32 +datum=WGS84 +units=m")
+
 #' Read milan datasets
 milan_census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+milan_census %<>% spTransform(projitaly)
 offering_advantage = read_csv("data/OSM/offering_advantage.csv")
 # cdr = read_csv("data/CDR/cdr_temporal_total_features.csv")
 street_centrality = read_csv("data/census/centrality_ace.csv")
@@ -38,10 +42,28 @@ milan_census@data %<>% mutate(ACE = as.numeric(as.character(ACE))) %>%
   # left_join(cdr, by = "ACE") %>%
   left_join(street_centrality, by = "ACE")
 
-milan_census %>% saveRDS("app/milan.rds")
+milan_census = spChFIDs(milan_census, as.character(milan_census@data$ACE))
 
 
-# library(geojsonio)
+
+
+milan_census %>% spTransform(CRS("+proj=longlat"))  %>% saveRDS("app/milan.rds")
+
+
+milan_census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+milan_census %<>% spTransform(projitaly)
+
+streets = readOGR("data/OSM/streets/streets.shp", "streets")
+proj4string(streets) = CRS("+proj=longlat")
+streets %<>% spTransform(projitaly)
+
+# plot(milan_census)
+# plot(streets, col ="red", add=T)
+street_intersection = raster::intersect(streets)
+street_intersection %>% spTransform(CRS("+proj=longlat"))  %>% saveRDS("app/milan_street_intersection.rds")
+
+plot(subset(street_intersection, street_intersection$ACE =="1"))
+  # library(geojsonio)
 
 # milan_census %>% geojson_write(file = "app/milan.geojson")
 # library(caret)
