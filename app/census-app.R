@@ -6,37 +6,28 @@ library(dplyr)
 library(ggthemes)
 library(ggplot2)
 library(rgdal)
-
-
+# library(RColorBrewer)
+library(scatterD3)
+library(ggthemes)
+library(plotly)
+library(shinyBS)
+library(shinyjs)
+library(tidyr)
+library(RColorBrewer)
 # setwd("app")
 
-milan_streets = readRDS("milan_street_network.rds") 
-milan_streets = SpatialLinesDataFrame(simple_streets,milan_streets@data)
+# milan_streets = readRDS("milan_street_network.rds")
+milan_streets = readRDS("milan_street_intersection.rds")
+mexico_streets = readRDS("mexico_city_street_intersection.rds")
 
-milan_census = readOGR("milano_census_ace.geojson", "OGRGeoJSON") 
+milan_census = readRDS("milan.rds") 
+mexico_census = readRDS("mexico_city.rds")
 
-
-pal <- function(x) {colorBin(c("black", "#99FFCC"), x, bins=quantile(x, probs = seq(0, 1, 0.1), na.rm=TRUE),na.color = "black")}
-palette <- rev(brewer.pal(10, "RdYlBu")) #Spectral #RdYlBu
-
-roadPal = function(x) {colorQuantile(palette = palette, domain = x, n=10)}
-
+milan_amenities = readRDS("milan_amenities.rds")
+mexico_amenities = readRDS("mexico_city_amenities.rds")
 
 
-
-
-extent = milan_streets@bbox
-
-cityMap = list("Milan" = "milan",
-               "Mexico City" = "mexico_city")
-
-censusMap = list("well-being" = "deprivation",
-                "Median Rent" = "median_rent")
-
-osmMap = list("Closeness Centrality" = "closeness_centrality",
-                 "Median Rent" = "median_rent")
-
-# namesMap = data.frame(var= c("median_income", "median_rent"), name = c("Median Income", "Median Rent"), short_name =c("Income", "Rent"))
+source("app-utils.R")
 
 ui = bootstrapPage(
   tags$head(
@@ -45,170 +36,529 @@ ui = bootstrapPage(
     includeScript("sync_maps.js")
   ),
   fluidRow(class="map-container",
+           # h4("pending")
            column(6, class="left-side",
                   leafletOutput("deprivation_map", width = "100%", height = "100%"),
-                  absolutePanel(top = 50, left = 45,h3("Well-being"))),
+                  absolutePanel(top = 50, left = 45,h3(textOutput("census_map_title")))),
            column(6, class="right-side",
                   leafletOutput("variable_map", width = "100%", height = "100%"),
-                  # absolutePanel(top = 50, left = 45,h3(textOutput("variable_map_title"))))
-                  absolutePanel(top = 50, left = 45,h3("Street-Network")))
-           
+                  absolutePanel(top = 50, left = 45,h3(textOutput("variable_map_title"))))
+           #        # absolutePanel(top = 50, left = 45,h3("Street-Network")))
+           #
            
   ),
-  absolutePanel(top = 130, right = "35%", id = "controls", class = "panel panel-default",
-                fixed = TRUE, draggable = TRUE,height = "350px", width =  "300px",
+  absolutePanel(top = 130, id = "controls", class = "panel panel-default middle",
+                fixed = TRUE, draggable = TRUE,height = "auto", width =  "350px",
                 h4("city"),
-                selectInput("city_feature", NA,
-                            choices = names(cityMap)),
+                selectInput("city_feature", NA, choices = cityMap, selected="milan"),
+                # conditionalPanel( condition = "input.city_feature == 'Milan'",
                 h4("census"),
-                selectInput("census_feature", NA,
-                            choices = names(censusMap)),
+                selectInput("census_feature", NA, choices = milanCensusMap, selected="deprivation"),
+                # uiOutput("census_input"),
+                h5("density"),
+                plotOutput('census_density', height = 125),
+                # tableOutput('census_statistics'),
                 h4("OSM"),
-                selectInput("osm_feature", NA,
-                            choices = names(osmMap)),
-                checkboxInput("show_netwrok", "Show network?", value = TRUE)
+                selectInput("osm_feature", NA, choices = milanOSMMap, selected="deprivation"),
+                # checkboxInput("show_netwrok", "Show network?", value = TRUE),
                 # selectInput("categories", "Select descriptors to display",multiple = TRUE, selected = descriptors,
                 # choices = descriptors, selectize = FALSE, size=3),
+
+                # scatterD3Output("scatter_plot", height = 200)
+
+                h5("scatterplot"),
+                plotOutput("scatter_plot", height = 175)
+                  # plotOutput("variable_distribution", height = 200)
+
+                  # plotOutput("response_season", height = 200)
+                # )
+
                 
-                # plotOutput("response_variable_points", height = 200)
-                # plotOutput("response_distribution", height = 200),
-                # plotOutput("variable_distribution", height = 200)
-                # 
-                # plotOutput("response_season", height = 200)
   ),
-  absolutePanel(top = 0, left = 35,headerPanel("Crowdsensing the Census"))
+  absolutePanel(top = 0, left = 35,headerPanel("Crowdsensing the Census")),
+  bsModal("detail-modal", "Detail", "tabBut", size = "large",
+          useShinyjs(),
+          leafletOutput("modal_map", width = "100%", height = "300px"),
+          fluidRow(class="some-class",
+                   # h4("pending")
+                   column(6, class="left-side",
+                          h4("OSM Distribution"),
+                          plotOutput("selected_distribution", width = "100%", height = "250px")),
+                   column(6, class="right-side",
+                          h4("Deprivation rank"),
+                          tableOutput("selected_rank"))
+                   #        # absolutePanel(top = 50, left = 45,h3("Street-Network")))
+                   #
+                  )
+          )
 )
 
 
 server <- function(input, output, session) {
+  
+  
   # Reactive expression to subset data
-  # selectedFeature <- reactive({
-  #   selected = input$feature
-  #   
-  #   return(list(feature = namesMap[[selected]], name = selected))
-  #   
-  #   
-  # })
+  
+  selectedCityFeature <- reactive({
+    selected = input$city_feature
+    return(selected)
+  })
+
+  
+  selectedCensusFeature <- reactive({
+    city = isolate({input$city_feature})
+    selected = if(is.null(input$census_feature))
+      defaults[[city]]
+    else
+      input$census_feature
+
+    map = census[[city]]
+    data = unlist(map@data[selected])
+    
+    legend = unlist(reverseList(censusMap[[city]])[[selected]])
+    
+    return(list(data = data, selected = selected, legend = legend, census_map = map))
+  })
+  
+  selectedOSMFeature <- reactive({
+    city = isolate({input$city_feature})
+    selected = if(is.null(input$osm_feature))
+      defaults_osm[[city]]
+    else
+      input$osm_feature
+    
+    map = census[[city]]
+    data = unlist(map@data[selected])
+    
+    legend = unlist(reverseList(osmMap[[city]])[[selected]])
+    
+    return(list(data = data, selected = selected, legend = legend, census_map = map))
+  })
+  
+  observe({
+    selected = selectedCityFeature()
+    choiceMap = censusMap[[selected]]
+    updateSelectInput(session, "census_feature", choices = choiceMap)
+  })
+  
   # selectedCategories <- reactive({
   #   cat = input$categories
   # 
   #   # return(list(feature = namesMap[[selected]], name = selected))
   # 
   # })
-  output$deprivation_map <- renderLeaflet({
-    # Aaspects of the map that  won't need to change dynamically
-    
-    leaflet(milan_census) %>% 
-      addProviderTiles("CartoDB.DarkMatter") %>%
-      setView(lng= mean(extent[1,]), lat = mean(extent[2,]),zoom =12) %>%
-      addPolygons(fillColor = pal(milan_census$deprivation)(milan_census$deprivation),fillOpacity = 0.8, weight = 0, color="white")%>%
-      addLegend(pal = pal(milan_census$deprivation),
-                values = milan_census$deprivation,
-                position = "bottomleft",
-                title = "well-being",
-                opacity=.9
-                # labFormat = labelFormat(suffix = " days")
-      )
-    
-    
+  
+  observe({
+    selected = selectedCityFeature()
+
+        choiceMap = osmMap[[selected]]
+    updateSelectInput(session,"osm_feature", choices = choiceMap)
   })
   
-  
+  output$deprivation_map <- renderLeaflet({
+    # Aaspects of the map that  won't need to change dynamically
+    leaflet() %>%
+      addProviderTiles("CartoDB.DarkMatter") 
+
+  })
   
   output$variable_map <- renderLeaflet({
     # Aaspects of the map that  won't need to change dynamically
-    leaflet(milan_streets) %>% 
-      setView(lng= mean(extent[1,]), lat = mean(extent[2,]),zoom =12) %>%
-      addProviderTiles("CartoDB.DarkMatter") %>%
-      addPolylines(weight = 1, color=~roadPal(closeness)(closeness))
+    leaflet() %>%
+      addProviderTiles("CartoDB.DarkMatter")
 
   })
-  # observe({
-  #   # feature = unlist(nycZip@data[selectedFeature()[["feature"]]])
-  #   # featureName = selectedFeature()[["name"]]
-  #   # 
-  #   # leafletProxy("variable_map") %>%
-  #   #   clearControls() %>%
-  #   #   clearShapes() %>%
-  #   #   addPolygons(data = nycZip, color = pal(feature)(feature),stroke = TRUE, weight = 1,
-  #   #               popup = paste(featureName,feature, sep=": "), fillOpacity = 0.7)%>%
-  #   #   addLegend(pal = pal(feature),
-  #   #             values = feature,
-  #   #             position = "bottomright",
-  #   #             title = featureName,
-  #   #             labFormat = labelFormat(prefix = "$"))
-  #   
-  # })
-  # 
-  # output$response_variable_points <- renderPlot({
-  #   feature = unlist(nycZip@data[selectedFeature()[["feature"]]])
-  #   featureName = selectedFeature()[["name"]]
-  #   
-  #   plot_df = data.frame(var =feature, response_time = nycZip@data$response.Time, descriptor = nycZip@data$Descriptor)
-  #   
-  #   ggplot(data = plot_df) + 
-  #     aes(x=var,y=response_time) + 
-  #     scale_x_log10(breaks=c(100,1000,10000))+
-  #     # geom_point(aes(color=descriptor)) +
-  #     geom_point() +
-  #     # scale_color_tableau(guide=FALSE)+
-  #     geom_smooth(method = "lm") +
-  #     theme_fivethirtyeight() + 
-  #     theme(plot.title = element_text(hjust = 1)) +
-  #     labs(title = paste("Response vs ",featureName, sep=""), x = featureName, y="Response Time")
-  #   
-  #   
-  # })
-  # output$variable_map_title <- renderText({
-  #   feature = unlist(nycZip@data[selectedFeature()[["feature"]]])
-  #   selectedFeature()[["name"]]
-  # })
-  # output$response_distribution <- renderPlot({
-  #   
-  #   
-  #   # ggplot(data = nycZip@data) + 
-  #   #   aes(x=Descriptor,y=response.Time) +
-  #   #   # geom_boxplot(aes(fill=Descriptor)) + 
-  #   #   geom_density(aes(fill=Descriptor)) + 
-  #   #   theme_fivethirtyeight() + 
-  #   #   # scale_fill_tableau(guide=FALSE)+
-  #   #   labs(title = paste("Response Time Distribution"), x = "Descriptor", y="Response Time")+
-  #   #   theme(axis.text.x=element_text(angle=15, vjust=1, hjust=1),
-  #   #         plot.title = element_text(hjust = 1)) 
-  #   
-  #   ggplot(data = nycZip@data) + 
-  #     aes(x=response.Time) +
-  #     # geom_boxplot(aes(fill=Descriptor)) + 
-  #     geom_density(fill="grey", alpha=.3) + 
-  #     theme_fivethirtyeight() + 
-  #     # scale_fill_tableau(guide=FALSE)+
-  #     labs(title = "Response Time Distribution", x="Response Time")+
-  #     theme(plot.title = element_text(hjust = 1)) 
-  #   
-  # })
-  # output$variable_distribution <- renderPlot({
-  #   feature = unlist(nycZip@data[selectedFeature()[["feature"]]])
-  #   featureName = selectedFeature()[["name"]]
-  #   
-  #   ggplot() + 
-  #     aes(x=feature) +
-  #     # geom_boxplot(aes(fill=Descriptor)) + 
-  #     geom_density(fill="grey", alpha=.3) + 
-  #     theme_fivethirtyeight() + 
-  #     # scale_fill_tableau(guide=FALSE)+
-  #     labs(title = paste(featureName, "Distribution",sep=" "), x=featureName)+
-  #     scale_x_log10(breaks=c(100,1000,10000))+
-  #     theme(plot.title = element_text(hjust = 1)) 
-  #   
-  # })
-  # 
   
-  # plotOutput("response_distribution", height = 200),
-  # plotOutput("response_variable_points", height = 200),
-  # plotOutput("response_season", height = 200)
+  output$modal_map <- renderLeaflet({
+    # Aaspects of the map that  won't need to change dynamically
+    leaflet() %>%
+      addProviderTiles("CartoDB.DarkMatter")
+    
+  })
+  
+  observe({
+    selectedMap = selectedCensusFeature()
+    selected =  selectedMap[["selected"]]
+    feature = selectedMap[["data"]]
+    legend = selectedMap[["legend"]]
+    # featureName = selectedFeature()[["name"]]
+    map = selectedMap[["census_map"]]
+    extent = map@bbox
+    
+    
+    city = isolate({input$city_feature})
+    if(city == "milan"){
+      weight = .4
+      zoom = 12
+    } else {
+      weight = .2
+      zoom = 10    
+    }
+    
+    ids = unlist(unname(map@data[poly_ids[[city]]]))
+    delay(700, {
+    leafletProxy("deprivation_map") %>%
+      clearControls() %>%
+      clearShapes() %>%
+      addPolygons(fillColor = pal2(feature)(feature),fillOpacity = 0.8, weight = weight, color="white",
+                  layerId = ids,
+                  data = map)%>%
+      addLegend(pal = pal2(feature),
+                values = feature,
+                position = "bottomleft",
+                title = legend,
+                # labels = c("Low",NA,NA,NA, "Medium",NA , NA ,NA ,NA,  "High"),
+                opacity=.9,
+                labFormat = labelFormat(digits = 2)
+      )%>%
+      setView(lng= mean(extent[1,]), lat = mean(extent[2,]),zoom =zoom)
+    })
+  })
+
+  observe({
+    selectedMap = selectedOSMFeature()
+    selected =  selectedMap[["selected"]]
+    feature = selectedMap[["data"]]
+    legend = selectedMap[["legend"]]
+    map = selectedMap[["census_map"]]
+    
+    
+    extent = map@bbox
+    
+    city = isolate({input$city_feature})
+    if(city == "milan"){
+      weight = .4
+      zoom = 12
+    } else {
+      weight = .2
+      zoom = 10    
+    }
+    
+    ids = unlist(unname(map@data[poly_ids[[city]]]))
+    # featureName = selectedFeature()[["name"]]
+    delay(700, {
+    leafletProxy("variable_map") %>%
+      clearControls() %>%
+      clearShapes() %>%
+      addPolygons(fillColor = pal(feature)(feature), fillOpacity = 0.8, weight = weight, color="white",
+                  layerId = ids,
+                  data = map) %>%
+      addLegend(pal = pal(feature),
+                values = feature,
+                position = "bottomright",
+                title = legend,
+                opacity=.9
+      ) %>%
+      setView(lng= mean(extent[1,]), lat = mean(extent[2,]), zoom = zoom)
+    })
+  })
+  # input$MAPID_click
+  observeEvent(input$variable_map_shape_click, {
+    event = input$variable_map_shape_click
+    map_click_event_handler_update_map(event)
+    
+  })
+  
+  observeEvent(input$variable_map_shape_click, {
+      toggleModal(session, "detail-modal", "open")
+  })
+
+  observeEvent(input$variable_map_shape_click, {
+    output$selected_distribution <- renderPlot({
+      event = input$variable_map_shape_click
+      map_click_event_handler_plot(event)
+
+      
+    })
+  })
+
+  observeEvent(input$variable_map_shape_click, {
+    output$selected_rank <- renderTable({
+      event = input$variable_map_shape_click
+      map_click_event_handler_table(event)
+    },include.rownames=FALSE)
+  })
+  
+  observeEvent(input$deprivation_map_shape_click, {
+    event = input$deprivation_map_shape_click
+    map_click_event_handler_update_map(event)
+    
+  })
+  
+  observeEvent(input$deprivation_map_shape_click, {
+    toggleModal(session, "detail-modal", "open")
+  })
+  
+  observeEvent(input$deprivation_map_shape_click, {
+    output$selected_distribution <- renderPlot({
+      event = input$deprivation_map_shape_click
+      map_click_event_handler_plot(event)
+    })
+   
+  })  
+  
+  observeEvent(input$deprivation_map_shape_click, {
+    output$selected_rank <- renderTable({
+      event = input$deprivation_map_shape_click
+      map_click_event_handler_table(event)
+    },include.rownames=FALSE)
+  })
+  
+  map_click_event_handler_update_map = function(event){
+    poly_id = event$id
+    
+    city = isolate({input$city_feature})
+    
+    map = census[[city]]
+    street_map = streets[[city]]
+    amenity_map = amenities[[city]]
+    
+    filtered_map = subset(map, unlist(map@data[poly_ids[[city]]]) == poly_id)
+    
+    selected = isolate({input$census_feature})
+    feature = unlist(map@data[selected])
+    
+    filtered_feature = unlist(filtered_map@data[selected])
+    
+    filtered_streets = subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
+
+    filtered_amenities = amenity_map[amenity_map[poly_ids[[city]]] == poly_id,]
+
+        # legend = reverseList()
+    # map = selectedMap[["census_map"]]
+    # # 
+    extent = filtered_map@bbox
+    # 
+    # city = isolate({input$city_feature})
+    if(city == "milan"){
+      weight = .4
+      zoom = 14
+    } else {
+      weight = .2
+      zoom = 17
+    }
+    # 
+    # featureName = selectedFeature()[["name"]]
+    delay(700, {
+      leafletProxy("modal_map") %>%
+        clearControls() %>%
+        clearShapes() %>%
+        setView(lng= mean(extent[1,]), lat = mean(extent[2,]), zoom = 14)%>%
+        addPolygons(fillColor = pal2(feature)(filtered_feature), 
+                    fillOpacity = 0.8, 
+                    weight = weight, 
+                    color="white",
+                    data = filtered_map)  %>%
+        addPolylines(weight = 2, 
+                     color= roadPal(street_map$closeness)(filtered_streets$closeness), 
+                     data=filtered_streets)%>%
+        addCircles(lng= ~lon, lat= ~lat, weight = 1,radius = 20,color="white",
+                                 fillColor = classPal(amenity_map$amenity)(filtered_amenities$amenity),
+                                 fillOpacity =1, data= filtered_amenities) %>%
+        addLegend(pal = classPal(amenity_map$amenity),
+                  values = amenity_map$amenity,
+                  position = "bottomleft",
+                  title = "amenity",
+                  opacity=.9
+        ) %>%
+        addLegend(pal = roadPal(street_map$closeness),
+                  values = street_map$closeness,
+                  position = "bottomright",
+                  title = "betwenness <br> centrality",
+                  opacity=.9
+                  ) 
+    })
+  }
+  map_click_event_handler_plot = function(event) {
+    poly_id = event$id
+    
+    city = isolate({input$city_feature})
+    map = census[[city]]
+    street_map = streets[[city]]
+    
+    filtered_map = subset(map, unlist(map@data[poly_ids[[city]]]) == poly_id)
+    
+    selected = isolate({input$census_feature})
+    feature = unlist(map@data[selected])
+    
+    filtered_feature = unlist(filtered_map@data[selected])
+    
+    df = map@data %>% dplyr::select(ends_with("osm")) %>%
+      gather(key, value) %>% 
+      mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
+    
+    # plot_names = unique(df$key) %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.) 
+    # print(plot_names)
+    # subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
+    df_selected = filtered_map@data %>% dplyr::select(ends_with("osm")) %>%
+      gather(key, value) %>% 
+      mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
+    
+    ggplot(df) + geom_boxplot(aes(1, value), fill = "#303030",size=.5,color = "darkgrey") +
+      geom_hline(aes(yintercept=value), color="#EE82EE", size=1.2, data= df_selected)+
+      facet_grid(key~., scales="free_y") + 
+      coord_flip() +
+      theme_fivethirtyeight()+
+      theme(strip.text.y = element_text(angle=0), axis.text = element_blank(),
+            axis.title = element_blank(), axis.ticks.y = element_blank(),
+            panel.background = element_rect(fill = "#303030"),
+            plot.background = element_rect(fill = "#303030"),
+            axis.title = element_text(colour = "white"),
+            axis.text = element_text(colour = "white"),
+            panel.grid = element_blank(),
+            strip.background = element_rect(fill = "black"),
+            strip.text = element_text(colour = "white")
+      )
+  }
+  #############################
+  # output$scatter_plot <- renderScatterD3(
+  #   scatterD3(x = milan_census@data$deprivation, y = milan_census@data$closeness, 
+  #             # lab = ACE,
+  #             # col_var = cyl, symbol_var = am,
+  #             xlab = "Weight", ylab = "Mpg", col_lab = "Cylinders",
+  #             symbol_lab = "Manual transmission")
+  # )
+  output$scatter_plot <- renderPlot({
+    selectedCensus = selectedCensusFeature()
+    
+    selected_census =  selectedCensus[["selected"]]
+    feature_census  = selectedCensus[["data"]]
+    featureName_census = selectedCensus[["legend"]]
+    
+    selectedOSM = selectedOSMFeature()
+    
+    selected_osm =  selectedOSM[["selected"]]
+    feature_osm  = selectedOSM[["data"]]
+    featureName_osm = selectedOSM[["legend"]]
+    
+    if(length(feature_osm) != length(feature_census)){
+      plot = ggplot()
+    } else {
+      plot_df = data.frame(selected_osm  = feature_osm, selected_census = feature_census)
+      names(plot_df) = c(selected_osm, selected_census)
+  
+      plot = ggplot(data = plot_df) +
+        geom_point(aes_string(x = selected_osm, y = selected_census), size =.8, color="white") +
+        geom_smooth(aes_string(x = selected_osm, y = selected_census),method = "lm", fill="lightgrey", color = "#6FDCF1") +
+        theme_fivethirtyeight() +
+        # theme(plot.title = element_text(hjust = 1)) +
+        labs(x = featureName_osm, y=featureName_census) +
+        theme(panel.background = element_rect(fill = "black"),
+              plot.background = element_rect(fill = "black"),
+              axis.title = element_text(colour = "white"),
+              axis.text = element_text(colour = "white"))
+    }
+    plot
+      # layout(plot_bgcolor='rgb(254, 247, 234, .5)') %>%
+      # layout(paper_bgcolor='rgb(254, 247, 234, .5)')
+      # labs(title = paste(selected_osm," vs ",selected_census, sep=""), x = featureName_osm, y=featureName_census)
+  })
+  
+  output$census_map_title <- renderText({
+    selectedMap = selectedCensusFeature()
+    
+    selectedMap[["legend"]]
+  })
+  output$variable_map_title <- renderText({
+    selectedMap = selectedOSMFeature()
+    
+    selectedMap[["legend"]]
+  })
+
+  output$census_statistics <- renderTable({
+    
+    selectedMap = selectedCensusFeature()
+    
+    selected =  selectedMap[["selected"]]
+    feature = selectedMap[["data"]]
+    legend = selectedMap[["legend"]]
+    
+
+    summary(feature) %>% broom::tidy() %>% 
+      dplyr::select(minimum, median, mean, maximum)%>% 
+      setNames(c("min", "median", "mean", "max")) 
+  }, 
+  include.rownames=FALSE)
+  
+  output$census_density <- renderPlot({
+    
+    selectedMap = selectedCensusFeature()
+    
+    selected =  selectedMap[["selected"]]
+    feature = selectedMap[["data"]]
+    legend = selectedMap[["legend"]]
+    
+    
+    p = ggplot() + geom_density(aes(x = feature), fill = "#EE82EE", alpha=.7) + 
+      labs(x = legend) + theme_fivethirtyeight() + 
+      theme(axis.title=element_blank(),
+            panel.background = element_rect(fill = "black"),
+            plot.background = element_rect(fill = "black"),
+            axis.title = element_text(colour = "white"),
+            axis.text = element_text(colour = "white"))
+    p
+    
+  })
+  
+  # output$selected_rank <- renderTable({
+  map_click_event_handler_table = function(event){
+    poly_id = event$id
+    
+    city = isolate({input$city_feature})
+    map = census[[city]]
+
+    
+    
+    ranked = map@data %>% arrange_(defaults[[city]]) %>% add_rownames("rank") %>% mutate(percentile= percent_rank(rank))
+    
+    index = which(ranked[poly_ids[[city]]] == poly_id)
+    
+    print(index)
+    surroundings = (index - 2):(index + 2)
+    while( sum(surroundings <=0) > 0 ){surroundings = surroundings + 1}
+    while( sum(surroundings > dim(map@data)[1]) > 0 ){surroundings = surroundings - 1}
+    
+    ranked %>% slice(surroundings) %>% dplyr::select_("rank", "percentile", poly_ids[[city]],  defaults[[city]]) 
+  }
+  
 }
 
 shinyApp(ui, server)
 
 
 
+
+# df = milan_census@data %>% dplyr::select(ends_with("osm")) %>%
+#   gather(key, value) %>% 
+#   mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
+# 
+# # plot_names = unique(df$key) %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.) 
+# # print(plot_names)
+# # subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
+# df_selected = filtered_map@data %>% dplyr::select(ends_with("osm")) %>%
+#   gather(key, value) %>% 
+#   mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
+# 
+# ggplot(df) + geom_boxplot(aes(1, value), fill = "#303030",size=.5,color = "darkgrey") +
+#   # geom_hline(aes(yintercept=value), color="#EE82EE", size=1.2, data= df_selected)+
+#   facet_grid(key~., scales="free_y") + 
+#   coord_flip() +
+#   theme_fivethirtyeight()+
+#   theme(strip.text.y = element_text(angle=0), axis.text = element_blank(),
+#         axis.title = element_blank(), axis.ticks.y = element_blank(),
+#         panel.background = element_rect(fill = "#303030"),
+#         plot.background = element_rect(fill = "#303030"),
+#         axis.title = element_text(colour = "white"),
+#         axis.text = element_text(colour = "white"),
+#         panel.grid = element_blank(),
+#         strip.background = element_rect(fill = "black"),
+#         strip.text = element_text(colour = "white")
+#   )
+# 
+# ggsave("../doc/plots/offering-advantages-distribution.png")
+# 
+# a = milan_census@data %>% arrange(deprivation) %>% add_rownames("rank") %>% mutate(perc= percent_rank(rank))
+# 
+# index = which(a$ACE == "1")
+# surroundings = c(index-2, index-1, index, index + 1, index + 2)
+# plotOutput(a %>% slice(surroundings) %>% dplyr::select_("rank","ACE", "deprivation") )

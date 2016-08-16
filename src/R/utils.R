@@ -1,7 +1,3 @@
-library(readr)
-library(leaflet)
-library(dplyr)
-
 multmerge = function(mypath, pattern, read_function){
   filenames = list.files(path=mypath, full.names=TRUE)
   filenames = filenames[grepl(pattern,filenames)]
@@ -14,6 +10,7 @@ multmerge = function(mypath, pattern, read_function){
 }
 
 read_census_data = function(file_path) {
+  require(readr)
   read_delim(file=file_path, delim = ";", na = "null", col_types = cols(
     "CODREG" = col_character(),
     "REGIONE" = col_character(),
@@ -44,8 +41,9 @@ pal <- function(x, palette = "YlGnBu",method = "quantile", n =5) {
 
 
 leaflet_map = function(spatialDf, var, legend_title, palette = "YlGnBu",method = "quantile", n=5) {
-  library(rgdal)
-
+  require(rgdal)
+  require(leaflet)
+  
   feature = unlist(spatialDf@data[var])
   
   spatialDf = spTransform(spatialDf, CRS("+init=epsg:4326"))
@@ -66,11 +64,15 @@ norm = function(x,p){x/p}
 dens = function(x,p,a){x/(p/a)}
 
 get_deprivation_features = function(census){
+  require(raster)
+  require(dplyr)
+  
   census@data %>% 
-    mutate(census_area = area(census),
+    mutate(census_area = raster::area(census),
            density = P1/census_area,
            high_school = P48/P1, 
-           illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
+           illiteracy = P52/P1, 
+           sixtyfive_plus = (P27 + P28 + P29)/P1,
            foreigners = ST15/P1,
            rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
            unemployment = P62/P60,
