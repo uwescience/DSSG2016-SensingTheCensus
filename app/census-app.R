@@ -23,76 +23,11 @@ mexico_streets = readRDS("mexico_city_street_intersection.rds")
 milan_census = readRDS("milan.rds") 
 mexico_census = readRDS("mexico_city.rds")
 
-poly_ids = list("milan" = "ACE", "mexico_city" = "CVE_GEOAGE")
-census = list("milan" = milan_census, "mexico_city" = mexico_census)
-streets =  list("milan" = milan_streets, "mexico_city" = mexico_streets )
-# pal <- function(x) {
-#   n = 9
-#   cuts = cut(x, breaks = n)
-#   # labels = c("low", NA, NA, NA, "medium", NA, NA, NA ,"high"))
-#   print(cuts)
-#   colors = colorRampPalette(c("black", "#99FFCC"))(n)
-#   
-#   colorFactor(colors, cuts, na.color = "black")}
-pal <- function(x) {colorBin(c("black", "#99FFCC"), x,bins =10, na.color = "black")}
-pal <- function(x) {colorQuantile(c("black", "#99FFCC"), x,n = 10, na.color = "black")}
-
-pal2 <- function(x) {colorBin(c("black", "#EE82EE"), x, bins=quantile(x, probs = seq(0, 1, 0.1), na.rm=TRUE),na.color = "black")}
-reverseList = function(hash_list){
-  revMap = list()
-  for(key in names(hash_list)){ revMap[[hash_list[[key]]]] = key }
-  return(revMap)
-}
-# palette <- rev(brewer.pal(10, "RdYlBu")) #Spectral #RdYlBu
-palette <- brewer.pal(10, "YlGnBu") #Spectral #RdYlBu
-
-roadPal = function(x) {colorBin(palette = palette, domain = x, bins=quantile(x, probs = seq(0, 1, 0.1), na.rm=TRUE))}
+milan_amenities = readRDS("milan_amenities.rds")
+mexico_amenities = readRDS("mexico_city_amenities.rds")
 
 
-milan_extent = milan_census@bbox
-mexico_extent = mexico_census@bbox
-
-
-cityMap = list("Milan" = "milan",
-               "Mexico City" = "mexico_city")
-
-milanCensusMap = list("well-being" = "deprivation",
-                "unemployment" = "unemployment",
-                "% high school" =  "high_school",
-                "% illiteracy" = "illiteracy",
-                "% age > 65" =  "sixtyfive_plus",
-                "% foreigners" = "foreigners",
-                "% rented dwellings" = "rented_dwelling")
-
-mexicoCensusMap = list("deprivation index" = "IMU")
-
-censusMap = list("milan" = milanCensusMap, "mexico_city" = mexicoCensusMap)
-
-milanOSMMap = list()
-milanOSMMap[["Closeness Centrality"]] = "closeness"
-milanOSMMap[["Betweenness Centrality"]] = "betweenness"
-for(name in milan_census@data%>% dplyr::select(bar:university) %>% names()){
-  clean_name = gsub("\\_", " ", name)
-  key = paste(clean_name, "offering advantage")
-  milanOSMMap[[key]] = name
-}
-
-
-mexicoOSMMap = list()
-
-mexicoOSMMap[["Betweenness Centrality"]] = "betweenness"
-mexicoOSMMap[["Closeness Centrality"]] = "closeness"
-# for(name in mexico_census@data%>% dplyr::select(bank:school) %>% names()){
-for(name in mexico_census@data%>% dplyr::select(idw_arts_centre:idw_townhall) %>% names()){
-  clean_name = gsub("\\_", " ", name)
-  key = paste(clean_name, "offering advantage")
-  mexicoOSMMap[[key]] = name
-}
-
-osmMap = list("milan" = milanOSMMap, "mexico_city" = mexicoOSMMap)
-
-defaults = list("milan" = "deprivation", "mexico_city" = "IMU")
-defaults_osm = list("milan" = "closeness", "mexico_city" = "closeness")
+source("app-utils.R")
 
 ui = bootstrapPage(
   tags$head(
@@ -120,8 +55,9 @@ ui = bootstrapPage(
                 h4("census"),
                 selectInput("census_feature", NA, choices = milanCensusMap, selected="deprivation"),
                 # uiOutput("census_input"),
-                plotlyOutput('census_density', height = "150"),
-                tableOutput('census_statistics'),
+                h5("density"),
+                plotOutput('census_density', height = 125),
+                # tableOutput('census_statistics'),
                 h4("OSM"),
                 selectInput("osm_feature", NA, choices = milanOSMMap, selected="deprivation"),
                 # checkboxInput("show_netwrok", "Show network?", value = TRUE),
@@ -130,8 +66,8 @@ ui = bootstrapPage(
 
                 # scatterD3Output("scatter_plot", height = 200)
 
-                h5("Scatterplot"),
-                plotlyOutput("scatter_plot", height = 200)
+                h5("scatterplot"),
+                plotOutput("scatter_plot", height = 175)
                   # plotOutput("variable_distribution", height = 200)
 
                   # plotOutput("response_season", height = 200)
@@ -146,10 +82,11 @@ ui = bootstrapPage(
           fluidRow(class="some-class",
                    # h4("pending")
                    column(6, class="left-side",
-                          h4("Distribution")),
-                          # plotOutput("selected_distribution", width = "100%", height = "250px")),
+                          h4("OSM Distribution"),
+                          plotOutput("selected_distribution", width = "100%", height = "250px")),
                    column(6, class="right-side",
-                          h4("To Fill"))
+                          h4("Deprivation rank"),
+                          tableOutput("selected_rank"))
                    #        # absolutePanel(top = 50, left = 45,h3("Street-Network")))
                    #
                   )
@@ -259,7 +196,7 @@ server <- function(input, output, session) {
     }
     
     ids = unlist(unname(map@data[poly_ids[[city]]]))
-    
+    delay(700, {
     leafletProxy("deprivation_map") %>%
       clearControls() %>%
       clearShapes() %>%
@@ -275,7 +212,7 @@ server <- function(input, output, session) {
                 labFormat = labelFormat(digits = 2)
       )%>%
       setView(lng= mean(extent[1,]), lat = mean(extent[2,]),zoom =zoom)
-      
+    })
   })
 
   observe({
@@ -299,6 +236,7 @@ server <- function(input, output, session) {
     
     ids = unlist(unname(map@data[poly_ids[[city]]]))
     # featureName = selectedFeature()[["name"]]
+    delay(700, {
     leafletProxy("variable_map") %>%
       clearControls() %>%
       clearShapes() %>%
@@ -312,6 +250,7 @@ server <- function(input, output, session) {
                 opacity=.9
       ) %>%
       setView(lng= mean(extent[1,]), lat = mean(extent[2,]), zoom = zoom)
+    })
   })
   # input$MAPID_click
   observeEvent(input$variable_map_shape_click, {
@@ -332,6 +271,13 @@ server <- function(input, output, session) {
       
     })
   })
+
+  observeEvent(input$variable_map_shape_click, {
+    output$selected_rank <- renderTable({
+      event = input$variable_map_shape_click
+      map_click_event_handler_table(event)
+    },include.rownames=FALSE)
+  })
   
   observeEvent(input$deprivation_map_shape_click, {
     event = input$deprivation_map_shape_click
@@ -348,14 +294,24 @@ server <- function(input, output, session) {
       event = input$deprivation_map_shape_click
       map_click_event_handler_plot(event)
     })
+   
   })  
+  
+  observeEvent(input$deprivation_map_shape_click, {
+    output$selected_rank <- renderTable({
+      event = input$deprivation_map_shape_click
+      map_click_event_handler_table(event)
+    },include.rownames=FALSE)
+  })
   
   map_click_event_handler_update_map = function(event){
     poly_id = event$id
     
     city = isolate({input$city_feature})
+    
     map = census[[city]]
     street_map = streets[[city]]
+    amenity_map = amenities[[city]]
     
     filtered_map = subset(map, unlist(map@data[poly_ids[[city]]]) == poly_id)
     
@@ -365,8 +321,10 @@ server <- function(input, output, session) {
     filtered_feature = unlist(filtered_map@data[selected])
     
     filtered_streets = subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
-    
-    # legend = reverseList()
+
+    filtered_amenities = amenity_map[amenity_map[poly_ids[[city]]] == poly_id,]
+
+        # legend = reverseList()
     # map = selectedMap[["census_map"]]
     # # 
     extent = filtered_map@bbox
@@ -394,12 +352,21 @@ server <- function(input, output, session) {
         addPolylines(weight = 2, 
                      color= roadPal(street_map$closeness)(filtered_streets$closeness), 
                      data=filtered_streets)%>%
+        addCircles(lng= ~lon, lat= ~lat, weight = 1,radius = 20,color="white",
+                                 fillColor = classPal(amenity_map$amenity)(filtered_amenities$amenity),
+                                 fillOpacity =1, data= filtered_amenities) %>%
+        addLegend(pal = classPal(amenity_map$amenity),
+                  values = amenity_map$amenity,
+                  position = "bottomleft",
+                  title = "amenity",
+                  opacity=.9
+        ) %>%
         addLegend(pal = roadPal(street_map$closeness),
                   values = street_map$closeness,
                   position = "bottomright",
                   title = "betwenness <br> centrality",
                   opacity=.9
-        )
+                  ) 
     })
   }
   map_click_event_handler_plot = function(event) {
@@ -416,18 +383,32 @@ server <- function(input, output, session) {
     
     filtered_feature = unlist(filtered_map@data[selected])
     
-    df = map@data %>% dplyr::select(deprivation, bar:university) %>%
-      gather(key, value)
+    df = map@data %>% dplyr::select(ends_with("osm")) %>%
+      gather(key, value) %>% 
+      mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
     
-    df_selected = subset(map, ACE== poly_id)@data%>% dplyr::select(deprivation, bar:university) %>%
-      gather(key, value)
+    # plot_names = unique(df$key) %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.) 
+    # print(plot_names)
+    # subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
+    df_selected = filtered_map@data %>% dplyr::select(ends_with("osm")) %>%
+      gather(key, value) %>% 
+      mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
     
-    ggplot(df) + geom_boxplot(aes(1, value)) +
-      geom_hline(aes(yintercept=value), color="red", data= df_selected)+
-      facet_grid(key~., scales="free_y") + coord_flip() +
+    ggplot(df) + geom_boxplot(aes(1, value), fill = "#303030",size=.5,color = "darkgrey") +
+      geom_hline(aes(yintercept=value), color="#EE82EE", size=1.2, data= df_selected)+
+      facet_grid(key~., scales="free_y") + 
+      coord_flip() +
       theme_fivethirtyeight()+
       theme(strip.text.y = element_text(angle=0), axis.text = element_blank(),
-            axis.title = element_blank(), axis.ticks.y = element_blank() )
+            axis.title = element_blank(), axis.ticks.y = element_blank(),
+            panel.background = element_rect(fill = "#303030"),
+            plot.background = element_rect(fill = "#303030"),
+            axis.title = element_text(colour = "white"),
+            axis.text = element_text(colour = "white"),
+            panel.grid = element_blank(),
+            strip.background = element_rect(fill = "black"),
+            strip.text = element_text(colour = "white")
+      )
   }
   #############################
   # output$scatter_plot <- renderScatterD3(
@@ -437,7 +418,7 @@ server <- function(input, output, session) {
   #             xlab = "Weight", ylab = "Mpg", col_lab = "Cylinders",
   #             symbol_lab = "Manual transmission")
   # )
-  output$scatter_plot <- renderPlotly({
+  output$scatter_plot <- renderPlot({
     selectedCensus = selectedCensusFeature()
     
     selected_census =  selectedCensus[["selected"]]
@@ -451,21 +432,23 @@ server <- function(input, output, session) {
     featureName_osm = selectedOSM[["legend"]]
     
     if(length(feature_osm) != length(feature_census)){
-      ggplotly(ggplot())
+      plot = ggplot()
     } else {
       plot_df = data.frame(selected_osm  = feature_osm, selected_census = feature_census)
       names(plot_df) = c(selected_osm, selected_census)
   
       plot = ggplot(data = plot_df) +
-        geom_point( aes_string(x = selected_osm, y = selected_census), size = .8) +
-        geom_smooth( aes_string(x = selected_osm, y = selected_census),method = "lm") +
-        theme_bw()+
+        geom_point(aes_string(x = selected_osm, y = selected_census), size =.8, color="white") +
+        geom_smooth(aes_string(x = selected_osm, y = selected_census),method = "lm", fill="lightgrey", color = "#6FDCF1") +
+        theme_fivethirtyeight() +
         # theme(plot.title = element_text(hjust = 1)) +
         labs(x = featureName_osm, y=featureName_census) +
-        theme(axis.text=element_text(size=8),
-              axis.title=element_text(size=8))
-      ggplotly(plot)# %>%
+        theme(panel.background = element_rect(fill = "black"),
+              plot.background = element_rect(fill = "black"),
+              axis.title = element_text(colour = "white"),
+              axis.text = element_text(colour = "white"))
     }
+    plot
       # layout(plot_bgcolor='rgb(254, 247, 234, .5)') %>%
       # layout(paper_bgcolor='rgb(254, 247, 234, .5)')
       # labs(title = paste(selected_osm," vs ",selected_census, sep=""), x = featureName_osm, y=featureName_census)
@@ -497,7 +480,7 @@ server <- function(input, output, session) {
   }, 
   include.rownames=FALSE)
   
-  output$census_density <- renderPlotly({
+  output$census_density <- renderPlot({
     
     selectedMap = selectedCensusFeature()
     
@@ -507,24 +490,75 @@ server <- function(input, output, session) {
     
     
     p = ggplot() + geom_density(aes(x = feature), fill = "#EE82EE", alpha=.7) + 
-      labs(x = legend) + theme_fivethirtyeight()
-    ggplotly(p)
+      labs(x = legend) + theme_fivethirtyeight() + 
+      theme(axis.title=element_blank(),
+            panel.background = element_rect(fill = "black"),
+            plot.background = element_rect(fill = "black"),
+            axis.title = element_text(colour = "white"),
+            axis.text = element_text(colour = "white"))
+    p
     
   })
+  
+  # output$selected_rank <- renderTable({
+  map_click_event_handler_table = function(event){
+    poly_id = event$id
+    
+    city = isolate({input$city_feature})
+    map = census[[city]]
+
+    
+    
+    ranked = map@data %>% arrange_(defaults[[city]]) %>% add_rownames("rank") %>% mutate(percentile= percent_rank(rank))
+    
+    index = which(ranked[poly_ids[[city]]] == poly_id)
+    
+    print(index)
+    surroundings = (index - 2):(index + 2)
+    while( sum(surroundings <=0) > 0 ){surroundings = surroundings + 1}
+    while( sum(surroundings > dim(map@data)[1]) > 0 ){surroundings = surroundings - 1}
+    
+    ranked %>% slice(surroundings) %>% dplyr::select_("rank", "percentile", poly_ids[[city]],  defaults[[city]]) 
+  }
+  
 }
 
 shinyApp(ui, server)
 
 
-# highchart() %>% 
-#   hc_add_theme(hc_theme_538()) %>% 
-#   hc_add_serie(data = ds, name = "data", type = "scatter") 
-# df = milan_census@data %>% dplyr::select(deprivation, bar:university) %>% 
-#   gather(key, value)
-# df_selected = subset(milan_census, ACE=="1")@data%>% dplyr::select(deprivation, bar:university) %>% 
-# 
-#   gather(key, value)
 
-# ggplot(df%>%filter(key == "university")) + geom_boxplot(aes(1,value)) +  
-  # geom_hline(aes(yintercept=value, color="selected"), data= df_selected%>%filter(key == "university"))
-# ggplot(df) + geom_boxplot(aes(key, value))  + coord_flip()
+
+# df = milan_census@data %>% dplyr::select(ends_with("osm")) %>%
+#   gather(key, value) %>% 
+#   mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
+# 
+# # plot_names = unique(df$key) %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.) 
+# # print(plot_names)
+# # subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
+# df_selected = filtered_map@data %>% dplyr::select(ends_with("osm")) %>%
+#   gather(key, value) %>% 
+#   mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
+# 
+# ggplot(df) + geom_boxplot(aes(1, value), fill = "#303030",size=.5,color = "darkgrey") +
+#   # geom_hline(aes(yintercept=value), color="#EE82EE", size=1.2, data= df_selected)+
+#   facet_grid(key~., scales="free_y") + 
+#   coord_flip() +
+#   theme_fivethirtyeight()+
+#   theme(strip.text.y = element_text(angle=0), axis.text = element_blank(),
+#         axis.title = element_blank(), axis.ticks.y = element_blank(),
+#         panel.background = element_rect(fill = "#303030"),
+#         plot.background = element_rect(fill = "#303030"),
+#         axis.title = element_text(colour = "white"),
+#         axis.text = element_text(colour = "white"),
+#         panel.grid = element_blank(),
+#         strip.background = element_rect(fill = "black"),
+#         strip.text = element_text(colour = "white")
+#   )
+# 
+# ggsave("../doc/plots/offering-advantages-distribution.png")
+# 
+# a = milan_census@data %>% arrange(deprivation) %>% add_rownames("rank") %>% mutate(perc= percent_rank(rank))
+# 
+# index = which(a$ACE == "1")
+# surroundings = c(index-2, index-1, index, index + 1, index + 2)
+# plotOutput(a %>% slice(surroundings) %>% dplyr::select_("rank","ACE", "deprivation") )
