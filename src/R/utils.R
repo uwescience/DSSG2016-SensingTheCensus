@@ -66,11 +66,13 @@ dens = function(x,p,a){x/(p/a)}
 get_deprivation_features = function(census){
   require(raster)
   require(dplyr)
+  
   census@data %>% 
-    mutate(census_area = area(census),
+    mutate(census_area = raster::area(census),
            density = P1/census_area,
            high_school = P48/P1, 
-           illiteracy = P52/P1, sixtyfive_plus = (P27 + P28 + P29)/P1,
+           illiteracy = P52/P1, 
+           sixtyfive_plus = (P27 + P28 + P29)/P1,
            foreigners = ST15/P1,
            rented_dwelling = ifelse(A46 + A47+ A48 > 0, A46/(A46 + A47+ A48), NA),
            unemployment = P62/P60,
