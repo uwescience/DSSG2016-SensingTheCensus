@@ -76,7 +76,7 @@ ui = bootstrapPage(
                 
   ),
   absolutePanel(top = 0, left = 35,headerPanel("Crowdsensing the Census")),
-  bsModal("detail-modal", "Detail", "tabBut", size = "large",
+  bsModal("detail-modal", textOutput("modal_title"), "tabBut", size = "large",
           useShinyjs(),
           leafletOutput("modal_map", width = "100%", height = "300px"),
           fluidRow(class="some-class",
@@ -271,12 +271,16 @@ server <- function(input, output, session) {
       
     })
   })
-
+  
   observeEvent(input$variable_map_shape_click, {
     output$selected_rank <- renderTable({
       event = input$variable_map_shape_click
       map_click_event_handler_table(event)
     },include.rownames=FALSE)
+    output$modal_title <- renderText({
+      event = input$variable_map_shape_click
+      paste("Detail", event$id)
+    })
   })
   
   observeEvent(input$deprivation_map_shape_click, {
@@ -302,6 +306,10 @@ server <- function(input, output, session) {
       event = input$deprivation_map_shape_click
       map_click_event_handler_table(event)
     },include.rownames=FALSE)
+    output$modal_title <- renderText({
+      event = input$variable_map_shape_click
+      paste("Detail", event$id)
+    })
   })
   
   map_click_event_handler_update_map = function(event){
@@ -410,14 +418,7 @@ server <- function(input, output, session) {
             strip.text = element_text(colour = "white")
       )
   }
-  #############################
-  # output$scatter_plot <- renderScatterD3(
-  #   scatterD3(x = milan_census@data$deprivation, y = milan_census@data$closeness, 
-  #             # lab = ACE,
-  #             # col_var = cyl, symbol_var = am,
-  #             xlab = "Weight", ylab = "Mpg", col_lab = "Cylinders",
-  #             symbol_lab = "Manual transmission")
-  # )
+
   output$scatter_plot <- renderPlot({
     selectedCensus = selectedCensusFeature()
     
@@ -507,9 +508,9 @@ server <- function(input, output, session) {
     city = isolate({input$city_feature})
     map = census[[city]]
 
-    
-    
-    ranked = map@data %>% arrange_(defaults[[city]]) %>% add_rownames("rank") %>% mutate(percentile= percent_rank(rank))
+    ranked = map@data %>% arrange_(defaults[[city]])
+    ranked$percentile = percent_rank(ranked[defaults[[city]]])
+    ranked$rank = 1:dim(ranked)[1]
     
     index = which(ranked[poly_ids[[city]]] == poly_id)
     
@@ -518,7 +519,10 @@ server <- function(input, output, session) {
     while( sum(surroundings <=0) > 0 ){surroundings = surroundings + 1}
     while( sum(surroundings > dim(map@data)[1]) > 0 ){surroundings = surroundings - 1}
     
-    ranked %>% slice(surroundings) %>% dplyr::select_("rank", "percentile", poly_ids[[city]],  defaults[[city]]) 
+    table = ranked %>% slice(surroundings) %>% dplyr::select_("rank", "percentile", poly_ids[[city]],  defaults[[city]]) 
+    names(table) = c("rank", "percentile", "id",  reverseList(censusMap[[city]])[[defaults[[city]]]])
+    
+    table
   }
   
 }
@@ -527,17 +531,13 @@ shinyApp(ui, server)
 
 
 
-
+# df_selected = filtered_map@data %>% dplyr::select(ends_with("osm")) %>%
+  # gather(key, value) %>% 
+  # mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
 # df = milan_census@data %>% dplyr::select(ends_with("osm")) %>%
 #   gather(key, value) %>% 
 #   mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
 # 
-# # plot_names = unique(df$key) %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.) 
-# # print(plot_names)
-# # subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
-# df_selected = filtered_map@data %>% dplyr::select(ends_with("osm")) %>%
-#   gather(key, value) %>% 
-#   mutate(key = {key %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.) %>% gsub("_", " ",.)})
 # 
 # ggplot(df) + geom_boxplot(aes(1, value), fill = "#303030",size=.5,color = "darkgrey") +
 #   # geom_hline(aes(yintercept=value), color="#EE82EE", size=1.2, data= df_selected)+
@@ -546,19 +546,16 @@ shinyApp(ui, server)
 #   theme_fivethirtyeight()+
 #   theme(strip.text.y = element_text(angle=0), axis.text = element_blank(),
 #         axis.title = element_blank(), axis.ticks.y = element_blank(),
-#         panel.background = element_rect(fill = "#303030"),
-#         plot.background = element_rect(fill = "#303030"),
-#         axis.title = element_text(colour = "white"),
-#         axis.text = element_text(colour = "white"),
-#         panel.grid = element_blank(),
-#         strip.background = element_rect(fill = "black"),
-#         strip.text = element_text(colour = "white")
-#   )
-# 
-# ggsave("../doc/plots/offering-advantages-distribution.png")
-# 
-# a = milan_census@data %>% arrange(deprivation) %>% add_rownames("rank") %>% mutate(perc= percent_rank(rank))
-# 
-# index = which(a$ACE == "1")
-# surroundings = c(index-2, index-1, index, index + 1, index + 2)
-# plotOutput(a %>% slice(surroundings) %>% dplyr::select_("rank","ACE", "deprivation") )
+#         panel.grid = element_blank()
+#         )+
+#   labs(title = "Amenity OA Distributions - Milan")
+#         # panel.background = element_rect(fill = "#303030"),
+#         # plot.background = element_rect(fill = "#303030"),
+#         # axis.title = element_text(colour = "white"),
+#         # axis.text = element_text(colour = "white"),
+# ggsave("milan-oa-sitributions.png")
+#         # strip.background = element_rect(fill = "black"),
+#         # strip.text = element_text(colour = "white")
+
+
+
