@@ -1,132 +1,11 @@
-library(shiny)
-library(leaflet)
-library(maptools)
-library(dplyr)
-library(ggthemes)
-library(ggplot2)
-library(ggthemes)
-library(shinyBS)
-library(shinyjs)
-library(tidyr)
-library(RColorBrewer)
-# setwd("app")
-
-# milan_streets = readRDS("milan_street_network.rds")
-milan_streets = readRDS("milan_street_intersection.rds")
-mexico_streets = readRDS("mexico_city_street_intersection.rds")
-
-milan_census = readRDS("milan.rds") 
-mexico_census = readRDS("mexico_city.rds")
-
-milan_amenities = readRDS("milan_amenities.rds")
-mexico_amenities = readRDS("mexico_city_amenities.rds")
-
-
-poly_ids = list("milan" = "ACE", "mexico_city" = "CVE_GEOAGE")
-census = list("milan" = milan_census, "mexico_city" = mexico_census)
-streets =  list("milan" = milan_streets, "mexico_city" = mexico_streets )
-amenities = list("milan" = milan_amenities, "mexico_city" = mexico_amenities)
-
-
-pal <- function(x) {
-  n = 10
-  quant_list = quantile(x, probs = seq(0, 1, 1/n))
-  if (length(unique(quant_list)) == n+1)
-    colorQuantile(c("black", "#99FFCC"), x, n = n, na.color = "black")
-  else
-    colorBin(c("black", "#99FFCC"), x, bins = n, na.color = "black")
-  
-  
-}
-
-pal2 <- function(x) {
-  n = 10
-  quant_list = quantile(x, probs = seq(0, 1, 1/n))
-  
-  if (length(unique(quant_list)) == n+1) 
-    colorBin(c("black", "#EE82EE"), x, bins=quant_list, na.color = "black")
-  else
-    colorBin(c("black", "#EE82EE"), x, bins = n, na.color = "black")
-  
-}
-
-classPal <- function(x) {
-  #ffff33
-  # palette = brewer.pal(name="Set1", n=5)
-  palette = c("#E41A1C", "#377EB8", "#4DAF4A", "#ffff33", "#FF7F00")
-  colorFactor(palette= palette, domain = x)
-  
-}
-
-reverseList = function(hash_list){
-  revMap = list()
-  for(key in names(hash_list)){ revMap[[hash_list[[key]]]] = key }
-  return(revMap)
-}
-# palette <- rev(brewer.pal(10, "RdYlBu")) #Spectral #RdYlBu
-palette <- brewer.pal(10, "YlGnBu") #Spectral #RdYlBu
-
-roadPal = function(x) {colorBin(palette = palette, domain = x, bins=quantile(x, probs = seq(0, 1, 0.1), na.rm=TRUE))}
-
-
-milan_extent = milan_census@bbox
-mexico_extent = mexico_census@bbox
-
-
-cityMap = list("Milan" = "milan",
-               "Mexico City" = "mexico_city")
-
-milanCensusMap = list("deprivation" = "deprivation",
-                      "unemployment" = "unemployment",
-                      "% high school" =  "high_school",
-                      "% illiteracy" = "illiteracy",
-                      "% age > 65" =  "sixtyfive_plus",
-                      "% foreigners" = "foreigners",
-                      "% rented dwellings" = "rented_dwelling")
-
-mexicoCensusMap = list("deprivation" = "IMU")
-
-censusMap = list("milan" = milanCensusMap, "mexico_city" = mexicoCensusMap)
-
-milanOSMMap = list()
-milanOSMMap[["Closeness Centrality"]] = "closeness"
-milanOSMMap[["Betweenness Centrality"]] = "betweenness"
-for(name in milan_census@data%>% dplyr::select(ends_with("osm")) %>% names()){
-  clean_name =name %>% gsub("_osm", "",.) %>% gsub("\\_", "",.) 
-  key = paste(clean_name, "offering advantage")
-  milanOSMMap[[key]] = name
-}
-
-
-mexicoOSMMap = list()
-
-mexicoOSMMap[["Betweenness Centrality"]] = "betweenness"
-mexicoOSMMap[["Closeness Centrality"]] = "closeness"
-# for(name in mexico_census@data%>% dplyr::select(bank:school) %>% names()){
-for(name in mexico_census@data%>% dplyr::select(ends_with("osm")) %>% names()){
-  clean_name = name %>% gsub("idw_", "",.)  %>% gsub("_osm", "",.)  %>% gsub("\\_", "",.) 
-  key = paste(clean_name, "offering advantage")
-  
-  mexicoOSMMap[[key]] = name 
-}
-
-osmMap = list("milan" = milanOSMMap, "mexico_city" = mexicoOSMMap)
-
-defaults = list("milan" = "deprivation", "mexico_city" = "IMU")
-defaults_osm = list("milan" = "closeness", "mexico_city" = "closeness")
-
-
-
-
 shinyServer(function(input, output, session) {
-  # Reactive expression to subset data
-  
+  # Reactive expression for selected city
   selectedCityFeature <- reactive({
     selected = input$city_feature
     return(selected)
   })
   
-  
+  # Reactive expression for selected census feature
   selectedCensusFeature <- reactive({
     city = isolate({input$city_feature})
     selected = if(is.null(input$census_feature))
@@ -142,6 +21,7 @@ shinyServer(function(input, output, session) {
     return(list(data = data, selected = selected, legend = legend, census_map = map))
   })
   
+  # Reactive expression for selected OSM feature
   selectedOSMFeature <- reactive({
     city = isolate({input$city_feature})
     selected = if(is.null(input$osm_feature))
@@ -163,12 +43,6 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "census_feature", choices = choiceMap)
   })
   
-  # selectedCategories <- reactive({
-  #   cat = input$categories
-  # 
-  #   # return(list(feature = namesMap[[selected]], name = selected))
-  # 
-  # })
   
   observe({
     selected = selectedCityFeature()
@@ -177,6 +51,7 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session,"osm_feature", choices = choiceMap)
   })
   
+  # Census map 
   output$deprivation_map <- renderLeaflet({
     # Aaspects of the map that  won't need to change dynamically
     leaflet() %>%
@@ -184,6 +59,7 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # OSM map
   output$variable_map <- renderLeaflet({
     # Aaspects of the map that  won't need to change dynamically
     leaflet() %>%
@@ -191,6 +67,7 @@ shinyServer(function(input, output, session) {
     
   })
   
+  # Detail map
   output$modal_map <- renderLeaflet({
     # Aaspects of the map that  won't need to change dynamically
     leaflet() %>%
@@ -218,6 +95,7 @@ shinyServer(function(input, output, session) {
     }
     
     ids = unlist(unname(map@data[poly_ids[[city]]]))
+    
     delay(700, {
       leafletProxy("deprivation_map") %>%
         clearControls() %>%
@@ -277,98 +155,24 @@ shinyServer(function(input, output, session) {
   # input$MAPID_click
   observeEvent(input$variable_map_shape_click, {
     event = input$variable_map_shape_click
-    map_click_event_handler_update_map(event)
+    map_click_event_handler(event)
+    toggleModal(session, "detail-modal", "open")
     
   })
   
-  observeEvent(input$variable_map_shape_click, {
-    toggleModal(session, "detail-modal", "open")
-  })
   
-  observeEvent(input$variable_map_shape_click, {
-    output$selected_distribution <- renderPlot({
-      event = input$variable_map_shape_click
-      map_click_event_handler_plot(event)
-      
-      
-    })
-  })
-  
-  observeEvent(input$variable_map_shape_click, {
-    output$selected_rank <- renderTable({
-      event = input$variable_map_shape_click
-      map_click_event_handler_table(event)
-    },include.rownames=FALSE)
-    output$modal_title <- renderText({
-      event = input$variable_map_shape_click
-      paste("Detail", event$id)
-    })
-  })
   
   observeEvent(input$deprivation_map_shape_click, {
     event = input$deprivation_map_shape_click
-    map_click_event_handler_update_map(event)
-    
-  })
-  
-  observeEvent(input$deprivation_map_shape_click, {
+    map_click_event_handler(event)
     toggleModal(session, "detail-modal", "open")
-  })
-  
-  observeEvent(input$deprivation_map_shape_click, {
-    output$selected_distribution <- renderPlot({
-      event = input$deprivation_map_shape_click
-      map_click_event_handler_plot(event)
-    })
     
   })  
   
-  observeEvent(input$deprivation_map_shape_click, {
-    output$selected_rank <- renderTable({
-      event = input$deprivation_map_shape_click
-      map_click_event_handler_table(event)
-    },include.rownames=FALSE)
-    output$modal_title <- renderText({
-      event = input$variable_map_shape_click
-      paste("Detail", event$id)
-    })
-  })
   
   map_click_event_handler_update_map = function(event){
-    poly_id = event$id
+    init_vars_map_click(event)
     
-    city = isolate({input$city_feature})
-    
-    map = census[[city]]
-    street_map = streets[[city]]
-    amenity_map = amenities[[city]]
-    
-    filtered_map = subset(map, unlist(map@data[poly_ids[[city]]]) == poly_id)
-    
-    selected = isolate({input$census_feature})
-    feature = unlist(map@data[selected])
-    
-    filtered_feature = unlist(filtered_map@data[selected])
-    
-    filtered_streets = subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
-    
-    filtered_amenities = amenity_map[amenity_map[poly_ids[[city]]] == poly_id,]
-    
-    # legend = reverseList()
-    # map = selectedMap[["census_map"]]
-    # # 
-    extent = filtered_map@bbox
-    # 
-    # city = isolate({input$city_feature})
-    if(city == "milan"){
-      weight = .4
-      zoom = 14
-    } else {
-      weight = .2
-      zoom = 17
-    }
-    # 
-    # featureName = selectedFeature()[["name"]]
     delay(700, {
       leafletProxy("modal_map") %>%
         clearControls() %>%
@@ -400,18 +204,7 @@ shinyServer(function(input, output, session) {
     })
   }
   map_click_event_handler_plot = function(event) {
-    poly_id = event$id
-    
-    city = isolate({input$city_feature})
-    map = census[[city]]
-    street_map = streets[[city]]
-    
-    filtered_map = subset(map, unlist(map@data[poly_ids[[city]]]) == poly_id)
-    
-    selected = isolate({input$census_feature})
-    feature = unlist(map@data[selected])
-    
-    filtered_feature = unlist(filtered_map@data[selected])
+    init_vars_map_click(event)
     
     df = map@data %>% dplyr::select(ends_with("osm")) %>%
       gather(key, value) %>% 
@@ -476,6 +269,18 @@ shinyServer(function(input, output, session) {
     # layout(paper_bgcolor='rgb(254, 247, 234, .5)')
     # labs(title = paste(selected_osm," vs ",selected_census, sep=""), x = featureName_osm, y=featureName_census)
   })
+  map_click_event_handler <- function(event) {
+    map_click_event_handler_update_map(event)
+    output$selected_distribution <- renderPlot({
+      map_click_event_handler_plot(event)
+    })
+    output$selected_rank <- renderTable({
+      map_click_event_handler_table(event)
+    },include.rownames=FALSE)
+    output$modal_title <- renderText({
+      paste("Detail", event$id)
+    })
+  }
   
   output$census_map_title <- renderText({
     selectedMap = selectedCensusFeature()
@@ -523,12 +328,10 @@ shinyServer(function(input, output, session) {
     
   })
   
+  
   # output$selected_rank <- renderTable({
   map_click_event_handler_table = function(event){
-    poly_id = event$id
-    
-    city = isolate({input$city_feature})
-    map = census[[city]]
+    init_vars_map_click(event)
     
     ranked = map@data %>% arrange_(defaults[[city]])
     ranked$percentile = percent_rank(ranked[defaults[[city]]])
@@ -545,5 +348,38 @@ shinyServer(function(input, output, session) {
     names(table) = c("rank", "percentile", "id",  reverseList(censusMap[[city]])[[defaults[[city]]]])
     
     table
+  }
+  
+  init_vars_map_click = function(event){
+    poly_id <<- event$id
+    
+    city <<- isolate({input$city_feature})
+    
+    map <<- census[[city]]
+    street_map <<- streets[[city]]
+    amenity_map <<- amenities[[city]]
+    
+    filtered_map <<- subset(map, unlist(map@data[poly_ids[[city]]]) == poly_id)
+    
+    selected <<- isolate({input$census_feature})
+    feature <<- unlist(map@data[selected])
+    
+    filtered_feature <<- unlist(filtered_map@data[selected])
+    
+    filtered_streets <<- subset(street_map, unlist(street_map@data[poly_ids[[city]]]) == poly_id)
+    
+    filtered_amenities <<- amenity_map[amenity_map[poly_ids[[city]]] == poly_id,]
+    
+    extent <<- filtered_map@bbox
+    # 
+    # city = isolate({input$city_feature})
+    if(city == "milan"){
+      weight <<- .4
+      zoom <<- 14
+    } else {
+      weight <<- .2
+      zoom <<- 17
+    }
+    # 
   }
 })
