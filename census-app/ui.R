@@ -1,9 +1,9 @@
 shinyUI(
   bootstrapPage(
     tags$head(
-      includeCSS("styles.css"),
-      includeScript("L.Map.Sync.js"),
-      includeScript("sync_maps.js")
+      includeCSS("www/css/styles.css"),
+      includeScript("www/js/L.Map.Sync.js"),
+      includeScript("www/js/sync_maps.js")
     ),
     fluidRow(class="map-container",
              #' Left map panel
