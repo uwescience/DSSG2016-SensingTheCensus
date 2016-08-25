@@ -12,5 +12,5 @@
     // make this easy since we know only two maps
     leaf_widgets[0].sync(leaf_widgets[1]);
     leaf_widgets[1].sync(leaf_widgets[0]);  
-}, 5000);
+}, 6000);
 })();
