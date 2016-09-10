@@ -37,6 +37,8 @@ src/notebooks/*.png
 # Temporary CSV files
 data/CDR/hash/region_network_final.csv
 data/CDR/hash/0805_networks.csv
+data/CDR/hash/sez_network.csv
+data/CDR/hash/0831_region_time.csv
 src/notebooks/*.csv
 
 

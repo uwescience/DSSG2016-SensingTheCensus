@@ -38,7 +38,7 @@ trueCentroids <- spTransform(trueCentroids, CRS(llprj))
 
 
 ncf.cor <- correlog(trueCentroids$x, trueCentroids$y, census@data$IMU, increment=2, latlon=TRUE, resamp=50)
-# plot(ncf.cor, xlab="Distance (km)")
+plot(ncf.cor, xlab="Distance (km)")
 
 # making a random variation graph
 
@@ -46,7 +46,8 @@ it <- 50
 mc <- matrix(NA,nrow=it,ncol=length(ncf.cor$mean.of.class))
 for(i in 1:it){
   print(i)
-  census@data$rand <- sample(census@data$IMU,length(census@data$IMU),replace=F)
+#   census@data$rand <- sample(census@data$IMU,length(census@data$IMU),replace=F)  
+  rand1 <- rnorm (length(census@data$IMU), mean(census@data$IMU), sd(census@data$IMU))
   clog <- correlog(trueCentroids$x, trueCentroids$y, census@data$rand, increment=2, latlon=TRUE, resamp=1)
   mc[i,] <- clog$correlation 
 }
@@ -81,6 +82,14 @@ proj4string(census) = CRS("+proj=utm +zone=32 +datum=WGS84")
 trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SEZ2011))
 # llprj <-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
 # trueCentroids <- spTransform(trueCentroids, CRS(llprj))
+
+deprivation = read_delim("data/census/milan_deprivation.csv", delim = ",",col_names = TRUE ) 
+deprivation$SEZ2011 <- as.character(deprivation$SEZ2011)
+deprivation$SEZ2011 <- as.factor(deprivation$SEZ2011)
+census@data$SEZ2011 <- as.factor(census@data$SEZ2011)
+
+colnames(census@data)[colnames(census@data) == "deprivation"] <- c("dep1")
+census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"))
 
 ncf.cor <- correlog(trueCentroids$x, trueCentroids$y, census@data$deprivation, increment=0.5, latlon=TRUE, resamp=100, na.rm = TRUE)
 plot(ncf.cor)
@@ -242,3 +251,39 @@ write_csv(ac1, "data/baseline/mexico_moran.csv")
 
 
 ```
+
+
+#test
+```{r}
+ac = read_delim("data/baseline/ring-based/milano_sez_moran.csv", delim = ",",col_names = TRUE ) 
+mc = read_delim("data/baseline/ring-based/milano_sez_random.csv", delim = ",",col_names = TRUE ) 
+
+ac[,3:4] <- t(apply(mc,2,quantile, probs = c(0.005,0.995)))
+
+ggplot(ac, aes(dist, ac)) +
+  geom_point(colour = "darkblue", size = 3) +
+  geom_line(colour = "red") +
+  scale_x_continuous('Great Circle Distance (KM)',limits=c(0,15)) + 
+  scale_y_continuous('Autocorrelation',limits=c(-0.4,0.7)) +
+  theme_bw() + 
+  geom_hline(yintercept=0) + theme(text = element_text(size=25), axis.text.x = element_text(size=30)) + 
+  geom_smooth(aes(ymin = lci, ymax = uci), stat="identity",fill="blue") 
+  
+
+
+ac = read_delim("data/baseline/ring-based/mexico_moran.csv", delim = ",",col_names = TRUE ) 
+mc = read_delim("data/baseline/ring-based/mexico_random.csv", delim = ",",col_names = TRUE ) 
+
+ac[,3:4] <- t(apply(mc,2,quantile, probs = c(0.005,0.995)))
+
+ggplot(ac, aes(dist, ac)) +
+  geom_point(colour = "darkblue", size = 3) +
+  geom_line(colour = "red") +
+  scale_x_continuous('Great Circle Distance (KM)',limits=c(0,25)) + 
+  scale_y_continuous('Autocorrelation',limits=c(-0.4,0.7)) +
+  theme_bw() + 
+  geom_hline(yintercept=0) + geom_hline(yintercept=0) + theme(text = element_text(size=25), axis.text.x = element_text(size=30)) +     
+  geom_smooth(aes(ymin = lci, ymax = uci), stat="identity",fill="blue")
+
+```
+

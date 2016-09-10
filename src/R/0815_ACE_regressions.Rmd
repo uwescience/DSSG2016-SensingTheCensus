@@ -1,0 +1,524 @@
+---
+title: "Network Regressions and Predictions for Milano, ACE-levl"
+author: "Myeong Lee"
+date: "August 14, 2016"
+output: html_document
+---
+
+This is a regression analysis for CDR and poverty data following the methods presented by Chirs (WWW 16). 
+
+```{r, echo=FALSE}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(stringr)
+library(hydroGOF)
+library(fields)
+library(MASS)
+library(e1071)
+library(raster)
+library(reshape2)
+```
+
+# Random Baseline
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON")  %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+cdr = read_delim("data/CDR/hash/0727_region_time.csv", delim = ",",col_names = TRUE ) 
+street = read_delim("data/census/centrality_ace.csv", delim = ",",col_names = TRUE ) 
+deprivation = read_delim("data/census/milan_deprivation_v1.csv", delim = ",",col_names = TRUE )  # SEZ level...
+oa <-  read_delim("data/OSM/offering_advantage.csv", delim = ",",col_names = TRUE ) 
+
+street$ACE <- as.character(street$ACE)
+street$ACE <- as.factor(street$ACE)
+deprivation$ACE <- as.character(deprivation$ACE)
+deprivation$ACE <- as.factor(deprivation$ACE)
+oa$ACE <- as.character(oa$ACE)
+oa$ACE <- as.factor(oa$ACE)
+
+colnames(census@data)[colnames(census@data) == "deprivation"] <- c("dep1")
+census@data <- census@data %>% left_join(deprivation, by = c("ACE"))
+census@data <- census@data %>% left_join(street, by = c("ACE"))
+census@data <- census@data %>% left_join(oa, by = c("ACE"))
+
+plot(density(census@data$deprivation, na.rm=TRUE))
+shapiro.test(census@data$deprivation)
+
+qqnorm(census@data$deprivation)
+qqline(census@data$deprivation, col = 2)
+
+
+# generate random drwas from two distinct normal distribution -- the final vector follows the distribution of observed data (deprivation)
+rand1 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+rand2 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+rand <- c(rand1, rand2)
+rand_data <- sample(rand, length(census@data$deprivation), replace = FALSE, prob = NULL)
+census@data$rand_base <- rand_data
+sha <- shapiro.test(census@data$rand_base)
+if (sha$p.value > 0.05) {
+  census@data$rand_base <- log(census@data$rand_base)
+}
+
+# MAE and Spearman's rank coefficient: comparion between the data and randomly generated poverty scores
+pred <- predict(lm(deprivation ~ rand_base, data=census@data))
+mae <- mae(pred,census@data$deprivation, na.rm=TRUE)
+mae
+rho <- cor.test(pred,census@data$deprivation, method="spearman")
+rho$estimate
+```
+
+# Population-density baseline
+```{r}
+census@data$density <- census@data$P1/raster::area(census)
+pca_baseline <- lm(deprivation ~ log(density), data=census@data)
+summary(pca_baseline)
+sez_agg_baseline <- lm(aggDeprMilano ~ log(density), data=census@data)
+summary(sez_agg_baseline)
+milano_baseline <- lm(deprivationAreaMilano ~ density, data=census@data)
+summary(milano_baseline)
+
+sha <- shapiro.test(census@data$density)
+if (sha$p.value > 0.05) {
+  census@data$density <- log(census@data$density)
+}
+```
+
+# Spaital-Lag Baseline
+```{r}
+census@data$spatial_lag <- NA
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$ACE))
+popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
+
+# calculating spatial lag
+for (i in 1:length(trueCentroids)){
+  k <- sapply(popdists[i,], function(x) 1/(x*x))
+  k[is.infinite(k)] <- 0 
+  k <- sapply(k, function(x) x/sum(k))  
+  
+  census@data$spatial_lag[i] <- sum(census@data$deprivation * k)
+}
+
+sha <- shapiro.test(census@data$spatial_lag)
+if (sha$p.value > 0.05) {
+  census@data$spatial_lag <- log(census@data$spatial_lag)
+}
+
+```
+
+
+# CDR features
+
+### Total Call Volume
+```{r}
+cdr <- cdr %>% dplyr::group_by(region_id) %>% 
+    summarize(calls = sum(adjusted_callIn + adjusted_callOut))
+cdr$region_id <- as.factor(cdr$region_id)
+
+census@data <- census@data %>% left_join(cdr, by = c("ACE" = "region_id"))
+
+sha <- shapiro.test(census@data$calls)
+if (sha$p.value > 0.05) {
+  census@data$calls <- log(census@data$calls)
+}
+```
+
+### Introversion
+```{r}
+networks = read_delim("data/CDR/hash/region_network_final.csv", delim = ",",col_names = TRUE ) 
+networks$time = paste(networks$month, str_pad(networks$day, 2, pad = "0"), str_pad(networks$hour, 2, pad = "0"), sep="")
+networks$time <- as.integer(networks$time)
+networks <- arrange(networks,time)
+
+get_introversion <- function(df){
+  introvert <- df[df$source==df$dest,]
+  introvert <- introvert %>% dplyr::group_by(source) %>% summarize(sum(call))
+  
+  extrovert <- df[df$source!=df$dest,]
+  extrovert <- extrovert %>% dplyr::group_by(source) %>% summarize(sum(call))
+  
+  introvert <-  introvert %>% left_join(extrovert, by = c("source" = "source"))
+  colnames(introvert) <- c("source", "inside", "outside")
+  introvert$region_based_rate <- introvert$inside/introvert$outside  
+  
+  introvert$source <- as.factor(introvert$source)  
+  
+  return(introvert)
+}
+
+introversion <- get_introversion(networks)
+census@data <-  census@data %>% left_join(introversion, by = c("ACE" = "source"))
+census@data$region_based_rate
+
+sha <- shapiro.test(census@data$region_based_rate)
+if (sha$p.value > 0.05) {
+  census@data$region_based_rate <- log(census@data$region_based_rate)
+}
+```
+
+
+### Network Advantage
+```{r}
+library(igraph)
+
+# Total Time Aggregation
+graph <- networks %>% dplyr::group_by(source, dest) %>% summarize(sum(call))
+colnames(graph) <- c("source", "dest", "weight")
+total_g <- graph.data.frame(graph)
+
+# Visualization of the Graph
+max_call <- max(E(total_g)$call)
+plot.igraph(total_g, vertex.label=V(total_g)$name, layout=layout.fruchterman.reingold, edge.color="black", edge.width=E(total_g)$weight/max_call)
+
+# Weighted PageRank (directed)
+page_rank_g <- page_rank(total_g, vids = V(total_g), directed = TRUE)
+page_rank <- as.data.frame(page_rank_g$vector)
+page_rank$ACE <- rownames(page_rank)
+census@data <-  census@data %>% left_join(page_rank, by = c("ACE"))
+census@data$page_rank <- as.numeric(census@data$page_rank)
+sha <- shapiro.test(census@data$page_rank)
+if (sha$p.value > 0.05) {
+  census@data$page_rank <- log(census@data$page_rank)
+}
+
+# Eigenvector Centraility
+eigen_cent <- eigen_centrality(total_g, directed = TRUE)
+eigen_cent <- as.data.frame(eigen_cent$vector)
+eigen_cent$ACE <- rownames(eigen_cent)
+census@data <-  census@data %>% left_join(eigen_cent, by = c("ACE"))
+census@data$eigen_cent <- as.numeric(census@data$eigen_cent)
+sha <- shapiro.test(census@data$eigen_cent)
+if (sha$p.value > 0.05) {
+  census@data$eigen_cent <- log(census@data$eigen_cent)
+}
+
+# Entropy of Edges
+entropy <- diversity(total_g)
+entropy <- as.data.frame(entropy)
+entropy$ACE <- rownames(entropy)
+census@data <-  census@data %>% left_join(entropy, by = c("ACE"))
+sha <- shapiro.test(census@data$entropy)
+if (sha$p.value > 0.05) {
+  census@data$entropy <- log(census@data$entropy)
+}
+```
+
+```{r}
+sha <- shapiro.test(census@data$betweenness)
+if (sha$p.value > 0.05) {
+  census@data$betweenness <- log(census@data$betweenness)
+}
+sha <- shapiro.test(census@data$closeness)
+if (sha$p.value > 0.05) {
+  census@data$closeness <- log(census@data$closeness)
+}
+sha <- shapiro.test(census@data$bar)
+if (sha$p.value > 0.05) {
+  census@data$bar <- log(census@data$bar)
+}
+sha <- shapiro.test(census@data$bank)
+if (sha$p.value > 0.05) {
+  census@data$bank <- log(census@data$bank)
+}
+sha <- shapiro.test(census@data$bicycle_parking)
+if (sha$p.value > 0.05) {
+  census@data$bicycle_parking <- log(census@data$bicycle_parking)
+}
+```
+
+
+# Predictions
+
+### Linear Regression
+```{r}
+proportions <- seq(50, 90, 5)
+rand_error_table <- matrix(NA,nrow=length(proportions),ncol=4)
+colnames(rand_error_table) <- c("train", "rho", "minmax", "mae")
+num_test <- 500
+
+calculate_error_table <- function (variable){
+  
+  for (i in 1:length(proportions) ){
+    temp_table <- data.frame(NA,nrow=num_test,ncol=3)
+    colnames(temp_table) <- c("rho", "minmax", "mape")
+    
+    for (j in 1:num_test){
+      index <- 1:nrow(census@data)
+      testindex <- sample(index, trunc(length(index) * proportions[1] / 100 ))
+      testset <- census@data[testindex,]
+      row.names(testset) <- testset$ACE
+      trainset <- census@data[-testindex,]
+      
+      if (variable == "random"){   
+        rand1 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+        rand2 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+        rand <- c(rand1, rand2)        
+        census@data$rand_base <- sample(rand, length(census@data$deprivation), replace = FALSE, prob = NULL)
+        model <- lm (deprivation ~ rand_base, data=trainset)
+      } else if (variable == "density"){
+        model <- lm (deprivation ~ density, data=trainset)
+      } else if (variable == "spatial_lag"){
+        model <- lm (deprivation ~ spatial_lag, data=trainset)
+      } else if (variable == "volume"){
+        model <- lm (deprivation ~ calls, data=trainset)
+      } else if (variable == "introversion"){
+        model <- lm (deprivation ~ region_based_rate, data=trainset)
+      } else if (variable == "page_rank"){
+        model <- lm (deprivation ~ page_rank, data=trainset)
+      } else if (variable == "eigen_cent"){
+        model <- lm (deprivation ~ eigen_cent, data=trainset)
+      } else if (variable == "entropy"){
+        model <- lm (deprivation ~ entropy, data=trainset)
+      } else if (variable == "betweenness"){
+        model <- lm (deprivation ~ betweenness, data=trainset)
+      } else if (variable == "closeness"){
+        model <- lm (deprivation ~ closeness, data=trainset)
+      } else if (variable == "street_network"){
+        model <- lm (deprivation ~ scale(closeness) + scale(betweenness), data=trainset)
+      } else if (variable == "cdr"){
+        model <- lm (deprivation ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
+      } else if (variable == "cdr_osm"){
+        model <- lm (deprivation ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(closeness) + scale(betweenness) + scale(bar) + scale(bicycle_parking), data=trainset)
+      }else if (variable == "bar"){
+        model <- lm (deprivation ~ bar, data=trainset)
+      } else if (variable == "bank"){
+        model <- lm (deprivation ~ bank, data=trainset)
+      } else if (variable == "bicycle_parking"){
+        model <- lm (deprivation ~ bicycle_parking, data=trainset)
+      } else if (variable == "oa_st"){
+        model <- lm (deprivation ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset)
+      } 
+      
+      
+      # Visual representation
+      # pred.w.plim <- predict(random, testset, interval = "prediction")
+      # pred.w.clim <- predict(random, testset, interval = "confidence")
+      # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+      
+      pred <- predict(model, testset)
+      
+      # Classification Rate Test (this is not a classification problem...)
+      # pred_table <- table(pred = pred, true=testset$deprivation)
+      # prediction_rate <- sum(diag(pred_table))/sum(pred_table)
+      # prediction_rate
+      
+      # Prediction Accuracy Test
+      actuals_preds <- data.frame(cbind(actuals=testset$deprivation, predicteds=pred))
+    #   correlation_accuracy <- cor(actuals_preds)
+      rho <- cor.test(actuals_preds$predicteds,actuals_preds$actuals, method="spearman")
+    
+      min_max_accuracy <- mean(apply(actuals_preds, 1, min) / apply(actuals_preds, 1, max)) 
+      mape <- mae(actuals_preds$predicteds,actuals_preds$actuals, na.rm=TRUE)
+#       mape <- mean(abs((actuals_preds$predicteds - actuals_preds$actuals))/actuals_preds$actuals)
+      
+      temp_table[j,] <- c(rho$estimate, min_max_accuracy, mape)
+    }
+    temp_table <- apply(temp_table, 2, mean)     
+              
+    rand_error_table[i,] <- c(proportions[i], temp_table["rho"], temp_table["minmax"], temp_table["mape"])
+  }
+  rand_error_table <- as.data.frame(rand_error_table)
+  return (rand_error_table)
+}
+
+
+rand <- calculate_error_table ("random")
+# spatial_lag <- calculate_error_table ("spatial_lag")
+density <- calculate_error_table ("density")
+vol <- calculate_error_table ("volume")
+intro <- calculate_error_table ("introversion")
+eigen_cent <- calculate_error_table ("eigen_cent")
+entropy <- calculate_error_table ("entropy")
+page_rank <- calculate_error_table ("page_rank")
+cdr <- calculate_error_table ("cdr")
+betweenness <- calculate_error_table ("betweenness")
+closeness <- calculate_error_table ("closeness")
+street_network <- calculate_error_table ("street_network")
+cdr_osm <- calculate_error_table ("cdr_osm")
+bar <- calculate_error_table ("bar")
+bank <- calculate_error_table ("bank")
+bicycle_parking <- calculate_error_table ("bicycle_parking")
+oa_st <- calculate_error_table ("oa_st")
+
+# OSM Graph Drawing
+draw_graph <- function (column){
+  dd <- cbind(rand$train, rand[,column], density[,column], betweenness[,column], closeness[,column], street_network[,column], bar[,column], bank[,column], bicycle_parking[,column], oa_st[,column] )
+  colnames(dd) <- c("train","random", "density", "betweenness", "closeness", "street_network", "bar", "bank", "bicycle_parking", "bar+bicycle+street")
+
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph("mae")
+draw_graph("minmax")
+draw_graph("rho")
+
+# CDR Graph Drawing
+draw_graph2 <- function (column){
+  dd <- cbind(rand$train, rand[,column], density[,column], cdr_osm[,column], cdr[,column], page_rank[,column],
+              vol[,column], intro[,column], eigen_cent[,column], entropy[,column] )
+  colnames(dd) <- c("train","random", "density", "cdr+bar+bicycle+street", "cdr","page_rank", 
+                    "call_volumne","introversion","eigen_cent","entropy")
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+  #   scale_y_continuous('Rho',limits=c(-0.1, 1)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph2("mae")
+draw_graph2("minmax")
+draw_graph2("rho")
+
+```
+
+# Logistic Regression
+```{r}
+# proportions <- seq(50, 90, 5)
+# rand_error_table <- matrix(NA,nrow=length(proportions),ncol=4)
+# colnames(rand_error_table) <- c("train", "rho", "minmax", "mape")
+# num_test <- 500
+# census@data$scale_deprive <- scale(census@data$deprivation, center = min(census@data$deprivation), scale = max(census@data$deprivation) - min(census@data$deprivation))
+# 
+# calculate_error_table <- function (variable){
+#   
+#   for (i in 1:length(proportions) ){
+#     temp_table <- data.frame(NA,nrow=num_test,ncol=3)
+#     colnames(temp_table) <- c("rho", "minmax", "mape")
+#     
+#     for (j in 1:num_test){
+#       index <- 1:nrow(census@data)
+#       testindex <- sample(index, trunc(length(index) * proportions[1] / 100 ))
+#       testset <- census@data[testindex,]
+#       row.names(testset) <- testset$ACE
+#       trainset <- census@data[-testindex,]      
+#       
+#       if (variable == "random"){   
+#         rand1 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+#         rand2 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
+#         rand <- c(rand1, rand2)
+#         census@data$rand_base <- sample(rand, length(census@data$deprivation), replace = FALSE, prob = NULL)
+#         model <- glm(scale_deprive ~ rand_base, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "density"){
+#         model <- glm(scale_deprive ~ density, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "spatial_lag"){
+#         model <- glm(scale_deprive ~ spatial_lag, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "volume"){
+#         model <- glm(scale_deprive ~ calls, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "introversion"){
+#         model <- glm(scale_deprive ~ region_based_rate, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "page_rank"){
+#         model <- glm(scale_deprive ~ page_rank, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "eigen_cent"){
+#         model <- glm(scale_deprive ~ eigen_cent, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "entropy"){
+#         model <- glm(scale_deprive ~ entropy, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "betweenness"){
+#         model <- glm (scale_deprive ~ betweenness, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "closeness"){
+#         model <- glm (scale_deprive ~ closeness, family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "street_network"){
+#         model <- glm (scale_deprive ~ scale(closeness) + scale(betweenness), family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "cdr_osm"){
+#         model <- glm (scale_deprive ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(closeness) + scale(betweenness), family=binomial(link = "logit"), data=trainset)
+#       } else if (variable == "cdr"){
+#         model <- glm(scale_deprive ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), family=binomial(link = "logit"), data=trainset) 
+#       }
+#       
+#       # Visual representation
+#       # pred.w.plim <- predict(random, testset, interval = "prediction")
+#       # pred.w.clim <- predict(random, testset, interval = "confidence")
+#       # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+#       
+#       pred <- predict(model, testset)
+#       
+#       # Classification Rate Test (this is not a classification problem...)
+#       # pred_table <- table(pred = pred, true=testset$deprivation)
+#       # prediction_rate <- sum(diag(pred_table))/sum(pred_table)
+#       # prediction_rate
+#       
+#       # Prediction Accuracy Test
+#       actuals_preds <- data.frame(cbind(actuals=testset$deprivation, predicteds=pred))
+#     #   correlation_accuracy <- cor(actuals_preds)
+#       rho <- cor.test(actuals_preds$predicteds,actuals_preds$actuals, method="spearman")
+#     
+#       min_max_accuracy <- mean(apply(actuals_preds, 1, min) / apply(actuals_preds, 1, max)) 
+#       mape <- mean(abs((actuals_preds$predicteds - actuals_preds$actuals))/actuals_preds$actuals)
+#       
+#       temp_table[j,] <- c(rho$estimate, min_max_accuracy, mape)
+#     }
+#     temp_table <- apply(temp_table, 2, mean)     
+#               
+#     rand_error_table[i,] <- c(proportions[i], temp_table["rho"], temp_table["minmax"], temp_table["mape"])
+#   }
+#   rand_error_table <- as.data.frame(rand_error_table)
+#   return (rand_error_table)
+# }
+# 
+# 
+# rand <- calculate_error_table ("random")
+# # spatial_lag <- calculate_error_table ("spatial_lag")
+# vol <- calculate_error_table ("volume")
+# intro <- calculate_error_table ("introversion")
+# eigen_cent <- calculate_error_table ("eigen_cent")
+# entropy <- calculate_error_table ("entropy")
+# page_rank <- calculate_error_table ("page_rank")
+# cdr <- calculate_error_table ("cdr")
+# betweenness <- calculate_error_table ("betweenness")
+# closeness <- calculate_error_table ("closeness")
+# street_network <- calculate_error_table ("street_network")
+# cdr_osm <- calculate_error_table ("cdr_osm")
+# 
+# # Graph Drawing - OSM
+# draw_graph <- function (column){
+#   dd <- cbind(rand$train, rand[,column], cdr_osm[,column], cdr[,column], page_rank[,column], 
+#               betweenness[,column], closeness[,column], street_network[,column], vol[,column], intro[,column], eigen_cent[,column], entropy[,column] )
+#   colnames(dd) <- c("train","random","cdr_osm", "cdr","page_rank", "betweenness", "closeness", "street_network", 
+#                     "call_volumne","introversion","eigen_cent","entropy")
+#   dd <- as.data.frame(dd)
+#   # mape$train <- as.factor(mape$train)
+#   
+#   df <- melt(dd, id.vars='train')
+#   
+#   pall <- rainbow(10, s = 1, v = 1, start = 0, end = 1, alpha = 1)
+#   colindex <- round(as.integer(as.factor(df$variable) ))
+#   
+#   ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+#     geom_point(size = 3) +
+#     geom_line() +
+#     scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+# #     scale_y_continuous('Rho',limits=c(1.7, 2.5)) +
+#     theme_bw() + 
+#     geom_hline(yintercept=0) 
+# }
+# 
+# draw_graph("mae")
+# draw_graph("minmax")
+# draw_graph("rho")
+```
+

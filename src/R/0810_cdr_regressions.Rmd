@@ -1,7 +1,7 @@
 ---
-title: "Network Regressions"
+title: "Network Regressions and Predictions"
 author: "Myeong Lee"
-date: "August 10, 2016"
+date: "August 14, 2016"
 output: html_document
 ---
 
@@ -25,20 +25,63 @@ library(stringr)
 library(hydroGOF)
 library(fields)
 library(MASS)
+library(e1071)
+library(raster)
 ```
 
 #Random Baseline
 ```{r}
 setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
-census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") 
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON")  %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+# proj4string(census) = CRS("+proj=utm +zone=32 +datum=WGS84")
 cdr = read_delim("data/CDR/hash/0727_region_time.csv", delim = ",",col_names = TRUE ) 
-deprivation = read_delim("data/census/milan_deprivation.csv", delim = ",",col_names = TRUE ) 
-deprivation$ACE <- as.character(deprivation$ACE)
-deprivation$ACE <- as.factor(deprivation$ACE)
 
-census@data <- census@data %>% left_join(deprivation, by = c("ACE"))
+deprivation = read_delim("data/census/milan_deprivation.csv", delim = ",",col_names = TRUE )  # SEZ level...
+sez = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON") %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+sez_cens = read_delim("data/GeoJSON/R03_indicatori_2011_sezioni.csv", delim = ";",col_names = TRUE )
 
-plot(density(census@data$deprivation))
+# need to aggregate up based on weighted mean of population... 
+
+sez$area <- raster::area(sez)
+#' Intersect polygons
+intersection = raster::intersect(x = census, y = sez)
+
+#' Calcualte area of each polygon
+intersection@data$part_area = raster::area(intersection)
+
+deprivation <- deprivation[,c("SEZ2011", "deprivation")]
+
+
+
+#intersection@data %<>% dplyr::select(ACE, area, SEZ2011)
+
+#' Aggregate data into census areas summing the CDR data proportionally to the size of the squares
+deprivation$SEZ2011 <- as.factor(deprivation$SEZ2011)
+intersection@data$SEZ2011 <- as.factor(intersection@data$SEZ2011)
+
+deprivation =  deprivation %>% left_join(intersection@data, by = c("SEZ2011")) 
+  
+
+deprivation <- deprivation %>% dplyr::group_by(ACE.1, ACE.2) %>% summarize(area = sum(part_area/area * deprivation))
+deprivation <- deprivation %>% dplyr::group_by(ACE.1) %>% summarize(deprivation = sum(area))
+
+# deprivation$SEZ2011 <- as.character(deprivation$SEZ2011)
+# deprivation$SEZ2011 <- as.factor(deprivation$SEZ2011)
+# sez@data$SEZ2011 <- as.factor(sez@data$SEZ2011)
+
+colnames(sez@data)[colnames(sez@data) == "deprivation"] <- c("dep1")
+sez@data <- sez@data %>% left_join(deprivation, by = c("SEZ2011"))
+
+
+
+
+# deprivation$ACE <- as.character(deprivation$ACE)
+# deprivation$ACE <- as.factor(deprivation$ACE)
+# 
+# colnames(census@data)[colnames(census@data) == "deprivation"] <- c("dep1")
+# census@data <- census@data %>% left_join(deprivation, by = c("ACE"))
+
+plot(density(census@data$deprivation, na.rm=TRUE))
 shapiro.test(census@data$deprivation)
 
 qqnorm(census@data$deprivation)
@@ -50,6 +93,7 @@ rand1 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation)
 rand2 <- rnorm (5000, mean(census@data$deprivation), sd(census@data$deprivation))
 rand <- c(rand1, rand2)
 rand_data <- sample(rand, length(census@data$deprivation), replace = FALSE, prob = NULL)
+census@data$rand_base <- rand_data
 
 # MAE and Spearman's rank coefficient: comparion between the data and randomly generated poverty scores
 mae <- mae(rand_data,census@data$deprivation, na.rm=TRUE)
@@ -60,8 +104,8 @@ rho$estimate
 
 # Population-density baseline
 ```{r}
-census@data$density <- census@data$P1/area(census)
-pca_baseline <- lm(deprivation.x ~ log(density), data=census@data)
+census@data$density <- census@data$P1/raster::area(census)
+pca_baseline <- lm(deprivation ~ log(density), data=census@data)
 summary(pca_baseline)
 sez_agg_baseline <- lm(aggDeprMilano ~ log(density), data=census@data)
 summary(sez_agg_baseline)
@@ -71,11 +115,18 @@ summary(milano_baseline)
 hist(census@data$density)
 ```
 
-# Spaital-Lag Baseline
+# Spaital-Lag Baseline (Mexico)
 ```{r}
+census = readOGR("data/census/mexico_city/mexico_city_census.shp", layer="mexico_city_census")
+proj4string(census) = CRS("+proj=utm +zone=32 +datum=WGS84")
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SP_ID))
+llprj <-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0"
+trueCentroids <- spTransform(trueCentroids, CRS(llprj))
+
 census@data$spatial_lag <- NA
 
-trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$ACE))
+#trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$ACE))
 popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
 
 # calculating spatial lag
@@ -84,14 +135,144 @@ for (i in 1:length(trueCentroids)){
   k[is.infinite(k)] <- 0 
   k <- sapply(k, function(x) x/sum(k))  
   
-  census@data$spatial_lag[i] <- sum(census@data$deprivation.x * k)
+  census@data$spatial_lag[i] <- sum(census@data$IMU * k)
 }
 
 ```
 
-# CDR features
-```{r}
 
+# CDR features
+
+### Total Call Volume
+```{r}
+cdr <- cdr %>% dplyr::group_by(region_id) %>% 
+    summarize(calls = sum(adjusted_callIn + adjusted_callOut))
+cdr$region_id <- as.factor(cdr$region_id)
+
+census@data <- census@data %>% left_join(cdr, by = c("ACE" = "region_id"))
+census@data$calls
+```
+
+### Introversion
+```{r}
+networks = read_delim("data/CDR/hash/region_network_final.csv", delim = ",",col_names = TRUE ) 
+networks$time = paste(networks$month, str_pad(networks$day, 2, pad = "0"), str_pad(networks$hour, 2, pad = "0"), sep="")
+networks$time <- as.integer(networks$time)
+networks <- arrange(networks,time)
+
+get_introversion <- function(df){
+  introvert <- df[df$source==df$dest,]
+  introvert <- introvert %>% dplyr::group_by(source) %>% summarize(sum(call))
+  
+  extrovert <- df[df$source!=df$dest,]
+  extrovert <- extrovert %>% dplyr::group_by(source) %>% summarize(sum(call))
+  
+  introvert <-  introvert %>% left_join(extrovert, by = c("source" = "source"))
+  colnames(introvert) <- c("source", "inside", "outside")
+  introvert$region_based_rate <- introvert$inside/introvert$outside  
+  
+  introvert$source <- as.factor(introvert$source)  
+  
+  return(introvert)
+}
+
+introversion <- get_introversion(networks)
+```
+
+
+### Network Advantage
+```{r}
+library(igraph)
+
+# Total Time Aggregation
+graph <- networks %>% dplyr::group_by(source, dest) %>% summarize(sum(call))
+colnames(graph) <- c("source", "dest", "weight")
+total_g <- graph.data.frame(graph)
+
+# Visualization of the Graph
+max_call <- max(E(total_g)$call)
+plot.igraph(total_g, vertex.label=V(total_g)$name, layout=layout.fruchterman.reingold, edge.color="black", edge.width=E(total_g)$weight/max_call)
+
+# Weighted PageRank (directed)
+page_rank_g <- page_rank(total_g, vids = V(total_g), directed = TRUE)
+
+# Eigenvector Centraility
+eigen_cent <- eigen_centrality(total_g, directed = TRUE)
+
+# Entropy of Edges
+entropy <- diversity(total_g)
 
 ```
 
+
+# Predictions
+
+### Random Baseline
+```{r}
+error_table <- matrix(NA,nrow=length(seq(50, 100, 5)),ncol=3)
+
+for (p in seq(50, 100, 5)){
+  index <- 1:nrow(census@data)
+  testindex <- sample(index, trunc(length(index)/5))
+  testset <- census@data[testindex,]
+  row.names(testset) <- testset$ACE
+  trainset <- census@data[-testindex,]
+  
+  random <- lm (deprivation ~ rand_base, data=trainset)
+  
+  # Visual representation
+  # pred.w.plim <- predict(random, testset, interval = "prediction")
+  # pred.w.clim <- predict(random, testset, interval = "confidence")
+  # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+  
+  pred <- predict(random, testset)
+  
+  # Classification Rate Test (this is not a classification problem...)
+  # pred_table <- table(pred = pred, true=testset$deprivation)
+  # prediction_rate <- sum(diag(pred_table))/sum(pred_table)
+  # prediction_rate
+  
+  # Prediction Accuracy Test
+  actuals_preds <- data.frame(cbind(actuals=testset$deprivation, predicteds=pred))
+  correlation_accuracy <- cor(actuals_preds)
+  
+  min_max_accuracy <- mean(apply(actuals_preds, 1, min) / apply(actuals_preds, 1, max)) 
+  mape <- mean(abs((actuals_preds$predicteds - actuals_preds$actuals))/actuals_preds$actuals)
+  min_max_accuracy
+  mape
+  
+  error_table[p,] <- c(correlation_accuracy, min_max_accuracy, mape)
+}
+```
+
+### Population Density Baseline
+```{r}
+index <- 1:nrow(census@data)
+testindex <- sample(index, trunc(length(index)/5))
+testset <- census@data[testindex,]
+row.names(testset) <- testset$ACE
+trainset <- census@data[-testindex,]
+random <- lm (deprivation ~ density, data=trainset)
+
+# Visual representation
+# pred.w.plim <- predict(random, testset, interval = "prediction")
+# pred.w.clim <- predict(random, testset, interval = "confidence")
+# matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+
+pred <- predict(random, testset)
+
+# Classification Rate Test (this is not a classification problem...)
+# pred_table <- table(pred = pred, true=testset$deprivation)
+# prediction_rate <- sum(diag(pred_table))/sum(pred_table)
+# prediction_rate
+
+# Prediction Accuracy Test
+actuals_preds <- data.frame(cbind(actuals=testset$deprivation, predicteds=pred))
+correlation_accuracy <- cor(actuals_preds)
+
+min_max_accuracy <- mean(apply(actuals_preds, 1, min) / apply(actuals_preds, 1, max)) 
+mape <- mean(abs((actuals_preds$predicteds - actuals_preds$actuals))/actuals_preds$actuals)
+min_max_accuracy
+mape
+
+```

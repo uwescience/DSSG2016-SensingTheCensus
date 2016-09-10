@@ -53,10 +53,10 @@ offerings$ACE = as.factor(offerings$ACE)
 offerings <-  offerings %>% left_join(clusters, by = c("ACE"="region"))
 
 offerings$callin <- as.factor(offerings$callin)
-offerings$callout <- as.factor(offerings$callin)
-offerings$smsin <- as.factor(offerings$callin)
-offerings$smsout <- as.factor(offerings$callin)
-offerings$internet <- as.factor(offerings$callin)
+offerings$callout <- as.factor(offerings$callout)
+offerings$smsin <- as.factor(offerings$smsin)
+offerings$smsout <- as.factor(offerings$smsout)
+offerings$internet <- as.factor(offerings$internet)
 
 #bars
 ggplot(offerings, aes(x = callin, y = bar)) +

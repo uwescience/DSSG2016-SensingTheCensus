@@ -24,16 +24,16 @@ library(raster)
 setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
 
 #' Load census and CDR geojson
-census = readOGR("../../data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
+census = readOGR("data/GeoJSON/milano_census_ace.geojson", "OGRGeoJSON") %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
-cdr = readOGR("../../data/GeoJSON/CDR_join_output.geojson", "OGRGeoJSON") %>%
+cdr = readOGR("data/GeoJSON/CDR_join_output.geojson", "OGRGeoJSON") %>%
   spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
 
 #' Intersect polygons
 intersection = raster::intersect(x = census, y = cdr)
 
 #' Calcualte area of each polygon
-intersection@data$area = area(intersection)
+intersection@data$area = raster::area(intersection)
 
 #' Calculate area of each polygon
 square_size = max(intersection@data$area)
@@ -44,13 +44,12 @@ days = seq(ymd("2013-11-01"), ymd("2014-01-01"), by="days")
 
 for(day in format(days, "%Y-%m-%d")){
   #file_path = paste("https://s3-us-west-2.amazonaws.com/census-cdr/mi-to-mi/MItoMI-", day, ".txt", sep = "")
-  local_path =  paste("../../data/CDR/cdr_nov/MItoMI-", day, ".txt", sep = "")
+  local_path =  paste("../../data/CDR/cdr_nov/MItoMI-", day, ".txt", sep = "")  
   save_path = paste("../../data/CDR/generated/ACEtoACE-", day, ".csv", sep = "")
   
   print(day)
-
   print("Reading")
-  
+
   #' Download netwrok dataset
   #download.file(file_path, local_path, mode="wb")
   #' Load netwrok dataset

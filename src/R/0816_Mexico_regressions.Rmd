@@ -1,0 +1,254 @@
+---
+title: "Network Regressions and Predictions for Mexico City"
+author: "Myeong Lee"
+date: "August 16, 2016"
+output: html_document
+---
+
+This is a regression analysis for CDR and poverty data following the methods presented by Chirs (WWW 16). 
+
+```{r, echo=FALSE}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(stringr)
+library(hydroGOF)
+library(fields)
+library(MASS)
+library(e1071)
+library(raster)
+library(reshape2)
+```
+
+# Random Baseline
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = readOGR("data/census/mexicocity.geojson", "OGRGeoJSON")  %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+
+street = read_delim("data/census/mexico_city/centrality_ageb.csv", delim = ",",col_names = TRUE ) 
+street$CVE_GEOAGE <- as.factor(street$CVE_GEOAGE)
+
+oa = read_delim("data/OSM/mexico_city/amenities_offering_advantage_idw.csv", delim = ",",col_names = TRUE ) 
+oa$CVE_GEOAGE <- as.factor(oa$CVE_GEOAGE)
+
+census@data <- census@data %>% left_join(street, by = c("CVE_GEOAGE"))
+census@data <- census@data %>% left_join(oa, by = c("CVE_GEOAGE"))
+
+plot(density(census@data$IMU, na.rm=TRUE))
+#shapiro.test(census@data$IMU)
+
+qqnorm(census@data$IMU)
+qqline(census@data$IMU, col = 2)
+
+
+# generate random drwas from two distinct normal distribution -- the final vector follows the distribution of observed data (IMU)
+rand1 <- rnorm (5000, mean(census@data$IMU), sd(census@data$IMU))
+rand2 <- rnorm (5000, mean(census@data$IMU), sd(census@data$IMU))
+rand <- c(rand1, rand2)
+rand_data <- sample(rand, length(census@data$IMU), replace = FALSE, prob = NULL)
+census@data$rand_base <- rand_data
+
+# MAE and Spearman's rank coefficient: comparion between the data and randomly generated poverty scores
+mae <- mae(rand_data,census@data$IMU, na.rm=TRUE)
+mae
+rho <- cor.test(rand_data,census@data$IMU, method="spearman")
+rho$estimate
+```
+
+# Population-density baseline
+```{r}
+census@data$POB_TOT <- as.numeric(census@data$POB_TOT)
+census@data$density <- census@data$POB_TOT/raster::area(census)
+pca_baseline <- lm(IMU ~ log(density), data=census@data)
+summary(pca_baseline)
+
+sample <- sample(census@data$density, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$density <- log(census@data$density)
+}
+```
+
+# Spaital-Lag Baseline
+```{r}
+census@data$spatial_lag <- NA
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$CVE_GEOAGE))
+popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
+
+# calculating spatial lag
+for (i in 1:length(trueCentroids)){
+  k <- sapply(popdists[i,], function(x) 1/(x*x))
+  k[is.infinite(k)] <- 0 
+  k <- sapply(k, function(x) x/sum(k))  
+  
+  census@data$spatial_lag[i] <- sum(census@data$IMU * k)
+}
+
+sample <- sample(census@data$spatial_lag, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$spatial_lag <- log(census@data$spatial_lag)
+}
+
+```
+
+#OSM
+```{r}
+sample <- sample(census@data$betweenness, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$betweenness <- log(census@data$betweenness)
+}
+sample <- sample(census@data$closeness, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$closeness <- log(census@data$closeness)
+}
+sample <- sample(census@data$idw_bar, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$idw_bar <- log(census@data$idw_bar)
+}
+sample <- sample(census@data$idw_bank, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$idw_bank <- log(census@data$idw_bank)
+}
+sample <- sample(census@data$idw_bicycle, 5000, replace = FALSE)
+sha <- shapiro.test(sample)
+if (sha$p.value > 0.05) {
+  census@data$idw_bicycle <- log(census@data$idw_bicycle)
+}
+```
+
+
+# Predictions
+
+### Linear Regression
+```{r}
+proportions <- seq(50, 90, 5)
+rand_error_table <- matrix(NA,nrow=length(proportions),ncol=4)
+colnames(rand_error_table) <- c("train", "rho", "minmax", "mae")
+num_test <- 500
+
+calculate_error_table <- function (variable){
+  
+  for (i in 1:length(proportions) ){
+    temp_table <- data.frame(NA,nrow=num_test,ncol=3)
+    colnames(temp_table) <- c("rho", "minmax", "mape")
+    
+    for (j in 1:num_test){
+      index <- 1:nrow(census@data)
+      testindex <- sample(index, trunc(length(index) * proportions[1] / 100 ))
+      testset <- census@data[testindex,]
+      row.names(testset) <- testset$CVE_GEOAGE
+      trainset <- census@data[-testindex,]
+      
+      if (variable == "random"){   
+        rand1 <- rnorm (5000, mean(census@data$IMU), sd(census@data$IMU))
+        rand2 <- rnorm (5000, mean(census@data$IMU), sd(census@data$IMU))
+        rand <- c(rand1, rand2)
+        census@data$rand_base <- sample(rand, length(census@data$IMU), replace = FALSE, prob = NULL)
+        model <- lm (IMU ~ rand_base, data=trainset)
+      } else if (variable == "density"){
+        model <- lm (IMU ~ density, data=trainset)
+      } else if (variable == "spatial_lag"){
+        model <- lm (IMU ~ spatial_lag, data=trainset)
+      } else if (variable == "betweenness"){
+        model <- lm (IMU ~ betweenness, data=trainset)
+      } else if (variable == "closeness"){
+        model <- lm (IMU ~ closeness, data=trainset)
+      } else if (variable == "street_network"){
+        model <- lm (IMU ~ scale(closeness) + scale(betweenness), data=trainset)
+      } else if (variable == "bank"){
+        model <- lm (IMU ~ idw_bank, data=trainset)
+      } else if (variable == "bar"){
+        model <- lm (IMU ~ idw_bar, data=trainset)
+      } else if (variable == "bicycle"){
+        model <- lm (IMU ~ idw_bicycle, data=trainset)
+      } else if (variable == "bicycle_closeness"){
+        model <- lm (IMU ~ scale(idw_bicycle) + scale(closeness), data=trainset)
+      } 
+      
+      # Visual representation
+      # pred.w.plim <- predict(random, testset, interval = "prediction")
+      # pred.w.clim <- predict(random, testset, interval = "confidence")
+      # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+      
+      pred <- predict(model, testset)
+      
+      # Classification Rate Test (this is not a classification problem...)
+      # pred_table <- table(pred = pred, true=testset$IMU)
+      # prediction_rate <- sum(diag(pred_table))/sum(pred_table)
+      # prediction_rate
+      
+      # Prediction Accuracy Test
+      actuals_preds <- data.frame(cbind(actuals=testset$IMU, predicteds=pred))
+    #   correlation_accuracy <- cor(actuals_preds)
+      rho <- cor.test(actuals_preds$predicteds,actuals_preds$actuals, method="spearman")
+    
+      min_max_accuracy <- mean(apply(actuals_preds, 1, min) / apply(actuals_preds, 1, max)) 
+      mape <- mae(actuals_preds$predicteds,actuals_preds$actuals, na.rm=TRUE)
+      
+      temp_table[j,] <- c(rho$estimate, min_max_accuracy, mape)
+    }
+    temp_table <- apply(temp_table, 2, mean)     
+              
+    rand_error_table[i,] <- c(proportions[i], temp_table["rho"], temp_table["minmax"], temp_table["mape"])
+  }
+  rand_error_table <- as.data.frame(rand_error_table)
+  return (rand_error_table)
+}
+
+
+rand <- calculate_error_table ("random")
+density <- calculate_error_table ("density")
+betweenness <- calculate_error_table ("betweenness")
+closeness <- calculate_error_table ("closeness")
+street_network <- calculate_error_table ("street_network")
+bank <- calculate_error_table ("bank")
+bar <- calculate_error_table ("bar")
+bicycle <- calculate_error_table ("bicycle")
+bi_cl <- calculate_error_table ("bicycle_closeness")
+
+# OSM Graph Drawing
+draw_graph <- function (column){
+  dd <- cbind(rand$train, rand[,column], density[,column] ,betweenness[,column], closeness[,column], 
+              street_network[,column], bank[,column], bar[,column], bicycle[,column], bi_cl[,column] )
+  colnames(dd) <- c("train","random", "density", "betweenness", "closeness", "street_network", "bank", "bar", "bicycle", "bicycle+closeness")
+  dd <- as.data.frame(dd)
+  # mape$train <- as.factor(mape$train)
+  
+  df <- melt(dd, id.vars='train')
+  
+#   pall <- rainbow(20, s = 1, v = 1, start = 0, end = 1, alpha = 1)
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15)) 
+}
+
+draw_graph("mae")
+draw_graph("minmax")
+draw_graph("rho")
+
+
+
+
+```

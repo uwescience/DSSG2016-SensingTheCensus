@@ -1,0 +1,596 @@
+---
+title: "Classification Predictions for Milano, SEZ-levl"
+author: "Myeong Lee"
+date: "September 7, 2016"
+output: html_document
+---
+
+This is a regression analysis for CDR and poverty data following the methods presented by Chirs (WWW 16). 
+
+```{r, echo=FALSE}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(stringr)
+library(hydroGOF)
+library(fields)
+library(MASS)
+library(e1071)
+library(raster)
+library(reshape2)
+library(igraph)
+library(Hmisc)
+```
+
+# Random Baseline
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON")  %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+raw = read_delim("data/census/R03_indicatori_2011_sezioni.csv", delim = ";",col_names = TRUE ) 
+
+cdr = read_delim("data/CDR/hash/0831_region_time.csv", delim = ",",col_names = TRUE ) 
+# street = read_delim("data/census/centrality_ace.csv", delim = ",",col_names = TRUE ) 
+# oa <-  read_delim("data/OSM/offering_advantage.csv", delim = ",",col_names = TRUE ) 
+deprivation = read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
+
+# census@data$SEZ2011 <- as.factor(census@data$SEZ2011)
+
+# street$ACE <- as.character(street$ACE)
+# street$ACE <- as.factor(street$ACE)
+# deprivation$SEZ <- as.character(deprivation$SEZ)
+# deprivation$SEZ <- as.factor(deprivation$SEZ)
+# raw$SEZ2011 <- as.character(raw$SEZ2011)
+# raw$SEZ2011 <- as.factor(raw$SEZ2011)
+# oa$ACE <- as.character(oa$ACE)
+# oa$ACE <- as.factor(oa$ACE)
+
+networks = read_delim("data/CDR/hash/sez_network.csv", delim = ",",col_names = TRUE ) 
+# networks$time = paste(networks$month, str_pad(networks$day, 2, pad = "0"), str_pad(networks$hour, 2, pad = "0"), sep="")
+# networks$time <- as.integer(networks$time)
+# networks <- arrange(networks,time)
+
+get_introversion <- function(df){
+  introvert <- df[df$source==df$dest,]
+  introvert <- introvert %>% dplyr::group_by(source) %>% dplyr::summarize(sum(call))
+  
+  extrovert <- df[df$source!=df$dest,]
+  extrovert <- extrovert %>% dplyr::group_by(source) %>% dplyr::summarize(sum(call))
+  
+  introvert <-  introvert %>% left_join(extrovert, by = c("source" = "source"))
+  colnames(introvert) <- c("source", "inside", "outside")
+  introvert$region_based_rate <- introvert$inside/introvert$outside  
+  
+  introvert$source <- as.factor(introvert$source)  
+  
+  return(introvert)
+}
+
+introversion <- get_introversion(networks)
+introversion$source <- as.numeric(levels(introversion$source))[introversion$source]
+
+census@data <-  census@data %>% left_join(introversion, by = c("SEZ2011" = "source"))
+census@data <- census@data %>% left_join(raw, by = c("SEZ2011"))
+
+
+# Total Time Aggregation
+graph <- networks %>% dplyr::group_by(source, dest) %>% dplyr::summarize(sum(call))
+colnames(graph) <- c("source", "dest","weight")
+total_g <- graph.data.frame(graph)
+
+# Visualization of the Graph
+# max_call <- max(E(total_g)$call)
+# plot.igraph(total_g, vertex.label=V(total_g)$name, layout=layout.fruchterman.reingold, edge.color="black", edge.width=E(total_g)$weight/max_call)
+
+# Weighted PageRank (directed)
+page_rank_g <- page_rank(total_g, vids = V(total_g), directed = TRUE)
+page_rank <- as.data.frame(page_rank_g$vector)
+page_rank$SEZ2011 <- rownames(page_rank)
+page_rank$SEZ2011 <- as.numeric(page_rank$SEZ2011)
+census@data <-  census@data %>% left_join(page_rank, by = c("SEZ2011"))
+census@data$page_rank <- as.numeric(census@data$page_rank)
+sha <- shapiro.test(sample(census@data$page_rank, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$page_rank <- log(census@data$page_rank)
+}
+
+# Eigenvector Centraility
+eigen_cent <- eigen_centrality(total_g, directed = TRUE)
+eigen_cent <- as.data.frame(eigen_cent$vector)
+eigen_cent$SEZ2011 <- rownames(eigen_cent)
+eigen_cent$SEZ2011 <- as.numeric(eigen_cent$SEZ2011)
+census@data <-  census@data %>% left_join(eigen_cent, by = c("SEZ2011"))
+census@data$eigen_cent <- as.numeric(census@data$eigen_cent)
+sha <- shapiro.test(sample(census@data$eigen_cent, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$eigen_cent <- log(census@data$eigen_cent)
+}
+
+# Entropy of Edges
+entropy <- diversity(total_g)
+entropy <- as.data.frame(entropy)
+entropy$SEZ2011 <- rownames(entropy)
+entropy$SEZ2011 <- as.numeric(entropy$SEZ2011)
+census@data <-  census@data %>% left_join(entropy, by = c("SEZ2011"))
+sha <- shapiro.test(sample(census@data$entropy, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$entropy <- log(census@data$entropy)
+}
+
+
+rm(networks)
+rm(graph)
+
+### Total Call Volume
+
+cdr_agg <- cdr %>% dplyr::group_by(region_id) %>% dplyr::summarize(calls = sum(adjusted_callIn + adjusted_callOut, na.rm=TRUE))
+
+census@data <- census@data %>% left_join(cdr_agg, by = c("SEZ2011" = "region_id"))
+
+sha <- shapiro.test(sample(census@data$calls, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$calls <- log(census@data$calls)
+}
+
+# Classifying poverty index into three parts (high = 3, middle, low = 1)
+deprivation$dep_class <-  as.numeric(cut2(deprivation$dep11, g=3))
+deprivation$dep_class <- as.factor(deprivation$dep_class)
+
+# Classifying poverty index based on quantile
+probs = c(0.1, 99.9)/100
+classes <- quantile(deprivation$dep11, probs = probs)
+
+deprivation$dep_class_3 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.1%"], 1, {ifelse(x >= classes["99.9%"], 3, 2)})})
+
+census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"="SEZ"))
+
+# census@data <- census@data %>% left_join(street, by = c("ACE"))
+# census@data <- census@data %>% left_join(oa, by = c("ACE"))
+
+plot(density(census@data$dep11, na.rm=TRUE))
+shapiro.test(sample(census@data$dep11, 5000, replace=FALSE))
+
+qqnorm(census@data$dep11)
+qqline(census@data$dep11, col = 2)
+
+census@data <- census@data[names(census@data) != ""]
+# generate random drwas from two distinct normal distribution -- the final vector follows the distribution of observed data (deprivation)
+rand1 <- rnorm (5000, mean(census@data$dep11,na.rm=TRUE), sd(census@data$dep11,na.rm=TRUE))
+rand2 <- rnorm (5000, mean(census@data$dep11,na.rm=TRUE), sd(census@data$dep11,na.rm=TRUE))
+rand <- c(rand1, rand2)
+rand_data <- sample(rand, length(census@data$dep11), replace = FALSE, prob = NULL)
+census@data$rand_base <- rand_data
+sha <- shapiro.test(sample(census@data$rand_base, 5000, replace=FALSE))
+
+# MAE and Spearman's rank coefficient: comparion between the data and randomly generated poverty scores
+pred <- predict(lm(dep11 ~ rand_base, data=census@data, na.action=na.exclude))
+mae <- mae(pred,census@data$dep11, na.rm=TRUE)
+mae
+rho <- cor.test(pred,census@data$dep11, method="spearman")
+rho$estimate
+```
+
+# Population-density baseline
+```{r}
+census@data$density <- census@data$P1/raster::area(census)
+pca_baseline <- lm(dep11 ~ log(density), data=census@data)
+summary(pca_baseline)
+
+milano_baseline <- lm(dep11 ~ density, data=census@data)
+summary(milano_baseline)
+
+sha <- shapiro.test(sample(census@data[is.finite(census@data$density),]$density, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$density <- log(census@data$density)
+}
+```
+
+# Spaital-Lag Baseline based on 2001 deprivation index
+```{r}
+census@data$spatial_lag <- NA
+
+trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SEZ2011))
+popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
+
+# calculating spatial lag
+for (i in 1:length(trueCentroids)){
+  print(i)
+  k <- sapply(popdists[i,], function(x) 1/(x*x))
+  k[is.infinite(k)] <- 0 
+  k <- sapply(k, function(x) x/sum(k))  
+  
+  census@data$spatial_lag[i] <- sum(census@data$dep01 * k, na.rm = TRUE)
+}
+
+sha <- shapiro.test(sample(census@data$spatial_lag, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$spatial_lag <- log(census@data$spatial_lag)
+}
+
+```
+
+
+# CDR features
+
+
+
+### Introversion
+```{r}
+sha <- shapiro.test(sample(census@data$region_based_rate, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$region_based_rate <- log(census@data$region_based_rate)
+}
+```
+
+
+### Network Advantage
+```{r}
+
+```
+
+```{r}
+# sha <- shapiro.test(census@data$betweenness)
+# if (sha$p.value > 0.05) {
+#   census@data$betweenness <- log(census@data$betweenness)
+# }
+# sha <- shapiro.test(census@data$closeness)
+# if (sha$p.value > 0.05) {
+#   census@data$closeness <- log(census@data$closeness)
+# }
+# sha <- shapiro.test(census@data$bar)
+# if (sha$p.value > 0.05) {
+#   census@data$bar <- log(census@data$bar)
+# }
+# sha <- shapiro.test(census@data$bank)
+# if (sha$p.value > 0.05) {
+#   census@data$bank <- log(census@data$bank)
+# }
+# sha <- shapiro.test(census@data$bicycle_parking)
+# if (sha$p.value > 0.05) {
+#   census@data$bicycle_parking <- log(census@data$bicycle_parking)
+# }
+```
+
+
+# Predictions
+
+### Linear Regression
+```{r}
+proportions <- seq(50, 90, 5)
+rand_error_table <- matrix(NA,nrow=length(proportions),ncol=3)
+colnames(rand_error_table) <- c("train", "score", "error")
+num_test <- 10
+
+calculate_svm_table <- function (variable){
+  
+  for (i in 1:length(proportions) ){
+    temp_table <- data.frame(nrow=num_test, ncol=2)
+    colnames(temp_table) <- c("score", "error")
+    
+    for (j in 1:num_test){
+      index <- 1:nrow(census@data)
+      testindex <- sample(index, trunc(length(index) * (100-proportions[1]) / 100 ))
+      testset <- census@data[testindex,]      
+      trainset <- census@data[-testindex,]
+      row.names(testset) <- testset$SEZ2011
+            
+      if (variable == "random"){   
+        rand1 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+        rand2 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+        rand <- c(rand1, rand2)        
+        trainset$rand_base <- sample(rand, length(trainset$dep11), replace = FALSE, prob = NULL)     
+        #trainset <- trainset[!is.na(testset$rand_base),]        
+        model <- svm (dep_class ~ rand_base, data=trainset)
+        
+      } else if (variable == "density"){
+        model <- svm (dep_class ~ density, data=trainset)     
+        testset <- testset[!is.na(testset$density),]
+      } else if (variable == "past"){
+        model <- svm (dep_class ~ dep01, data=trainset)
+        testset <- testset[!is.na(testset$dep01),]       
+      }else if (variable == "spatial_lag"){
+        model <- svm (dep_class ~ spatial_lag, data=trainset)
+        testset <- testset[!is.na(testset$spatial_lag),]
+      } else if (variable == "volume"){
+        model <- svm (dep_class ~ calls, data=trainset)
+        testset <- testset[!is.na(testset$calls),]
+      } else if (variable == "introversion"){
+        model <- svm (dep_class ~ region_based_rate, data=trainset)
+        testset <- testset[!is.na(testset$region_based_rate),]
+      } else if (variable == "page_rank"){
+        model <- svm (dep_class ~ page_rank, data=trainset)
+        testset <- testset[!is.na(testset$page_rank),]
+      } else if (variable == "eigen_cent"){
+        model <- svm (dep_class ~ eigen_cent, data=trainset)
+        testset <- testset[!is.na(testset$eigen_cent),]
+      } else if (variable == "entropy"){
+        model <- svm (dep_class ~ entropy, data=trainset)
+        testset <- testset[!is.na(testset$entropy),]
+      } else if (variable == "past_cdr"){
+        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01), data=trainset)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag"){
+        model <- svm (dep_class ~ scale(dep01) + scale(spatial_lag) , data=trainset,na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag_cdr"){
+        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01) + scale(spatial_lag), data=trainset)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) & !is.na(testset$spatial_lag),]
+      } else if (variable == "entoropy_lag"){
+        model <- svm (dep_class ~ scale(entropy) + scale(spatial_lag), data=trainset)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$entropy) ,]
+      } else if (variable == "cdr_lag"){
+        model <- svm (dep_class ~ scale(spatial_lag) +scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$spatial_lag),]
+      } else if (variable == "betweenness"){
+        model <- svm (dep_class ~ betweenness, data=trainset)
+      } else if (variable == "closeness"){
+        model <- svm (dep_class ~ closeness, data=trainset)
+      } else if (variable == "street_network"){
+        model <- svm (dep_class ~ scale(closeness) + scale(betweenness), data=trainset)
+      } else if (variable == "cdr"){
+        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
+      } else if (variable == "cdr_osm"){
+        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(closeness) + scale(betweenness) + scale(bar) + scale(bicycle_parking), data=trainset)
+      }else if (variable == "bar"){
+        model <- svm (dep_class ~ bar, data=trainset)
+      } else if (variable == "bank"){
+        model <- svm (dep_class ~ bank, data=trainset)
+      } else if (variable == "bicycle_parking"){
+        model <- svm (dep_class ~ bicycle_parking, data=trainset)
+      } else if (variable == "oa_st"){
+        model <- svm (dep_class ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset)
+      } 
+      
+      
+      # Visual representation
+      # pred.w.plim <- predict(random, testset, interval = "prediction")
+      # pred.w.clim <- predict(random, testset, interval = "confidence")
+      # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+     
+      pred <- predict(model,testset)
+      tb <- table(pred = pred, true= testset$dep_class )
+            
+      temp_table[j,] <- c(classAgreement(tb)$diag, 1-sum(diag(tb))/sum(tb))
+    }
+    temp_table <- apply(temp_table, 2, mean)    
+    
+    rand_error_table[i,] <- c(proportions[i], temp_table["score"], temp_table["error"])
+  }
+  rand_error_table <- as.data.frame(rand_error_table)
+  return (rand_error_table)
+}
+
+
+
+# calculate_error_table <- function (variable){
+#   
+#   for (i in 1:length(proportions) ){
+#     temp_table <- data.frame(nrow=num_test, ncol=2)
+#     colnames(temp_table) <- c("score", "error")
+#     
+#     for (j in 1:num_test){
+#       index <- 1:nrow(census@data)
+#       testindex <- sample(index, trunc(length(index) * (100-proportions[1]) / 100 ))
+#       testset <- census@data[testindex,]
+#       row.names(testset) <- testset$SEZ2011
+#       trainset <- census@data[-testindex,]
+#       
+#       if (variable == "random"){   
+#         rand1 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+#         rand2 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+#         rand <- c(rand1, rand2)        
+#         census@data$rand_base <- sample(rand, length(census@data$dep11), replace = FALSE, prob = NULL)
+#         model <- glm (dep_class ~ rand_base, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "density"){
+#         model <- glm (dep_class ~ density, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "past"){
+#         model <- glm (dep_class ~ dep01, data=trainset, family=binomial(link = "logit"))
+#       }else if (variable == "spatial_lag"){
+#         model <- glm (dep_class ~ spatial_lag, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "volume"){
+#         model <- glm (dep_class ~ calls, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "introversion"){
+#         model <- glm (dep_class ~ region_based_rate, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "page_rank"){
+#         model <- glm (dep_class ~ page_rank, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "eigen_cent"){
+#         model <- glm (dep_class ~ eigen_cent, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "entropy"){
+#         model <- glm (dep_class ~ entropy, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "past_cdr"){
+#         model <- glm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01), data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "past_lag"){
+#         model <- glm (dep_class ~ scale(dep01) + scale(spatial_lag) , data=trainset,na.action=na.omit, family=binomial(link = "logit"))
+#       } else if (variable == "past_lag_cdr"){
+#         model <- glm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01) + scale(spatial_lag), data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "entoropy_lag"){
+#         model <- glm (dep_class ~ scale(entropy) + scale(spatial_lag), data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "cdr_lag"){
+#         model <- glm (dep_class ~ scale(spatial_lag) +scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "betweenness"){
+#         model <- glm (dep_class ~ betweenness, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "closeness"){
+#         model <- glm (dep_class ~ closeness, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "street_network"){
+#         model <- glm (dep_class ~ scale(closeness) + scale(betweenness), data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "cdr"){
+#         model <- glm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "cdr_osm"){
+#         model <- glm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(closeness) + scale(betweenness) + scale(bar) + scale(bicycle_parking), data=trainset, family=binomial(link = "logit"))
+#       }else if (variable == "bar"){
+#         model <- glm (dep_class ~ bar, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "bank"){
+#         model <- glm (dep_class ~ bank, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "bicycle_parking"){
+#         model <- glm (dep_class ~ bicycle_parking, data=trainset, family=binomial(link = "logit"))
+#       } else if (variable == "oa_st"){
+#         model <- glm (dep_class ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset, family=binomial(link = "logit"))
+#       } 
+#       
+#       
+#       # Visual representation
+#       # pred.w.plim <- predict(random, testset, interval = "prediction")
+#       # pred.w.clim <- predict(random, testset, interval = "confidence")
+#       # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+#      
+#       pred <- predict(model, testset)
+#       tb <- table(pred = pred, true=testset$dep_class)
+#             
+#       temp_table[j,] <- c(classAgreement(tb)$diag, 1-sum(diag(tb))/sum(tb))
+#     }
+#     temp_table <- apply(temp_table, 2, mean)    
+#     
+#     rand_error_table[i,] <- c(proportions[i], temp_table["score"], temp_table["error"])
+#   }
+#   rand_error_table <- as.data.frame(rand_error_table)
+#   return (rand_error_table)
+# }
+# 
+# #baselines
+# rand <- calculate_error_table ("random")
+# past <- calculate_error_table ("past")
+# density <- calculate_error_table ("density")
+# 
+# # spatial lag based on the past poverty index
+# spatial_lag <- calculate_error_table ("spatial_lag")
+# 
+# #CDR
+# intro <- calculate_error_table ("introversion")
+# eigen_cent <- calculate_error_table ("eigen_cent")
+# entropy <- calculate_error_table ("entropy")
+# page_rank <- calculate_error_table ("page_rank")
+# cdr <- calculate_error_table ("cdr")
+# vol <- calculate_error_table ("volume")
+
+#SVM
+rand <- calculate_svm_table ("random")
+past <- calculate_svm_table ("past")
+density <- calculate_svm_table ("density")
+spatial_lag <- calculate_svm_table ("spatial_lag")
+
+intro <- calculate_svm_table ("introversion")
+eigen_cent <- calculate_svm_table ("eigen_cent")
+entropy <- calculate_svm_table ("entropy")
+page_rank <- calculate_svm_table ("page_rank")
+cdr <- calculate_svm_table ("cdr")
+vol <- calculate_svm_table ("volume")
+
+# Baseline Graph Drawing
+draw_graph_base <- function (column){
+  dd <- cbind(rand$train, rand[,column], density[,column], spatial_lag[,column], past[,column] )
+  colnames(dd) <- c("train","random", "density", "spatial_lag", "past")
+
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph_base("score")
+draw_graph_base("error")
+
+
+
+# CDR Graph Drawing
+draw_graph2 <- function (column){
+  dd <- cbind(rand$train, rand[,column], density[,column], cdr[,column], page_rank[,column],
+              vol[,column], intro[,column], eigen_cent[,column], entropy[,column] )
+  colnames(dd) <- c("train","random", "density", "cdr","page_rank", 
+                    "call_volumne","introversion","eigen_cent","entropy")
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+    scale_y_continuous('Prediction Rate',limits=c(0.3, 0.5)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph2("score")
+
+
+past_cdr <- calculate_svm_table ("past_cdr")
+past_lag <- calculate_svm_table ("past_lag")
+past_lag_cdr <- calculate_svm_table ("past_lag_cdr")
+entoropy_lag <- calculate_svm_table ("entoropy_lag")
+cdr_lag <- calculate_svm_table ("cdr_lag")
+
+#combination
+draw_comb <- function (column){
+  dd <- cbind(rand$train, density[,column], past[,column],past_cdr[,column], 
+              past_lag[,column], past_lag_cdr[,column], entoropy_lag[,column], cdr_lag[,column] )
+  colnames(dd) <- c("train", "density", "past","past+CDR", 
+                    "past+lag","past+lag+cdr","entropy+lag","cdr+lag")
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+  #   scale_y_continuous('Rho',limits=c(-0.1, 1)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_comb("score")
+
+
+```
+
+```{r}
+#OSM
+# betweenness <- calculate_error_table ("betweenness")
+# closeness <- calculate_error_table ("closeness")
+# street_network <- calculate_error_table ("street_network")
+# cdr_osm <- calculate_error_table ("cdr_osm")
+# bar <- calculate_error_table ("bar")
+# bank <- calculate_error_table ("bank")
+# bicycle_parking <- calculate_error_table ("bicycle_parking")
+# oa_st <- calculate_error_table ("oa_st")
+# 
+# # OSM Graph Drawing
+# draw_graph <- function (column){
+#   dd <- cbind(rand$train, rand[,column], density[,column], betweenness[,column], closeness[,column], street_network[,column], bar[,column], bank[,column], bicycle_parking[,column], oa_st[,column] )
+#   colnames(dd) <- c("train","random", "density", "betweenness", "closeness", "street_network", "bar", "bank", "bicycle_parking", "bar+bicycle+street")
+# 
+#   dd <- as.data.frame(dd)
+#   df <- melt(dd, id.vars='train')
+#   colindex <- round(as.integer(as.factor(df$variable) ))
+#   
+#   ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+#     geom_point(size = 3) +
+#     geom_line() +
+#     scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+# #     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+#     theme_bw() + 
+#     geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+# }
+# 
+# draw_graph("mae")
+# draw_graph("minmax")
+# draw_graph("rho")
+```
+
