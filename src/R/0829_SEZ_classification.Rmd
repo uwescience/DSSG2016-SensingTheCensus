@@ -30,6 +30,7 @@ library(raster)
 library(reshape2)
 library(igraph)
 library(Hmisc)
+library(randomForest)
 ```
 
 # Random Baseline
@@ -37,12 +38,12 @@ library(Hmisc)
 setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
 census = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON")  %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
 raw = read_delim("data/census/R03_indicatori_2011_sezioni.csv", delim = ";",col_names = TRUE ) 
-
 cdr = read_delim("data/CDR/hash/0831_region_time.csv", delim = ",",col_names = TRUE ) 
-# street = read_delim("data/census/centrality_ace.csv", delim = ",",col_names = TRUE ) 
-# oa <-  read_delim("data/OSM/offering_advantage.csv", delim = ",",col_names = TRUE ) 
+street = read_delim("data/OSM/centrality_sez.csv", delim = ",",col_names = TRUE ) 
+# oa <-  read_delim("data/OSM/offering_advantage_sez.csv", delim = ",",col_names = TRUE ) 
 deprivation = read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
 
+census@data <- census@data %>% left_join(street, by = c("SEZ2011"))
 # census@data$SEZ2011 <- as.factor(census@data$SEZ2011)
 
 # street$ACE <- as.character(street$ACE)
@@ -146,10 +147,17 @@ deprivation$dep_class <-  as.numeric(cut2(deprivation$dep11, g=3))
 deprivation$dep_class <- as.factor(deprivation$dep_class)
 
 # Classifying poverty index based on quantile
-probs = c(0.1, 99.9)/100
+probs = c(0.13, 2.27, 15.87, 84.13, 97.73, 99.87)/100
 classes <- quantile(deprivation$dep11, probs = probs)
+deprivation$dep_class_3 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.13%"], 1, {ifelse(x >= classes["99.87%"], 3, 2)})})
 
-deprivation$dep_class_3 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.1%"], 1, {ifelse(x >= classes["99.9%"], 3, 2)})})
+deprivation$dep_class_5 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.13%"], 1, {ifelse(x < classes["2.27%"], 2, {ifelse(x < classes["97.73%"], 3, {ifelse(x < classes["99.87%"], 4, 5)})})})})
+
+deprivation$dep_class_7 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.13%"], 1, {ifelse(x < classes["2.27%"], 2, {ifelse(x < classes["15.87%"], 3, {ifelse(x < classes["84.13%"], 4, {ifelse(x < classes["97.73%"], 5, {ifelse(x < classes["99.87%"], 6, 7)})})})})})})
+
+deprivation$dep_class_3 <- as.factor(deprivation$dep_class_3)
+deprivation$dep_class_5 <- as.factor(deprivation$dep_class_5)
+deprivation$dep_class_7 <- as.factor(deprivation$dep_class_7)
 
 census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"="SEZ"))
 
@@ -278,7 +286,7 @@ calculate_svm_table <- function (variable){
     
     for (j in 1:num_test){
       index <- 1:nrow(census@data)
-      testindex <- sample(index, trunc(length(index) * (100-proportions[1]) / 100 ))
+      testindex <- sample(index, trunc(length(index) * (100-proportions[i]) / 100 ))
       testset <- census@data[testindex,]      
       trainset <- census@data[-testindex,]
       row.names(testset) <- testset$SEZ2011
@@ -289,66 +297,69 @@ calculate_svm_table <- function (variable){
         rand <- c(rand1, rand2)        
         trainset$rand_base <- sample(rand, length(trainset$dep11), replace = FALSE, prob = NULL)     
         #trainset <- trainset[!is.na(testset$rand_base),]        
-        model <- svm (dep_class ~ rand_base, data=trainset)
+        model <- svm (dep_class_7 ~ rand_base, data=trainset)
         
       } else if (variable == "density"){
-        model <- svm (dep_class ~ density, data=trainset)     
+        model <- svm (dep_class_7 ~ density, data=trainset)     
         testset <- testset[!is.na(testset$density),]
       } else if (variable == "past"){
-        model <- svm (dep_class ~ dep01, data=trainset)
+        model <- svm (dep_class_7 ~ dep01, data=trainset)
         testset <- testset[!is.na(testset$dep01),]       
       }else if (variable == "spatial_lag"){
-        model <- svm (dep_class ~ spatial_lag, data=trainset)
+        model <- svm (dep_class_7 ~ spatial_lag, data=trainset)
         testset <- testset[!is.na(testset$spatial_lag),]
       } else if (variable == "volume"){
-        model <- svm (dep_class ~ calls, data=trainset)
+        model <- svm (dep_class_7 ~ calls, data=trainset)
         testset <- testset[!is.na(testset$calls),]
       } else if (variable == "introversion"){
-        model <- svm (dep_class ~ region_based_rate, data=trainset)
+        model <- svm (dep_class_7 ~ region_based_rate, data=trainset)
         testset <- testset[!is.na(testset$region_based_rate),]
       } else if (variable == "page_rank"){
-        model <- svm (dep_class ~ page_rank, data=trainset)
+        model <- svm (dep_class_7 ~ page_rank, data=trainset)
         testset <- testset[!is.na(testset$page_rank),]
       } else if (variable == "eigen_cent"){
-        model <- svm (dep_class ~ eigen_cent, data=trainset)
+        model <- svm (dep_class_7 ~ eigen_cent, data=trainset)
         testset <- testset[!is.na(testset$eigen_cent),]
       } else if (variable == "entropy"){
-        model <- svm (dep_class ~ entropy, data=trainset)
+        model <- svm (dep_class_7 ~ entropy, data=trainset)
         testset <- testset[!is.na(testset$entropy),]
       } else if (variable == "past_cdr"){
-        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01), data=trainset)
+        model <- svm (dep_class_7 ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01), data=trainset)
         testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) ,]
       } else if (variable == "past_lag"){
-        model <- svm (dep_class ~ scale(dep01) + scale(spatial_lag) , data=trainset,na.action=na.omit)
+        model <- svm (dep_class_7 ~ scale(dep01) + scale(spatial_lag) , data=trainset,na.action=na.omit)
         testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$dep01) ,]
       } else if (variable == "past_lag_cdr"){
-        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01) + scale(spatial_lag), data=trainset)
+        model <- svm (dep_class_7 ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(dep01) + scale(spatial_lag), data=trainset)
         testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) & !is.na(testset$spatial_lag),]
       } else if (variable == "entoropy_lag"){
-        model <- svm (dep_class ~ scale(entropy) + scale(spatial_lag), data=trainset)
+        model <- svm (dep_class_7 ~ scale(entropy) + scale(spatial_lag), data=trainset)
         testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$entropy) ,]
       } else if (variable == "cdr_lag"){
-        model <- svm (dep_class ~ scale(spatial_lag) +scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
+        model <- svm (dep_class_7 ~ scale(spatial_lag) +scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
         testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$spatial_lag),]
       } else if (variable == "betweenness"){
-        model <- svm (dep_class ~ betweenness, data=trainset)
+        model <- svm (dep_class_7 ~ betweenness, data=trainset)
+        testset <- testset[!is.na(testset$betweenness),]
       } else if (variable == "closeness"){
-        model <- svm (dep_class ~ closeness, data=trainset)
+        model <- svm (dep_class_7 ~ closeness, data=trainset)
+        testset <- testset[!is.na(testset$closeness),]
       } else if (variable == "street_network"){
-        model <- svm (dep_class ~ scale(closeness) + scale(betweenness), data=trainset)
+        model <- svm (dep_class_7 ~ scale(closeness) + scale(betweenness), data=trainset)
+        testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness),]
       } else if (variable == "cdr"){
-        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
+        model <- svm (dep_class_7 ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy), data=trainset)
         testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
       } else if (variable == "cdr_osm"){
-        model <- svm (dep_class ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(closeness) + scale(betweenness) + scale(bar) + scale(bicycle_parking), data=trainset)
+        model <- svm (dep_class_7 ~ scale(calls) + scale(region_based_rate) + scale(page_rank) + scale(eigen_cent) + scale(entropy) + scale(closeness) + scale(betweenness) + scale(bar) + scale(bicycle_parking), data=trainset)
       }else if (variable == "bar"){
-        model <- svm (dep_class ~ bar, data=trainset)
+        model <- svm (dep_class_7 ~ bar, data=trainset)
       } else if (variable == "bank"){
-        model <- svm (dep_class ~ bank, data=trainset)
+        model <- svm (dep_class_7 ~ bank, data=trainset)
       } else if (variable == "bicycle_parking"){
-        model <- svm (dep_class ~ bicycle_parking, data=trainset)
+        model <- svm (dep_class_7 ~ bicycle_parking, data=trainset)
       } else if (variable == "oa_st"){
-        model <- svm (dep_class ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset)
+        model <- svm (dep_class_7 ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset)
       } 
       
       
@@ -358,7 +369,7 @@ calculate_svm_table <- function (variable){
       # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
      
       pred <- predict(model,testset)
-      tb <- table(pred = pred, true= testset$dep_class )
+      tb <- table(pred = pred, true= testset$dep_class_7 )
             
       temp_table[j,] <- c(classAgreement(tb)$diag, 1-sum(diag(tb))/sum(tb))
     }
@@ -370,7 +381,112 @@ calculate_svm_table <- function (variable){
   return (rand_error_table)
 }
 
+rand_error_table <- matrix(NA,nrow=length(proportions),ncol=3)
+colnames(rand_error_table) <- c("train", "score", "error")
+num_test <- 1
 
+calculate_rf_table <- function (variable){
+  
+  for (i in 1:length(proportions) ){
+    temp_table <- data.frame(nrow=num_test, ncol=2)
+    colnames(temp_table) <- c("score", "error")
+    
+    for (j in 1:num_test){
+      index <- 1:nrow(census@data)
+      testindex <- sample(index, trunc(length(index) * (100-proportions[i]) / 100 ))
+      testset <- census@data[testindex,]      
+      trainset <- census@data[-testindex,]
+      row.names(testset) <- testset$SEZ2011
+            
+      if (variable == "random"){   
+        rand1 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+        rand2 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+        rand <- c(rand1, rand2)        
+        trainset$rand_base <- sample(rand, length(trainset$dep11), replace = FALSE, prob = NULL)     
+        #trainset <- trainset[!is.na(testset$rand_base),]      
+        model <- randomForest (formula("dep_class_7 ~ rand_base"), data=trainset, ntree=100, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        
+      } else if (variable == "density"){
+        model <- randomForest (formula("dep_class_7 ~ density"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)     
+        testset <- testset[!is.na(testset$density),]
+      } else if (variable == "past"){
+        model <- randomForest (formula("dep_class_7 ~ dep01"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$dep01),]       
+      }else if (variable == "spatial_lag"){
+        model <- randomForest (formula("dep_class_7 ~ spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag),]
+      } else if (variable == "volume"){
+        model <- randomForest (formula("dep_class_7 ~ calls"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls),]
+      } else if (variable == "introversion"){
+        model <- randomForest (formula("dep_class_7 ~ region_based_rate"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$region_based_rate),]
+      } else if (variable == "page_rank"){
+        model <- randomForest (formula("dep_class_7 ~ page_rank"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$page_rank),]
+      } else if (variable == "eigen_cent"){
+        model <- randomForest (formula("dep_class_7 ~ eigen_cent"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$eigen_cent),]
+      } else if (variable == "entropy"){
+        model <- randomForest (formula("dep_class_7 ~ entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$entropy),]
+      } else if (variable == "past_cdr"){
+        model <- randomForest (formula("dep_class_7 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag"){
+        model <- randomForest (formula("dep_class_7 ~ dep01 + spatial_lag"), data=trainset,na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag_cdr"){
+        model <- randomForest (formula("dep_class_7 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01 + spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) & !is.na(testset$spatial_lag),]
+      } else if (variable == "entoropy_lag"){
+        model <- randomForest (formula("dep_class_7 ~ entropy + spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$entropy) ,]
+      } else if (variable == "cdr_lag"){
+        model <- randomForest (formula("dep_class_7 ~ spatial_lag + calls + region_based_rate + page_rank + eigen_cent + entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$spatial_lag),]
+      } else if (variable == "betweenness"){
+        model <- randomForest (formula("dep_class_7 ~ betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness),]
+      } else if (variable == "closeness"){
+        model <- randomForest (formula("dep_class_7 ~ closeness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$closeness),]
+      } else if (variable == "street_network"){
+        model <- randomForest (formula("dep_class_7 ~ closeness + betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness),]
+      } else if (variable == "cdr"){
+        model <- randomForest (formula("dep_class_7 ~ region_based_rate + calls + page_rank + eigen_cent + entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
+      } else if (variable == "cdr_osm"){
+        model <- randomForest (formula("dep_class_7 ~ dep01 + calls + region_based_rate + page_rank + eigen_cent + entropy + closeness + betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      }else if (variable == "st_past"){
+        model <- randomForest (formula("dep_class_7 ~ dep01 + closeness + betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "bank"){
+        model <- randomForest (trainset$dep_class_7 ~ bank, data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "bicycle_parking"){
+        model <- randomForest (trainset$dep_class_7 ~ bicycle_parking, data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "oa_st"){
+        model <- randomForest (trainset$dep_class_7 ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } 
+      
+      
+      # Visual representation
+      # pred.w.plim <- predict(random, testset, interval = "prediction")
+      # pred.w.clim <- predict(random, testset, interval = "confidence")
+      # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+     
+      pred <- predict(model,testset)
+      tb <- table(pred = pred, true= testset$dep_class_7 )
+            
+      temp_table[j,] <- c(classAgreement(tb)$diag, 1-sum(diag(tb))/sum(tb))
+    }
+    temp_table <- apply(temp_table, 2, mean)    
+    
+    rand_error_table[i,] <- c(proportions[i], temp_table["score"], temp_table["error"])
+  }
+  rand_error_table <- as.data.frame(rand_error_table)
+  return (rand_error_table)
+}
 
 # calculate_error_table <- function (variable){
 #   
@@ -498,7 +614,7 @@ draw_graph_base <- function (column){
     geom_point(size = 3) +
     geom_line() +
     scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
-#     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+#     scale_y_continuous('Rho',limits=c(0.95, 1.05)) +
     theme_bw() + 
     geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
 }
@@ -522,7 +638,7 @@ draw_graph2 <- function (column){
     geom_point(size = 3) +
     geom_line() +
     scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
-    scale_y_continuous('Prediction Rate',limits=c(0.3, 0.5)) +
+#     scale_y_continuous('Prediction Rate',limits=c(0.98, 1)) +
     theme_bw() + 
     geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
 }
@@ -550,47 +666,295 @@ draw_comb <- function (column){
     geom_point(size = 3) +
     geom_line() +
     scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
-  #   scale_y_continuous('Rho',limits=c(-0.1, 1)) +
+#     scale_y_continuous('Prediction Rate',limits=c(0.98, 1)) +
     theme_bw() + 
     geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
 }
 
 draw_comb("score")
 
-
-```
-
-```{r}
 #OSM
-# betweenness <- calculate_error_table ("betweenness")
-# closeness <- calculate_error_table ("closeness")
-# street_network <- calculate_error_table ("street_network")
+betweenness <- calculate_svm_table ("betweenness")
+closeness <- calculate_svm_table ("closeness")
+street_network <- calculate_svm_table ("street_network")
 # cdr_osm <- calculate_error_table ("cdr_osm")
 # bar <- calculate_error_table ("bar")
 # bank <- calculate_error_table ("bank")
 # bicycle_parking <- calculate_error_table ("bicycle_parking")
 # oa_st <- calculate_error_table ("oa_st")
 # 
-# # OSM Graph Drawing
-# draw_graph <- function (column){
-#   dd <- cbind(rand$train, rand[,column], density[,column], betweenness[,column], closeness[,column], street_network[,column], bar[,column], bank[,column], bicycle_parking[,column], oa_st[,column] )
-#   colnames(dd) <- c("train","random", "density", "betweenness", "closeness", "street_network", "bar", "bank", "bicycle_parking", "bar+bicycle+street")
-# 
-#   dd <- as.data.frame(dd)
-#   df <- melt(dd, id.vars='train')
-#   colindex <- round(as.integer(as.factor(df$variable) ))
-#   
-#   ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
-#     geom_point(size = 3) +
-#     geom_line() +
-#     scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
-# #     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
-#     theme_bw() + 
-#     geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
-# }
-# 
-# draw_graph("mae")
+# OSM Graph Drawing
+draw_graph <- function (column){
+  dd <- cbind(rand$train, past[,column], density[,column], betweenness[,column], closeness[,column], street_network[,column] )
+  colnames(dd) <- c("train","past", "density", "betweenness", "closeness", "street_network")
+
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph("score")
 # draw_graph("minmax")
 # draw_graph("rho")
+```
+
+#random Forest
+```{r}
+rand <- calculate_rf_table ("random")
+past <- calculate_rf_table ("past")
+density <- calculate_rf_table ("density")
+spatial_lag <- calculate_rf_table ("spatial_lag")
+
+intro <- calculate_rf_table ("introversion")
+eigen_cent <- calculate_rf_table ("eigen_cent")
+entropy <- calculate_rf_table ("entropy")
+page_rank <- calculate_rf_table ("page_rank")
+cdr <- calculate_rf_table ("cdr")
+vol <- calculate_rf_table ("volume")
+
+past_cdr <- calculate_rf_table ("past_cdr")
+past_lag <- calculate_rf_table ("past_lag")
+past_lag_cdr <- calculate_rf_table ("past_lag_cdr")
+entoropy_lag <- calculate_rf_table ("entoropy_lag")
+cdr_lag <- calculate_rf_table ("cdr_lag")
+
+betweenness <- calculate_rf_table ("betweenness")
+closeness <- calculate_rf_table ("closeness")
+street_network <- calculate_rf_table ("street_network")
+
+cdr_osm <- calculate_rf_table ("cdr_osm")
+st_past <- calculate_rf_table ("st_past")
+
+# Baseline Graph Drawing
+draw_graph_base <- function (column){
+  dd <- cbind(rand$train, rand[,column], density[,column], spatial_lag[,column], past[,column] )
+  colnames(dd) <- c("train","random", "density", "spatial_lag", "past")
+
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Rho',limits=c(0.95, 1.05)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph_base("score")
+
+# CDR Graph Drawing
+draw_graph2 <- function (column){
+  dd <- cbind(rand$train, past[,column], density[,column], cdr[,column], page_rank[,column],
+              vol[,column], intro[,column], eigen_cent[,column], entropy[,column] )
+  colnames(dd) <- c("train","past", "density", "cdr","page_rank", 
+                    "call_volumne","introversion","eigen_cent","entropy")
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Prediction Rate',limits=c(0.98, 1)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph2("score")
+
+
+#combination
+draw_comb <- function (column){
+  dd <- cbind(rand$train, density[,column], past[,column],past_cdr[,column], 
+              past_lag[,column], past_lag_cdr[,column], entoropy_lag[,column], cdr_lag[,column] )
+  colnames(dd) <- c("train", "density", "past","past+CDR", 
+                    "past+lag","past+lag+cdr","entropy+lag","cdr+lag")
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Prediction Rate',limits=c(0.98, 1)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_comb("score")
+
+#OSM
+
+# cdr_osm <- calculate_error_table ("cdr_osm")
+# bar <- calculate_error_table ("bar")
+# bank <- calculate_error_table ("bank")
+# bicycle_parking <- calculate_error_table ("bicycle_parking")
+# oa_st <- calculate_error_table ("oa_st")
+# 
+# OSM Graph Drawing
+draw_graph <- function (column){
+  dd <- cbind(rand$train, past[,column], density[,column], betweenness[,column], closeness[,column], street_network[,column], cdr_osm[,column], st_past[,column] )
+  colnames(dd) <- c("train","past", "density", "betweenness", "closeness", "street_network", "cdr_osm", "st_past")
+
+  dd <- as.data.frame(dd)
+  df <- melt(dd, id.vars='train')
+  colindex <- round(as.integer(as.factor(df$variable) ))
+  
+  ggplot(df, aes(x = train, y = value, shape=factor(variable), colour=factor(variable))) +
+    geom_point(size = 3) +
+    geom_line() +
+    scale_x_continuous('Train Proportion (%)',limits=c(50,95)) + 
+#     scale_y_continuous('Rho',limits=c(-0.07, 0.07)) +
+    theme_bw() + 
+    geom_hline(yintercept=0) + theme(legend.text=element_text(size=15))
+}
+
+draw_graph("score")
+
+```
+
+
+
+```{r}
+calculate_rf_table5 <- function (variable){
+  
+  for (i in 1:length(proportions) ){
+    temp_table <- data.frame(nrow=num_test, ncol=2)
+    colnames(temp_table) <- c("score", "error")
+    
+    for (j in 1:num_test){
+      index <- 1:nrow(census@data)
+      testindex <- sample(index, trunc(length(index) * (100-proportions[i]) / 100 ))
+      testset <- census@data[testindex,]      
+      trainset <- census@data[-testindex,]
+      row.names(testset) <- testset$SEZ2011
+            
+      if (variable == "random"){   
+        rand1 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+        rand2 <- rnorm (5000, mean(census@data$dep11, na.rm=TRUE), sd(census@data$dep11, na.rm=TRUE))
+        rand <- c(rand1, rand2)        
+        trainset$rand_base <- sample(rand, length(trainset$dep11), replace = FALSE, prob = NULL)     
+        #trainset <- trainset[!is.na(testset$rand_base),]      
+        model <- randomForest (formula("dep_class_5 ~ rand_base"), data=trainset, ntree=100, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        
+      } else if (variable == "density"){
+        model <- randomForest (formula("dep_class_5 ~ density"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)     
+        testset <- testset[!is.na(testset$density),]
+      } else if (variable == "past"){
+        model <- randomForest (formula("dep_class_5 ~ dep01"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$dep01),]       
+      }else if (variable == "spatial_lag"){
+        model <- randomForest (formula("dep_class_5 ~ spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag),]
+      } else if (variable == "volume"){
+        model <- randomForest (formula("dep_class_5 ~ calls"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls),]
+      } else if (variable == "introversion"){
+        model <- randomForest (formula("dep_class_5 ~ region_based_rate"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$region_based_rate),]
+      } else if (variable == "page_rank"){
+        model <- randomForest (formula("dep_class_5 ~ page_rank"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$page_rank),]
+      } else if (variable == "eigen_cent"){
+        model <- randomForest (formula("dep_class_5 ~ eigen_cent"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$eigen_cent),]
+      } else if (variable == "entropy"){
+        model <- randomForest (formula("dep_class_5 ~ entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$entropy),]
+      } else if (variable == "past_cdr"){
+        model <- randomForest (formula("dep_class_5 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag"){
+        model <- randomForest (formula("dep_class_5 ~ dep01 + spatial_lag"), data=trainset,na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag_cdr"){
+        model <- randomForest (formula("dep_class_5 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01 + spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) & !is.na(testset$spatial_lag),]
+      } else if (variable == "entoropy_lag"){
+        model <- randomForest (formula("dep_class_5 ~ entropy + spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$entropy) ,]
+      } else if (variable == "cdr_lag"){
+        model <- randomForest (formula("dep_class_5 ~ spatial_lag + calls + region_based_rate + page_rank + eigen_cent + entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$spatial_lag),]
+      } else if (variable == "betweenness"){
+        model <- randomForest (formula("dep_class_5 ~ betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness),]
+      } else if (variable == "closeness"){
+        model <- randomForest (formula("dep_class_5 ~ closeness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$closeness),]
+      } else if (variable == "street_network"){
+        model <- randomForest (formula("dep_class_5 ~ closeness + betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness),]
+      } else if (variable == "cdr"){
+        model <- randomForest (formula("dep_class_5 ~ region_based_rate + calls + page_rank + eigen_cent + entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
+      } else if (variable == "cdr_osm"){
+        model <- randomForest (formula("dep_class_5 ~ dep01 + calls + region_based_rate + page_rank + eigen_cent + entropy + closeness + betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      }else if (variable == "st_past"){
+        model <- randomForest (formula("dep_class_5 ~ dep01 + closeness + betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "bank"){
+        model <- randomForest (trainset$dep_class_5 ~ bank, data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "bicycle_parking"){
+        model <- randomForest (trainset$dep_class_5 ~ bicycle_parking, data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "oa_st"){
+        model <- randomForest (trainset$dep_class_5 ~ scale(bicycle_parking) + scale(bar) + scale(closeness) + scale(betweenness), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } 
+      
+      
+      # Visual representation
+      # pred.w.plim <- predict(random, testset, interval = "prediction")
+      # pred.w.clim <- predict(random, testset, interval = "confidence")
+      # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+     
+      pred <- predict(model,testset)
+      tb <- table(pred = pred, true= testset$dep_class_5 )
+            
+      temp_table[j,] <- c(classAgreement(tb)$diag, 1-sum(diag(tb))/sum(tb))
+    }
+    temp_table <- apply(temp_table, 2, mean)    
+    
+    rand_error_table[i,] <- c(proportions[i], temp_table["score"], temp_table["error"])
+  }
+  rand_error_table <- as.data.frame(rand_error_table)
+  return (rand_error_table)
+}
+
+rand <- calculate_rf_table5 ("random")
+past <- calculate_rf_table5 ("past")
+density <- calculate_rf_table5 ("density")
+spatial_lag <- calculate_rf_table5 ("spatial_lag")
+
+intro <- calculate_rf_table5 ("introversion")
+eigen_cent <- calculate_rf_table5 ("eigen_cent")
+entropy <- calculate_rf_table5 ("entropy")
+page_rank <- calculate_rf_table5 ("page_rank")
+cdr <- calculate_rf_table5 ("cdr")
+vol <- calculate_rf_table5 ("volume")
+
+past_cdr <- calculate_rf_table5 ("past_cdr")
+past_lag <- calculate_rf_table5 ("past_lag")
+past_lag_cdr <- calculate_rf_table5 ("past_lag_cdr")
+entoropy_lag <- calculate_rf_table5 ("entoropy_lag")
+cdr_lag <- calculate_rf_table5 ("cdr_lag")
+
+betweenness <- calculate_rf_table5 ("betweenness")
+closeness <- calculate_rf_table5 ("closeness")
+street_network <- calculate_rf_table5 ("street_network")
+
+cdr_osm <- calculate_rf_table5 ("cdr_osm")
+st_past <- calculate_rf_table5 ("st_past")
 ```
 
