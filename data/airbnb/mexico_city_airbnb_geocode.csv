@@ -1,0 +1,2685 @@
+,room_id,room_type,city,price,latitude,longitude
+0,13311781,Private room,Ciudad de México,11.0,19.402872,99.182288
+1,796477,Private room,Mexico City,41.0,19.416327,99.175053
+2,11089363,Private room,Ciudad de México,36.0,19.410631,99.17299
+3,12088827,Private room,Ciudad de México,56.0,19.442961999999998,99.204891
+4,11692281,Private room,Ciudad de México,14.0,19.402245999999998,99.174304
+5,11243135,Private room,Ciudad de México,32.0,19.406377,99.17348
+6,13265138,Private room,Ciudad de México,29.0,19.395507000000002,99.234673
+7,9128328,Private room,Colonia Juárez,25.0,19.422601999999998,99.174247
+8,13299793,Private room,Ciudad de México,21.0,19.397964,99.248429
+9,626276,Private room,Mexico City,13.0,19.420904999999998,99.158591
+10,7919295,Private room,Ciudad de México,31.0,19.40786,99.171705
+11,13688885,Private room,Benito Juárez,21.0,19.379857,99.159857
+12,13943070,Private room,Ciudad de México,20.0,19.421265,99.17045
+13,9478750,Private room,Ciudad de México,41.0,19.386992000000003,99.154334
+14,12267309,Private room,Ciudad de México,22.0,19.429115,99.174234
+15,454077,Private room,delegación Cuauhtémoc,26.0,19.425769,99.137211
+16,7885447,Private room,Ciudad de México,26.0,19.409471,99.16765
+17,12187384,Private room,Ciudad de México,20.0,19.4033,99.182457
+18,4162879,Private room,Ciudad de México,11.0,19.412122,99.144006
+19,12408358,Private room,Mexico City,21.0,19.428694,99.171235
+20,8773955,Private room,Ciudad de México,23.0,19.422562,99.160909
+21,12056715,Private room,Ciudad de México,21.0,19.436242,99.133483
+22,13875758,Private room,Ciudad de México,29.0,19.435131,99.206239
+23,5577961,Private room,Colonia 8 de Agosto,12.0,19.39174,99.186646
+24,13547861,Private room,Ciudad de México,31.0,19.41341,99.157482
+25,11239328,Private room,Polanco Chapultepec,41.0,19.430122,99.197153
+26,4909687,Private room,Ciudad de México,11.0,19.411398000000002,99.142777
+27,11929527,Private room,Ciudad de México,14.0,19.420970999999998,99.151057
+28,13298321,Private room,Colonia Juárez,23.0,19.428509,99.15596
+29,12830061,Private room,Ciudad de México,14.0,19.406051,99.183342
+30,326296,Private room,Mexico City,19.0,19.340035,99.182726
+31,1469949,Private room,Mexico City,26.0,19.410673000000003,99.171515
+32,11318132,Private room,Ciudad de México,26.0,19.40396,99.170306
+33,5271971,Private room,Colonia Juárez,26.0,19.42869,99.160724
+34,6325960,Private room,Ciudad de México,20.0,19.353716,99.155217
+35,3869649,Private room,Mexico City,28.0,19.435223,99.136835
+36,13251520,Private room,Ciudad de México,26.0,19.4306,99.201456
+37,12114007,Private room,Ciudad de México,15.0,19.389631,99.153499
+38,7931916,Private room,Ciudad de México,16.0,19.395264,99.158231
+39,8754782,Private room,Ciudad de México,26.0,19.438751,99.133325
+40,8666985,Private room,Ciudad de México,31.0,19.486137,99.120352
+41,1167552,Private room,Ciudad de México,29.0,19.414907999999997,99.156838
+42,13701373,Private room,Ciudad de México,31.0,19.35613,99.158152
+43,7950888,Private room,Ciudad de México,19.0,19.402724,99.183573
+44,4499873,Private room,Ciudad de México,28.0,19.432449,99.191588
+45,11160297,Private room,Ciudad de México,22.0,19.398581,99.24957
+46,7366486,Private room,Ciudad de México,90.0,19.412618,99.180169
+47,9664326,Private room,Ciudad de México,26.0,19.407536999999998,99.160729
+48,4304175,Private room,Mexico City,23.0,19.417114,99.176436
+49,5832316,Private room,Ciudad de México,27.0,19.426244,99.154296
+50,10983886,Private room,Mexico City,19.0,19.455394000000002,99.0646
+51,7440600,Private room,Ciudad de México,42.0,19.434564,99.146672
+52,5287695,Private room,Ciudad de México,37.0,19.429755,99.133548
+53,12852938,Private room,Ciudad de México,20.0,19.409678,99.169373
+54,11865463,Private room,Ciudad de México,96.0,19.352632,99.165035
+55,7303025,Private room,Ciudad de México,34.0,19.421895000000003,99.168957
+56,8425051,Private room,Ciudad de México,21.0,19.411592000000002,99.162778
+57,5170393,Private room,Ciudad de México,24.0,19.411847,99.162636
+58,12131459,Private room,Ciudad de México,19.0,19.380613,99.165892
+59,13605402,Private room,Ciudad de México,20.0,19.430809,99.157321
+60,8721086,Private room,Ciudad de México,34.0,19.41581,99.166239
+61,882387,Private room,Mexico City,36.0,19.426838,99.163246
+62,13547587,Private room,Ciudad de México,41.0,19.41335,99.15811
+63,8915048,Private room,Ciudad de México,28.0,19.41412,99.173709
+64,13074282,Private room,Ciudad de México,16.0,19.414848000000003,99.17895
+65,7651362,Private room,Ciudad de México,23.0,19.426639,99.138407
+66,13202114,Private room,Ciudad de México,14.0,19.422392000000002,99.166067
+67,12890846,Private room,Ciudad de México,24.0,19.433201,99.146499
+68,6186035,Private room,Ciudad de México,27.0,19.414717,99.174734
+69,8456969,Private room,Ciudad de México,11.0,19.407938,99.082164
+70,12685443,Private room,Ciudad de México,36.0,19.410939000000003,99.168476
+71,2560062,Private room,Ciudad de México,16.0,19.421209,99.156822
+72,13640176,Private room,Ciudad de México,40.0,19.424301999999997,99.137009
+73,5618595,Private room,Mexico City,20.0,19.365161999999998,99.132811
+74,9670624,Private room,Ciudad de México,18.0,19.420853,99.170258
+75,6343207,Private room,Mexico City ,233.0,19.436618,99.145856
+76,12175088,Private room,Ciudad de México,20.0,19.36962,99.152822
+77,13282462,Private room,Mexico City,39.0,19.442470999999998,99.201972
+78,7951319,Private room,Ciudad de México,20.0,19.408007,99.166171
+79,11318383,Private room,Ciudad de México,28.0,19.431008,99.146943
+80,11829369,Private room,Ejido del Centro,12.0,19.431065,99.150249
+81,5624602,Private room,Ciudad de México,15.0,19.413693,99.176523
+82,5743529,Private room,Ciudad de México,32.0,19.405251,99.180494
+83,12998922,Private room,Ejido del Centro,24.0,19.43628,99.134564
+84,13728377,Private room,Ciudad de México,23.0,19.384953,99.177458
+85,8213716,Private room,Ciudad de México,34.0,19.426629000000002,99.137766
+86,14068285,Private room,Ciudad de México,28.0,19.413812,99.169675
+87,11300635,Private room,Ciudad de México,28.0,19.406126999999998,99.166323
+88,13846839,Private room,Ciudad de México,34.0,19.428344,99.15138
+89,13047518,Private room,Ejido del Centro,16.0,19.430409,99.147454
+90,9372893,Private room,Ciudad de México,25.0,19.424954,99.154339
+91,8291981,Private room,Mexico City,11.0,19.435463000000002,99.14639
+92,13328866,Private room,Mexico City,12.0,19.392877,99.159676
+93,13187284,Private room,Ciudad de México,10.0,19.402365,99.153333
+94,1832012,Private room,Mexico City,18.0,19.439141,99.142159
+95,12814044,Private room,Ciudad de México,34.0,19.43273,99.145049
+96,4559409,Private room,Ciudad de México,28.0,19.409041000000002,99.171052
+97,12408254,Private room,Ciudad de México,21.0,19.407772,99.180496
+98,7094188,Private room,Ciudad de México,11.0,19.3892,99.168462
+99,13657263,Private room,Ciudad de México,40.0,19.422887,99.136836
+100,744821,Private room,Juárez,33.0,19.427147,99.162721
+101,12211303,Private room,Ciudad de México,14.0,19.426942999999998,99.138947
+102,7482050,Private room,Miguel Hidalgo,34.0,19.431892,99.182224
+103,7544493,Private room,Ciudad de México,14.0,19.408532,99.110032
+104,13639751,Private room,Ciudad de México,40.0,19.422714000000003,99.13667
+105,11442386,Private room,Ciudad de México,41.0,19.418931,99.214215
+106,12128790,Private room,Ciudad de México,45.0,19.36179,99.16149
+107,13782780,Private room,Ciudad de México,13.0,19.39471,99.13832
+108,8253601,Private room,Ciudad de México,36.0,19.354839000000002,99.194186
+109,10681159,Private room,Ciudad de México,18.0,19.448842000000003,99.107165
+110,9343874,Private room,Ciudad de México,26.0,19.381087,99.180859
+111,11894757,Private room,Mexico City,96.0,19.353003,99.165047
+112,5783165,Private room,Ciudad de México,21.0,19.359695000000002,99.192693
+113,8721601,Private room,Ciudad de México,26.0,19.427822,99.134177
+114,12904365,Private room,Ciudad de México,24.0,19.348498,99.162869
+115,8113829,Private room,Ciudad de México,23.0,19.401564,99.140484
+116,12987817,Private room,Ciudad de México,21.0,19.433732,99.133533
+117,6491970,Private room,Mexico City,34.0,19.358279,99.188733
+118,13291322,Private room,Ciudad de México,16.0,19.346232,99.158402
+119,6711680,Private room,Ciudad de México,26.0,19.384836,99.176952
+120,6713478,Private room,Ciudad de México,73.0,19.347236,99.162882
+121,9613172,Private room,Ciudad de México,11.0,19.357086,99.153113
+122,9319198,Private room,Ciudad de México,21.0,19.380693,99.17937
+123,12095954,Private room,Ciudad de México,18.0,19.398925,99.144462
+124,14341899,Private room,Coyoacán,45.0,19.353396,99.167093
+125,992784,Private room,Mexico City,14.0,19.437635999999998,99.136092
+126,13799007,Private room,Ciudad de México,14.0,19.352806,99.158044
+127,9736959,Private room,Ciudad de México,45.0,19.383716,99.178253
+128,9093391,Private room,Ciudad de México,26.0,19.441019,99.150664
+129,6973165,Private room,Ciudad de México,14.0,19.381154000000002,99.182339
+130,13768088,Private room,Ciudad de México,20.0,19.398108999999998,99.145578
+131,1104450,Private room,Mexico City,36.0,19.385245,99.17836
+132,2664537,Private room,Mexico City,45.0,19.358297,99.186267
+133,9128046,Private room,Mexico City,9.0,19.444834,99.150926
+134,11891097,Private room,Mexico City,96.0,19.35249,99.165054
+135,12628344,Private room,Mexico City,16.0,19.426526000000003,99.139078
+136,6332452,Private room,México,21.0,19.396193,99.141602
+137,14106137,Private room,Ciudad de México,103.0,19.349297,99.176758
+138,12602882,Private room,Ciudad de México,19.0,19.429845999999998,99.176824
+139,5069849,Private room,Ciudad de México,31.0,19.350032000000002,99.196477
+140,7618555,Private room,DF,20.0,19.357751999999998,99.187755
+141,14220508,Private room,Ciudad de México,77.0,19.361126000000002,99.18716
+142,5831714,Private room,México df ,48.0,19.425107,99.177746
+143,7475352,Private room,Ciudad de México,31.0,19.412729000000002,99.182509
+145,4642549,Private room,Coyoacan ,45.0,19.347433,99.163803
+146,7359064,Private room,Mexico City,73.0,19.431222,99.176993
+147,12467073,Private room,Ciudad de México,56.0,19.363032,99.174046
+148,7455240,Private room,Ciudad de México,36.0,19.425631,99.17693
+149,11759201,Private room,Ciudad de México,31.0,19.433747,99.179038
+150,14187621,Private room,Ciudad de México,11.0,19.368323999999998,99.178406
+151,11572635,Private room,Ciudad de México,18.0,19.430318,99.173498
+152,5114645,Private room,Ciudad de México,45.0,19.426907,99.177861
+153,2711101,Private room,Mexico City,22.0,19.363664,99.173226
+154,13672423,Private room,Ciudad de México,57.0,19.425176,99.17718
+155,7817608,Private room,Ciudad de México,39.0,19.425687,99.1787
+156,5652229,Private room,Ciudad de México,26.0,19.348734,99.162522
+157,7363270,Private room,Mexico City,64.0,19.431673,99.177624
+158,9298845,Private room,Ciudad de México,28.0,19.437322,99.183622
+159,13243273,Private room,Ciudad de México,46.0,19.434909,99.181056
+160,7359275,Private room,Mexico City,64.0,19.432712,99.177812
+161,7791225,Private room,Mexico City,39.0,19.435772,99.179824
+162,6075076,Private room,Ciudad de México,36.0,19.42526,99.176703
+163,13731336,Private room,Ciudad de México,19.0,19.380625,99.140711
+164,1429120,Private room,Mexico City,13.0,19.368907,99.180095
+165,10162960,Private room,De los Deportes,26.0,19.38101,99.182162
+166,12538814,Private room,Ciudad de México,124.0,19.350167000000003,99.175556
+167,6969861,Private room,Ciudad de México,16.0,19.351649,99.151827
+168,7358839,Private room,Ciudad de México,70.0,19.431825,99.178794
+169,2988520,Private room,Mexico City,280.0,19.426929,99.177304
+170,7708414,Private room,Ciudad de México,23.0,19.429689,99.17526
+171,11711533,Private room,Ciudad de México,23.0,19.435415,99.178578
+172,3534616,Private room,Mexico City,33.0,19.346968,99.173339
+173,12853705,Private room,Ciudad de México,26.0,19.429827,99.175837
+174,13672668,Private room,Ciudad de México,57.0,19.426789000000003,99.177032
+175,10069785,Private room,Ciudad de México,35.0,19.344123,99.153511
+176,8408609,Private room,Ciudad de México,16.0,19.379699,99.140259
+178,10009611,Private room,Ciudad de México,36.0,19.410273999999998,99.178133
+179,6677471,Private room,Ciudad de México,21.0,19.413366,99.180583
+180,14387507,Private room,Ciudad de México,18.0,19.437943,99.128736
+181,7250,Private room,Mexico City,41.0,19.411125,99.179035
+182,13657534,Private room,Ciudad de México,40.0,19.423125,99.136544
+183,9901633,Private room,Ciudad de México,31.0,19.430094,99.165187
+184,2778452,Private room,Mexico City,23.0,19.430431,99.160917
+185,3783152,Private room,Mexico City,103.0,19.349359,99.176488
+186,12486258,Private room,Ejido del Centro,27.0,19.42773,99.137699
+187,13639672,Private room,Ciudad de México,15.0,19.447174,99.213439
+188,14470071,Private room,Ciudad de México,66.0,19.423682,99.165908
+189,8273481,Private room,Ejido del Centro,20.0,19.428851,99.134832
+190,8517435,Private room,Ciudad de México,20.0,19.426385999999997,99.174944
+192,14095026,Private room,Ciudad de México,11.0,19.428368,99.151846
+193,12254969,Private room,Ciudad de México,27.0,19.433387,99.16752
+194,3193467,Private room,Coyoacán,20.0,19.356117,99.152881
+195,11137585,Private room,Ciudad de México,23.0,19.350348,99.163142
+196,14486922,Private room,Ciudad de México,27.0,19.437332,99.131646
+197,10753494,Private room,Ciudad de México,29.0,19.433678,99.165037
+198,2905087,Private room,Mexico City,29.0,19.42963,99.173288
+199,10015747,Private room,Ciudad de México,54.0,19.430006,99.162011
+200,10730243,Private room,Ejido del Centro,13.0,19.432919000000002,99.14849
+201,10278640,Private room,Mexico City,46.0,19.430118,99.161736
+202,8721643,Private room,Ciudad de México,21.0,19.426331,99.134084
+203,13271804,Private room,Ciudad de México,16.0,19.431693,99.15209
+204,11362877,Private room,Ciudad de México,26.0,19.430213000000002,99.157081
+205,8306119,Private room,Ciudad de México,31.0,19.427132999999998,99.136364
+206,10528516,Private room,Ciudad de México,34.0,19.352989,99.164483
+207,12388523,Private room,Ciudad de México,36.0,19.427623,99.137976
+208,10310182,Private room,Ciudad de México,23.0,19.352609,99.161833
+209,12092782,Private room,Ciudad de México,16.0,19.430778,99.146906
+210,8507421,Private room,México,13.0,19.435301000000003,99.148776
+211,6214515,Private room,México,87.0,19.412469,99.175301
+212,13989906,Private room,Ciudad de México,16.0,19.43253,99.14598
+213,11849623,Private room,Ciudad de México,28.0,19.434768,99.132851
+214,10464501,Private room,Ciudad de México,33.0,19.411281,99.181964
+215,10835500,Private room,Ciudad de México,52.0,19.417574,99.177417
+216,6311724,Private room,Ciudad de México,16.0,19.431517000000003,99.170428
+217,2241823,Private room,Mexico City,46.0,19.416467,99.177363
+218,9791350,Private room,Ciudad de México,32.0,19.419187,99.176954
+219,12385710,Private room,Ciudad de México,52.0,19.425251,99.175023
+220,5386653,Private room,Ciudad de México,13.0,19.415246,99.177227
+221,5910426,Private room,Mexico City,34.0,19.413220000000003,99.178628
+222,10781652,Private room,Ciudad de México,21.0,19.432973,99.17046
+223,6026506,Private room,Mexico City,27.0,19.412089,99.176679
+224,6300877,Private room,Ciudad de México,80.0,19.427042,99.174073
+225,11343168,Private room,Ciudad de México,34.0,19.427899,99.171173
+226,7789320,Private room,Ciudad de México,20.0,19.414192,99.175398
+227,13302390,Private room,Ciudad de México,10.0,19.411410999999998,99.179296
+229,9429370,Private room,Ciudad de México,41.0,19.414199,99.171952
+230,11887396,Private room,Mexico City,52.0,19.407764999999998,99.178918
+231,2521698,Private room,Mexico City,98.0,19.412078,99.176679
+232,7764344,Private room,Ciudad de México,45.0,19.430702,99.163912
+233,9291120,Private room,Ciudad de México,22.0,19.433220000000002,99.16568
+234,13668039,Private room,Ciudad de México,10.0,19.431955,99.164772
+235,5979450,Private room,México,31.0,19.412519,99.176214
+236,11950524,Private room,Ciudad de México,18.0,19.428668,99.173491
+237,1492972,Private room,Ciudad de México,18.0,19.410421,99.178068
+238,5230043,Private room,Cuauhtémoc,34.0,19.431696,99.166349
+239,7387910,Private room,Ciudad de México,23.0,19.431498,99.164407
+240,12222065,Private room,Ciudad de México,23.0,19.432059,99.167772
+241,11818906,Private room,Mexico City,31.0,19.41181,99.176002
+242,9012892,Private room,Ciudad de México,31.0,19.432464000000003,99.167074
+243,7277187,Private room,Ciudad de México,16.0,19.43153,99.171288
+244,6144727,Private room,Ciudad de México,39.0,19.428707,99.172224
+245,5028620,Private room,Ciudad de México,46.0,19.419995999999998,99.177187
+246,11530432,Private room,Ciudad de México,23.0,19.413565,99.179743
+247,10970128,Private room,Ciudad de México,26.0,19.434538,99.167837
+248,12972081,Private room,Ciudad de México,12.0,19.411143,99.181298
+249,13496061,Private room,Mexico City,12.0,19.411521,99.18123
+250,4516607,Private room,Mexico City,41.0,19.411768,99.174375
+251,13186164,Private room,Ciudad de México,41.0,19.412457,99.175929
+252,11874962,Private room,Ciudad de México,16.0,19.383476,99.158574
+253,12517414,Private room,Ciudad de México,16.0,19.41327,99.17828
+254,13098943,Private room,Ciudad de México,84.0,19.410532999999997,99.176208
+255,11576104,Private room,Ciudad de México,20.0,19.416973000000002,99.177893
+256,3848018,Private room,Mexico City,21.0,19.410660999999998,99.176545
+257,9394568,Private room,Ciudad de México,29.0,19.411279,99.174522
+258,1221050,Private room,Mexico City,41.0,19.412075,99.177553
+259,14184695,Private room,Ciudad de México,43.0,19.414127,99.179406
+260,9841623,Private room,Ciudad de México,39.0,19.413254000000002,99.175943
+261,10682745,Private room,Ciudad de México,36.0,19.4108,99.182014
+262,10489418,Private room,Ciudad de México,21.0,19.407519,99.182022
+263,4998280,Private room,Ciudad de México,77.0,19.416473999999997,99.177471
+264,11982194,Private room,Ciudad de México,18.0,19.419347,99.177341
+266,11942158,Private room,Ciudad de México,33.0,19.414434,99.171814
+267,11148703,Private room,Ciudad de México,41.0,19.411345999999998,99.17994
+268,12815057,Private room,Ciudad de México,84.0,19.412004999999997,99.173423
+269,11042536,Private room,Ciudad de México,25.0,19.416228,99.178094
+270,7206706,Private room,Ciudad de México,28.0,19.411976,99.176991
+271,11717231,Private room,Ciudad de México,28.0,19.410215,99.180051
+272,11418335,Private room,Ciudad de México,24.0,19.416859,99.17663
+273,11099845,Private room,Ciudad de México,34.0,19.411782000000002,99.175319
+274,5152399,Private room,Ciudad de México,20.0,19.409757,99.176916
+275,9841308,Private room,Ciudad de México,23.0,19.413078,99.180536
+276,9155035,Private room,Ciudad de México,20.0,19.411746,99.175794
+277,3410805,Private room,Mexico City,39.0,19.408061,99.182668
+278,6025951,Private room,Mexico City,41.0,19.411764,99.178053
+279,2733112,Private room,Mexico City,41.0,19.412684,99.175791
+280,4091848,Private room,Ciudad de México,23.0,19.430907,99.172278
+281,13715412,Private room,Ciudad de México,26.0,19.412578,99.175586
+282,8827494,Private room,Ciudad de México,45.0,19.414333,99.171507
+283,12320410,Private room,Ciudad de México,18.0,19.414174,99.178352
+284,12275578,Private room,Ciudad de México,42.0,19.412838,99.177109
+285,11849105,Private room,Ciudad de México,12.0,19.419916,99.172606
+286,12927924,Private room,Mexico City,26.0,19.399091000000002,99.168685
+287,10223524,Private room,Ciudad de México,20.0,19.379843,99.159447
+288,8128468,Private room,Del Valle Norte,24.0,19.400260999999997,99.162699
+289,8994328,Private room,Ciudad de México,23.0,19.411362,99.177737
+290,12367698,Private room,Del Valle Norte,20.0,19.398879,99.168996
+291,7443720,Private room,Del Valle Norte,15.0,19.393467,99.165694
+292,12782574,Private room,Ciudad de México,113.0,19.382704,99.170854
+293,3540570,Private room,Mexico City,15.0,19.398247,99.169095
+294,10991365,Private room,mexico,36.0,19.382087,99.166466
+295,6356949,Private room,México,28.0,19.412189,99.18089
+296,14355319,Private room,Ciudad de México,42.0,19.393162,99.166308
+297,11905914,Private room,Mexico City,96.0,19.351379,99.166962
+298,14186837,Private room,Ciudad de México,16.0,19.391920000000002,99.16626
+300,7330848,Private room,Ciudad de México,18.0,19.395032999999998,99.171001
+301,14304805,Private room,Del Valle Norte,28.0,19.401949,99.16241
+302,11756873,Private room,Ciudad de México,31.0,19.410853,99.177311
+303,11187379,Private room,Ciudad de México,14.0,19.386709,99.169769
+304,11036056,Private room,Ciudad de México,14.0,19.37162,99.171415
+305,11532681,Private room,Ciudad de México,50.0,19.379381,99.167847
+306,12929874,Private room,Mexico City,23.0,19.400667000000002,99.168854
+307,1654935,Private room,Mexico City,16.0,19.417167000000003,99.177346
+308,13846107,Private room,Ciudad de México,11.0,19.414514,99.172466
+309,11777452,Private room,Ciudad de México,41.0,19.395749,99.161761
+310,12797731,Private room,Ciudad de México,24.0,19.394631,99.163455
+311,12681507,Private room,Ciudad de México,11.0,19.371123,99.169962
+312,9524025,Private room,Ciudad de México,14.0,19.409779,99.180979
+313,14402982,Private room,Ciudad de México,22.0,19.385492000000003,99.167251
+314,6645069,Private room,Ciudad de México,23.0,19.431867,99.156784
+315,14470319,Private room,Ciudad de México,66.0,19.424822,99.167351
+316,13297817,Private room,Del Valle Norte,29.0,19.391030999999998,99.168097
+317,14254816,Private room,Del Valle Norte,34.0,19.394769,99.17018
+318,10782311,Private room,Ciudad de México,12.0,19.414154,99.178119
+319,13390004,Private room,Del Valle Norte,27.0,19.395917999999998,99.160295
+320,9525375,Private room,Ciudad de México,21.0,19.371411,99.175005
+321,14339353,Private room,Ciudad de México,52.0,19.350604,99.154561
+323,13728597,Private room,Ciudad de México,21.0,19.353709,99.163549
+324,6512539,Private room,Ciudad de México,23.0,19.353728,99.177622
+325,11894528,Private room,Mexico City,96.0,19.352789,99.166765
+326,8653961,Private room,Ciudad de México,459.0,19.357642000000002,99.159712
+327,13249825,Private room,Ciudad de México,26.0,19.346746,99.154559
+328,2519535,Private room,Mexico City,43.0,19.354058,99.163395
+329,11742636,Private room,Ciudad de México,33.0,19.34853,99.155978
+330,13301381,Private room,Ciudad de México,28.0,19.349456,99.155878
+331,12154557,Private room,Ciudad de México,28.0,19.349097,99.153397
+332,11119692,Private room,Ciudad de México ,14.0,19.371064999999998,99.170181
+333,12989806,Private room,Ciudad de México,16.0,19.356114,99.156242
+334,10343707,Private room,Ciudad de México,19.0,19.382535,99.170822
+335,725399,Private room,Mexico City,36.0,19.355504,99.164403
+336,7582942,Private room,Ciudad de México,20.0,19.35294,99.156967
+337,14177670,Private room,Ciudad de México,16.0,19.391633,99.171758
+338,10279030,Private room,Ciudad de México,23.0,19.350662,99.177608
+339,7873652,Private room,Coyoacán,56.0,19.347003,99.166645
+340,5173777,Private room,Ciudad de México,44.0,19.354109,99.163108
+341,13770968,Private room,Ciudad de México,15.0,19.354201999999997,99.152122
+342,11220608,Private room,Ciudad de México,14.0,19.388876,99.162766
+343,13899559,Private room,Ciudad de México,29.0,19.356957,99.160849
+344,1248431,Private room,Ciudad de México,54.0,19.344835,99.157859
+345,9939898,Private room,Ciudad de México,25.0,19.347038,99.173327
+346,12548433,Private room,Ciudad de México,16.0,19.392912,99.166036
+347,11204436,Private room,Mexico City,30.0,19.348381,99.1678
+348,9528273,Private room,Ciudad de México,34.0,19.352175,99.169122
+349,9435143,Private room,Ciudad de México,14.0,19.39435,99.162168
+350,6415338,Private room,Ciudad de México,18.0,19.345198,99.159711
+351,11803185,Private room,Ciudad de México,28.0,19.394704,99.16159
+352,12985240,Private room,Del Valle Norte,47.0,19.399635999999997,99.170096
+353,5470627,Private room,Mexico DF,24.0,19.395083,99.1701
+354,4604456,Private room,Mexico City,31.0,19.393276999999998,99.161826
+355,9881709,Private room,Del Valle Norte,23.0,19.395028,99.166962
+356,716741,Private room,Ciudad de México,28.0,19.349395,99.175608
+357,12543347,Private room,Ciudad de México,14.0,19.390673,99.169011
+358,4525241,Private room,Mexico City,14.0,19.381195,99.173397
+359,7198492,Private room,Mexico City,31.0,19.42867,99.157319
+360,10593785,Private room,df,20.0,19.390595,99.163878
+361,3987924,Private room,Ciudad de México,31.0,19.392796,99.163571
+362,3314993,Private room,Mexico City,16.0,19.436861999999998,99.142982
+363,12064563,Private room,Ciudad de México,20.0,19.384669,99.17041
+364,1944179,Private room,Mexico City,61.0,19.427905,99.159234
+365,12736697,Private room,Ciudad de México,16.0,19.379459,99.171601
+366,11011416,Private room,Ciudad de México,29.0,19.427815,99.159424
+367,10524633,Private room,Ciudad de México,30.0,19.429517,99.157621
+368,8756599,Private room,Ciudad de México,55.0,19.433316,99.186525
+369,6662892,Private room,Ciudad de México,23.0,19.398375,99.16521
+370,6994948,Private room,Del Valle Norte,18.0,19.400543,99.16164
+371,3869175,Private room,Mexico City,22.0,19.437281,99.142236
+372,307301,Private room,Mexico City,52.0,19.431117,99.196298
+373,11881307,Private room,Del Valle Norte,16.0,19.395892,99.167385
+374,11566401,Private room,Ciudad de México,13.0,19.387276,99.169995
+375,9578718,Private room,Ciudad de México,23.0,19.427338,99.153456
+376,13649816,Private room,Del Valle Norte,26.0,19.390583,99.164416
+377,10696274,Private room,Ciudad de México,67.0,19.438356,99.212208
+378,12087074,Private room,Ciudad de México,23.0,19.425210999999997,99.169016
+379,8779113,Private room,Colonia Juárez,67.0,19.42928,99.157008
+380,6349068,Private room,México,15.0,19.387183,99.167436
+381,11910634,Private room,Ciudad de México,10.0,19.394082,99.165739
+382,1570806,Private room,Mexico City,57.0,19.431282,99.155288
+383,5317885,Private room,Ciudad de México,41.0,19.432925,99.151898
+384,10332247,Private room,Ciudad de México,12.0,19.443956,99.143892
+385,9856613,Private room,Mexico City,26.0,19.426222,99.155126
+386,11464206,Private room,Colonia Juárez,20.0,19.429425,99.156471
+387,12366514,Private room,Del Valle Norte,20.0,19.395623,99.169977
+388,5708004,Private room,Ciudad de México,90.0,19.434310999999997,99.194033
+389,9940461,Private room,Ciudad de México,16.0,19.374142000000003,99.164799
+390,9015069,Private room,Colonia Juárez,31.0,19.43042,99.154832
+391,10021598,Private room,Ciudad de México,18.0,19.418965,99.152504
+392,7852796,Private room,Ciudad de México,25.0,19.378076,99.166885
+393,9516301,Private room,Mexico City,20.0,19.406546,99.172479
+394,6375397,Private room,Ciudad de México,20.0,19.415056,99.154088
+395,6337991,Private room,México,34.0,19.436726,99.193829
+396,5837676,Private room,Ciudad de México,52.0,19.430243,99.200227
+397,13987387,Private room,Ciudad de México,33.0,19.373293,99.185389
+398,14472514,Private room,Ciudad de México,20.0,19.403451999999998,99.174573
+399,3847595,Private room,Mexico City,37.0,19.410629999999998,99.173963
+400,12807418,Private room,Ciudad de México,28.0,19.401111,99.172875
+401,13245153,Private room,Ciudad de México,16.0,19.401597,99.171621
+402,6288769,Private room,Escandón I Sección,26.0,19.402411999999998,99.180671
+403,13101167,Private room,Ciudad de México,53.0,19.432737,99.183548
+404,11931045,Private room,Ciudad de México,14.0,19.422114999999998,99.152574
+405,5415152,Private room,Ciudad de México,26.0,19.408422,99.171868
+406,13392070,Private room,Ciudad de México,26.0,19.433259,99.186919
+407,2257525,Private room,Mexico City,16.0,19.402417,99.181813
+408,10577587,Private room,Ciudad de México,21.0,19.399584,99.172225
+409,13059660,Private room,Mexico City,36.0,19.417399,99.149048
+410,14484648,Private room,Ciudad de México,44.0,19.402682000000002,99.170665
+411,13283859,Private room,Ciudad de México,15.0,19.421912,99.153026
+412,12190835,Private room,Mexico City,48.0,19.408722,99.169874
+413,14317545,Private room,Ciudad de México,16.0,19.420029,99.152348
+414,7633535,Private room,Ciudad de México,31.0,19.415382,99.168673
+415,4856567,Private room,Ciudad de México,124.0,19.406154,99.172452
+416,1144478,Private room,Mexico City,14.0,19.423963,99.151641
+417,14417024,Private room,Ciudad de México,34.0,19.409795000000003,99.171986
+418,6512041,Private room,Ciudad de México,53.0,19.434595,99.208082
+419,10888574,Private room,Ciudad de México,31.0,19.407524,99.168793
+420,11321588,Private room,Ciudad de México,15.0,19.408264000000003,99.169119
+421,11592212,Private room,Ciudad de México,28.0,19.403723,99.170502
+422,10765942,Private room,Ciudad de México,41.0,19.400308,99.174308
+423,12867765,Private room,Ciudad de México,16.0,19.423454,99.152078
+424,12491402,Private room,Ciudad de México,21.0,19.422594,99.150587
+425,9371118,Private room,Ciudad de México,14.0,19.404481,99.180587
+426,13815080,Private room,Ciudad de México,49.0,19.429822,99.204338
+427,5345090,Private room,Ciudad de México,15.0,19.422584,99.146441
+428,6453236,Private room,Ciudad de México,15.0,19.396921,99.146496
+429,5479331,Private room,Ciudad de México,41.0,19.409024,99.174417
+430,9769934,Private room,Ciudad de México,14.0,19.405467,99.17981
+431,11356565,Private room,Ciudad de México,36.0,19.413856,99.171253
+432,6778555,Private room,Escandón II Sección,28.0,19.403256,99.175426
+433,13126921,Private room,Mexico City,20.0,19.403218,99.17452
+434,4388360,Private room,Mexico City,14.0,19.405629,99.170278
+435,13753916,Private room,Mexico City,28.0,19.416206,99.168753
+436,375032,Private room,Mexico City,72.0,19.407463,99.174816
+437,13396933,Private room,Ciudad de México,21.0,19.40511,99.180125
+438,9027813,Private room,Ciudad de México,39.0,19.408519000000002,99.175575
+439,7033195,Private room,México City,113.0,19.411051,99.17204
+440,1403168,Private room,Mexico City,29.0,19.404265,99.179276
+441,4896227,Private room,Ciudad de México,18.0,19.399598,99.171606
+442,11872924,Private room,Ciudad de México,16.0,19.402489000000003,99.178532
+443,8648930,Private room,Ciudad de México,23.0,19.398657,99.17496
+444,14030463,Private room,Ciudad de México,21.0,19.407584,99.171623
+445,9689920,Private room,Ciudad de México,25.0,19.405874,99.169814
+446,9115665,Private room,Ciudad de México,31.0,19.402673,99.175004
+447,11980742,Private room,Ciudad de México,28.0,19.402069,99.172456
+448,11166069,Private room,Ciudad de México,18.0,19.399673,99.172362
+449,6272639,Private room,México,69.0,19.411468,99.171496
+450,5549972,Private room,Ciudad de México,34.0,19.411057,99.170068
+452,830457,Private room,Ciudad de México,27.0,19.401122,99.180254
+453,12364759,Private room,Ciudad de México,15.0,19.40766,99.174789
+454,127220,Private room,Ciudad de México,84.0,19.405235,99.172719
+455,6657150,Private room,Escandón II Sección,19.0,19.402770999999998,99.172952
+456,13472732,Private room,Ciudad de México,34.0,19.415263,99.166106
+457,7196297,Private room,Ciudad de México,26.0,19.41382,99.170295
+458,14058154,Private room,Ciudad de México,32.0,19.413922,99.16914
+459,14140836,Private room,Ciudad de México,34.0,19.414976,99.168703
+460,8761062,Private room,Ciudad de México,50.0,19.403071,99.174117
+461,910000,Private room,Ciudad de México,47.0,19.413609,99.169627
+462,4264369,Private room,Mexico City,18.0,19.404344000000002,99.17596
+464,6882414,Private room,Ciudad de México,14.0,19.404370999999998,99.176032
+465,3874995,Private room,Mexico City,36.0,19.430651,99.189092
+466,7493377,Private room,Ciudad de México,153.0,19.435042000000003,99.192828
+467,2702990,Private room,Ciudad de México,44.0,19.432425,99.190215
+468,9217969,Private room,Ciudad de México,36.0,19.432191,99.182327
+469,7133588,Private room,Ciudad de México,36.0,19.411032000000002,99.170193
+470,3279258,Private room,Mexico City,34.0,19.42912,99.185013
+471,5727417,Private room,Ciudad de México,39.0,19.406727,99.172874
+472,10854922,Private room,Ciudad de México,56.0,19.414814,99.167923
+473,6448066,Private room,Ciudad de México,22.0,19.354360999999997,99.177495
+474,4378578,Private room,Mexico City,103.0,19.408179,99.170583
+475,9820300,Private room,Ciudad de México,15.0,19.44614,99.213321
+476,6958392,Private room,Ciudad de México,49.0,19.4348,99.189746
+477,4527255,Private room,Mexico City,44.0,19.433318,99.205173
+478,4391108,Private room,Mexico City,52.0,19.43253,99.208581
+479,4252077,Private room,Mexico City,98.0,19.43025,99.199043
+480,13329130,Private room,Ciudad de México,205.0,19.42914,99.191696
+481,3661570,Private room,Mexico City,77.0,19.405923,99.171389
+482,13786185,Private room,Ciudad de México,35.0,19.433378,99.186505
+483,3168115,Private room,Ciudad de México,24.0,19.405547,99.175803
+484,491428,Private room,Mexico City,48.0,19.429942,99.202241
+485,2092538,Private room,Mexico City,97.0,19.429775,99.194145
+486,13771066,Private room,Ciudad de México,37.0,19.415944,99.169672
+487,1451214,Private room,Mexico City,41.0,19.407992999999998,99.17179
+488,13641884,Private room,Ciudad de México,77.0,19.436245,99.209426
+489,12592047,Private room,Ciudad de México,39.0,19.415999,99.168283
+490,3637873,Private room,Mexico City,26.0,19.432019,99.208345
+491,13506616,Private room,Ciudad de México,205.0,19.434989,99.190762
+492,10169470,Private room,Ciudad de México,91.0,19.428953,99.193315
+493,7874510,Private room,Ciudad de México,52.0,19.436607000000002,99.184168
+494,11147914,Private room,Ciudad de México,45.0,19.429385999999997,99.191856
+495,6376286,Private room,Mexico City,280.0,19.431923,99.207691
+496,1780789,Private room,Mexico City,34.0,19.411093,99.167887
+497,10406530,Private room,Ciudad de México,47.0,19.435482,99.188775
+498,13771354,Private room,Ciudad de México,34.0,19.414942,99.169931
+499,7034452,Private room,Ciudad de México,100.0,19.430446,99.192734
+500,7988187,Private room,Ciudad de México,41.0,19.430248000000002,99.19705
+501,10413327,Private room,Ciudad de México,36.0,19.414237,99.167297
+502,11420811,Private room,Ciudad de México,26.0,19.414248,99.169534
+503,10594692,Private room,Ciudad de México,49.0,19.411099,99.172069
+504,8666503,Private room,Ciudad de México,37.0,19.415975,99.167733
+505,10763252,Private room,Ciudad de México,124.0,19.408637,99.171946
+506,1704455,Private room,Mexico City,52.0,19.414516,99.167904
+507,6450184,Private room,Ciudad de México,34.0,19.410566,99.170393
+508,7177962,Private room,Ciudad de México,34.0,19.40915,99.17173
+509,3167973,Private room,Mexico City,20.0,19.40695,99.17455
+510,6914989,Private room,Ciudad de México,76.0,19.410328,99.171282
+511,5673275,Private room,Ciudad de México,26.0,19.410176999999997,99.168927
+512,9955116,Private room,Ciudad de México,20.0,19.405844000000002,99.175212
+513,5078047,Private room,Ciudad de México,29.0,19.413570999999997,99.169731
+514,678650,Private room,Mexico City,46.0,19.411489000000003,99.171208
+515,4973910,Private room,Ciudad de México,45.0,19.404795999999997,99.170349
+516,4285390,Private room,Mexico City,23.0,19.408516,99.171268
+517,6800751,Private room,Ciudad de México,36.0,19.406357,99.173017
+518,8582466,Private room,Ciudad de México,28.0,19.411706,99.167424
+519,10312458,Private room,Ciudad de México,20.0,19.408675,99.17164
+520,1602563,Private room,Mexico City,28.0,19.405491,99.174981
+521,13057029,Private room,Ciudad de México,24.0,19.406882999999997,99.170682
+522,10549526,Private room,Ciudad de México,23.0,19.40917,99.173574
+523,8170964,Private room,Ciudad de México,688.0,19.41339,99.168509
+524,400048,Private room,Mexico City,52.0,19.405804999999997,99.175602
+525,6527505,Private room,Ciudad de México,28.0,19.406088,99.176524
+526,9139551,Private room,Ciudad de México,23.0,19.413572,99.169695
+527,11592116,Private room,Ciudad de México,18.0,19.357737,99.178555
+528,12794793,Private room,Ciudad de México,29.0,19.413063,99.168832
+529,1550438,Private room,Mexico City,26.0,19.412823,99.170282
+530,12231823,Private room,Ciudad de México,18.0,19.356225,99.178983
+531,10009914,Private room,Ciudad de México,23.0,19.403361,99.170517
+532,11296964,Private room,Ciudad de México,62.0,19.41275,99.170648
+533,14140599,Private room,Ciudad de México,37.0,19.41541,99.168529
+534,10272387,Private room,Ciudad de México,28.0,19.410982,99.169789
+535,4021346,Private room,Mexico City,28.0,19.410631,99.167282
+536,9217038,Private room,Ciudad de México,30.0,19.348948,99.180606
+538,14008703,Private room,Ciudad de México,28.0,19.399686,99.178434
+539,11607782,Private room,Ciudad de México,26.0,19.381662,99.190595
+541,4730329,Private room,Ciudad de México,47.0,19.380628,99.19069
+542,1363110,Private room,Mexico City,29.0,19.391447,99.187012
+543,3000163,Private room,Mexico City,22.0,19.3891,99.181984
+545,14013644,Private room,México D.F ,18.0,19.399055999999998,99.181997
+547,6746548,Private room,Ciudad de México,31.0,19.381210999999997,99.185814
+549,14123187,Private room,Ciudad de México,13.0,19.379599,99.15081
+550,10709634,Private room,Ciudad de México,21.0,19.386041,99.188545
+551,12984291,Private room,Niños Heroes,14.0,19.388284,99.14633
+552,2979950,Private room,Mexico City,22.0,19.389735,99.183275
+553,13666188,Private room,Ciudad de México,31.0,19.383419,99.1911
+554,14401350,Private room,Ciudad de México,36.0,19.388448,99.14397
+555,10549402,Private room,Ciudad de México,18.0,19.388396,99.184636
+557,8403483,Private room,Ciudad de México,16.0,19.381372,99.151603
+558,9750910,Private room,Ciudad de México,13.0,19.391882,99.187306
+559,7826711,Private room,Ciudad de México,31.0,19.390099,99.184158
+561,9115680,Private room,Ciudad de México,16.0,19.438277,99.213402
+562,11604121,Private room,Ciudad de México,26.0,19.387148999999997,99.186709
+564,11739319,Private room,Ciudad de México,22.0,19.390356,99.182312
+567,13764427,Private room,Ciudad de México,13.0,19.380065,99.19048
+568,13840242,Private room,Ciudad de México,31.0,19.437698,99.201975
+569,7517675,Private room,Ciudad de México,28.0,19.391167000000003,99.182071
+570,11014063,Private room,Ciudad de México,14.0,19.390059,99.186626
+571,11114387,Private room,Ciudad de México,23.0,19.399593,99.177781
+572,7221849,Private room,México,21.0,19.386159,99.186812
+573,6895042,Private room,Ciudad de México,23.0,19.390361,99.174821
+574,12541533,Private room,Ciudad de México,41.0,19.389103,99.174848
+575,9645920,Private room,Ciudad de México,23.0,19.395781,99.177715
+576,3033052,Private room,Ciudad de México,29.0,19.392272,99.174715
+577,10388527,Private room,Ciudad de México,43.0,19.363367,99.187795
+578,10728196,Private room,Ciudad de México,18.0,19.368397,99.187958
+579,13604903,Private room,Ciudad de México,20.0,19.394751,99.178697
+580,2730883,Private room,Mexico City,15.0,19.394138,99.176861
+581,8034300,Private room,Ciudad de México,34.0,19.396382,99.174536
+582,9975837,Private room,Ciudad de México,18.0,19.366203,99.186848
+583,10101401,Private room,Ciudad de México,208.0,19.391929,99.174365
+585,8860617,Private room,Ciudad de México,18.0,19.377620999999998,99.180815
+586,12782520,Private room,Ciudad de México,18.0,19.390494,99.179769
+587,13847163,Private room,Ciudad de México,26.0,19.390333,99.181079
+588,11284555,Private room,México ,34.0,19.376091,99.183365
+589,11324003,Private room,Ciudad de México,16.0,19.376675,99.181567
+590,9561275,Private room,Ciudad de México,21.0,19.383693,99.173128
+591,10247589,Private room,Ciudad de México,36.0,19.38859,99.179139
+592,12253989,Private room,Ciudad de México,11.0,19.386685999999997,99.179389
+593,11709360,Private room,Ciudad de México,20.0,19.365477,99.183309
+594,1344188,Private room,Mexico City,42.0,19.395038,99.17565
+595,8723285,Private room,Ciudad de México,23.0,19.388091,99.179621
+596,5200568,Private room,Ciudad de México,12.0,19.395617,99.178245
+597,11161332,Private room,Ciudad de México,28.0,19.376414,99.181593
+598,9392923,Private room,Ciudad de México,23.0,19.374368,99.182016
+599,6257700,Private room,Ciudad de México,13.0,19.38717,99.175654
+600,12185839,Private room,Ciudad de México,62.0,19.39612,99.178486
+601,2349800,Private room,Mexico City,67.0,19.368151,99.182823
+602,12608995,Private room,CIUDAD DE MEXICO,32.0,19.396233,99.179432
+603,1377895,Private room,Mexico City,19.0,19.386504000000002,99.177365
+604,9662880,Private room,Ciudad de México,23.0,19.391436,99.176108
+605,13752821,Private room,Ciudad de México,20.0,19.396489000000003,99.177667
+606,171109,Private room,Mexico City,23.0,19.39549,99.176164
+607,14484551,Private room,Ciudad de México,37.0,19.390728,99.175919
+608,13971523,Private room,Ciudad de México,31.0,19.39624,99.177126
+609,8210287,Private room,Ciudad de México,28.0,19.428834,99.157714
+610,13876894,Private room,Colonia Juárez,26.0,19.432266000000002,99.155214
+611,10015742,Private room,Colonia Juárez,28.0,19.427313,99.156847
+612,1380783,Private room,Mexico City,93.0,19.427429999999998,99.193074
+613,14185415,Private room,Ciudad de México,26.0,19.406085,99.162014
+614,9901313,Private room,Ciudad de México,103.0,19.427754,99.157965
+615,11864976,Private room,Ciudad de México,30.0,19.423417999999998,99.168199
+618,9367115,Private room,Ciudad de México,15.0,19.374382,99.156093
+619,10747755,Private room,Ciudad de México,20.0,19.427587,99.157198
+620,10341363,Private room,Ciudad de México,28.0,19.41716,99.163484
+621,10291007,Private room,Colonia Juárez,36.0,19.425441,99.169784
+622,6884621,Private room,Colonia Juárez,23.0,19.420977,99.174712
+625,14127372,Private room,Ciudad de México,125.0,19.423217,99.172885
+626,13623301,Private room,Ciudad de México,26.0,19.428601,99.159374
+628,13605033,Private room,Ciudad de México,20.0,19.431499,99.155923
+629,12337411,Private room,Ciudad de México,27.0,19.376586,99.156142
+631,7276571,Private room,Ciudad de México,14.0,19.375767,99.161258
+632,2716649,Private room,Ciudad de México,93.0,19.425473999999998,99.169537
+633,12137692,Private room,Colonia Juárez,12.0,19.429278,99.156359
+634,12753769,Private room,Colonia Juárez,14.0,19.42343,99.170609
+635,4751563,Private room,Ciudad de México,23.0,19.424007999999997,99.16886
+636,13796240,Private room,Colonia Juárez,20.0,19.424682,99.159968
+637,13574178,Private room,Ciudad de México,26.0,19.403827,99.165874
+640,7871236,Private room,Ciudad de México,23.0,19.426712,99.166166
+641,14470533,Private room,Ciudad de México,66.0,19.424259,99.165997
+642,14341631,Private room,Colonia Juárez,34.0,19.422179,99.173871
+643,1589621,Private room,Mexico City,26.0,19.428872,99.155145
+645,3906082,Private room,Mexico City,45.0,19.38619,99.157369
+646,8596239,Private room,Ciudad de México,16.0,19.389219,99.153881
+647,14374678,Private room,Ciudad de México,34.0,19.3911,99.154718
+648,2188749,Private room,Mexico City,23.0,19.394018,99.158694
+649,13032063,Private room,Ciudad de México,19.0,19.401618,99.160598
+650,3074692,Private room,Ciudad de México,39.0,19.402333,99.148219
+651,13878965,Private room,Ciudad de México,10.0,19.389657999999997,99.150401
+652,4930220,Private room,Ciudad de México,11.0,19.38692,99.155322
+653,3876420,Private room,Mexico City,16.0,19.391489,99.158293
+654,5464228,Private room,Mexico City,15.0,19.402963,99.15026
+655,12149175,Private room,Ciudad de México,23.0,19.393025,99.15612
+656,10460162,Private room,Ciudad de México,23.0,19.383582,99.159277
+657,14465119,Private room,Ciudad de México,44.0,19.396660999999998,99.15283
+658,13844131,Private room,Ciudad de México,20.0,19.40103,99.158925
+659,7603115,Private room,Ciudad de México,20.0,19.401745000000002,99.15937
+660,13635405,Private room,Mexico City,20.0,19.385154999999997,99.156932
+661,10524007,Private room,Ciudad de México,18.0,19.39038,99.151468
+662,6793344,Private room,Ciudad de México,25.0,19.397309,99.148935
+663,393788,Private room,Mexico City,412.0,19.405865,99.158566
+664,14013213,Private room,Ciudad de México,19.0,19.397695000000002,99.157847
+665,5511437,Private room,Mexico City,14.0,19.396653,99.15661
+666,12255239,Private room,Ciudad de México,28.0,19.391560000000002,99.151201
+667,6704792,Private room,Ciudad de México,45.0,19.396559,99.158492
+668,13348269,Private room,Ciudad de México,20.0,19.395149,99.150842
+669,9975020,Private room,Ciudad de México,12.0,19.385293,99.156666
+670,9281237,Private room,,15.0,19.382257,99.159088
+671,14451083,Private room,Ciudad de México,16.0,19.404076,99.160475
+672,6501879,Private room,Ciudad de México,23.0,19.392119,99.15805
+673,13496337,Private room,Ciudad de México,19.0,19.396139,99.160702
+674,12446819,Private room,Ciudad de México,16.0,19.404937,99.164798
+675,10997176,Private room,Ciudad de México,20.0,19.404457999999998,99.158942
+676,13020156,Private room,Ciudad de México,16.0,19.401913,99.160772
+677,10852232,Private room,Ciudad de México,16.0,19.404422,99.167796
+678,13899400,Private room,Ciudad de México,11.0,19.391187,99.150484
+679,3343560,Private room,Ciudad de México,31.0,19.400738,99.148833
+680,14125509,Private room,Benito Juárez,31.0,19.395723,99.159795
+681,9690120,Private room,Ciudad de México,26.0,19.409264,99.159353
+684,9113994,Private room,Ciudad de México,23.0,19.407609,99.166029
+685,13044110,Private room,Ciudad de México,23.0,19.385563,99.158283
+686,12784208,Private room,Ciudad de México,36.0,19.409006,99.167068
+687,9652375,Private room,Ciudad de México,19.0,19.393746,99.155248
+688,9739057,Private room,Ciudad de México,21.0,19.410524,99.162351
+689,11392847,Private room,México,72.0,19.415765,99.159602
+690,4719159,Private room,Mexico City,26.0,19.410662,99.163596
+691,7499761,Private room,Ciudad de México,15.0,19.402447,99.145144
+692,1086140,Private room,Mexico City,23.0,19.406671,99.163938
+693,7885110,Private room,Ciudad de México,16.0,19.390439,99.154552
+694,9404435,Private room,Ciudad de México,16.0,19.391366,99.149672
+695,5762333,Private room,Ciudad de México,19.0,19.404787,99.162375
+696,7172853,Private room,Ciudad de México,19.0,19.403406,99.162534
+697,11553394,Private room,Ciudad de México,15.0,19.417051,99.161299
+698,6894076,Private room,Ciudad de México,14.0,19.402603,99.166051
+699,13778279,Private room,Ciudad de México,16.0,19.402228,99.162075
+700,11104740,Private room,Ciudad de México,12.0,19.398149,99.157363
+701,4464002,Private room,Ciudad de México,33.0,19.402588,99.162322
+702,3206581,Private room,Mexico City,19.0,19.404456,99.163303
+703,4959796,Private room,Ciudad de México,16.0,19.405219,99.165356
+704,4449651,Private room,Mexico City,34.0,19.404270999999998,99.16524
+705,6831378,Private room,Ciudad de México,26.0,19.407646,99.166602
+706,1147926,Private room,Mexico City,23.0,19.400320999999998,99.150759
+707,11693785,Private room,Ciudad de México,23.0,19.409807,99.164766
+708,9541340,Private room,Ciudad de México,13.0,19.403343,99.164247
+709,4256949,Private room,Mexico City,36.0,19.40885,99.163244
+710,7886895,Private room,Ciudad de México,21.0,19.410178,99.161836
+711,12273654,Private room,Ciudad de México,20.0,19.409688,99.165398
+712,6240055,Private room,México,23.0,19.407379000000002,99.159513
+713,12784714,Private room,Ciudad de México,16.0,19.403979,99.157735
+714,6142198,Private room,Ciudad de México,15.0,19.409779,99.161204
+715,9080302,Private room,Ciudad de México,21.0,19.408519000000002,99.163785
+716,760912,Private room,Mexico City,41.0,19.409755,99.162103
+719,13171204,Private room,Ciudad de México,39.0,19.360046,99.161372
+721,13625548,Private room,Ciudad de México,23.0,19.405419000000002,99.14359
+722,4041762,Private room,Distrito Federal ,39.0,19.43787,99.167645
+723,3042675,Private room,Ciudad de México,34.0,19.402941000000002,99.167173
+724,3302855,Private room,Mexico City,106.0,19.442351000000002,99.164955
+725,14194677,Private room,Ciudad de México,21.0,19.363015,99.161772
+726,741564,Private room,Mexico City,16.0,19.405735,99.157762
+727,14369044,Private room,Ciudad de México,19.0,19.416218,99.138009
+729,12426474,Private room,Ciudad de México,12.0,19.439223000000002,99.163988
+732,7896944,Private room,Ciudad de México,28.0,19.409668,99.134729
+733,4909688,Private room,Ciudad de México,11.0,19.413612,99.14337
+734,3301194,Private room,Mexico City,143.0,19.440731,99.164088
+735,7972176,Private room,Ciudad de México,13.0,19.439594,99.160443
+736,9067281,Private room,Ciudad de México,20.0,19.361625,99.157271
+737,329532,Private room,Mexico City,46.0,19.410068,99.134338
+742,10711104,Private room,Ciudad de México,16.0,19.433695,99.160989
+743,13957332,Private room,Ciudad de México,24.0,19.435657,99.160994
+745,14351831,Private room,Ciudad de México,16.0,19.440355,99.159083
+746,3628076,Private room,Mexico City,26.0,19.359095,99.163203
+747,3301929,Private room,Ciudad de México,115.0,19.442157,99.163608
+748,8596092,Private room,Ciudad de México,18.0,19.438345,99.165265
+749,6586075,Private room,Ciudad de México,15.0,19.420848,99.141806
+750,9752165,Private room,Ciudad de México,16.0,19.441015,99.16493
+751,6590890,Private room,Ciudad de México,28.0,19.406439000000002,99.163876
+753,13973271,Private room,Ciudad de México,11.0,19.366298999999998,99.145441
+754,11657523,Private room,Ciudad de México,45.0,19.434686,99.208576
+756,13668302,Private room,Polanco V sección ,31.0,19.430866,99.18344
+757,10177656,Private room,Ciudad de México,23.0,19.369923,99.154408
+758,3950057,Private room,Ciudad de México,34.0,19.436771,99.208998
+761,14303976,Private room,Ciudad de México,44.0,19.429897,99.184224
+762,3701680,Private room,Ciudad de México,22.0,19.440396,99.165278
+763,13588344,Private room,Ciudad de México,56.0,19.430091,99.20077
+764,9777910,Private room,Ciudad de México,37.0,19.436544,99.205416
+765,3821765,Private room,Portales Norte,15.0,19.370936,99.152437
+766,13027832,Private room,Ciudad de México,20.0,19.435848999999997,99.183894
+767,4510561,Private room,Mexico,40.0,19.433798,99.183304
+768,12092119,Private room,Ciudad de México,33.0,19.361985,99.150487
+770,3088194,Private room,Mexico City,28.0,19.459771,99.133482
+771,7564490,Private room,Ciudad de México,13.0,19.365134,99.152093
+773,12365407,Private room,Ciudad de México,18.0,19.357924,99.149263
+776,8257301,Private room,Ciudad de México,21.0,19.369968,99.142521
+777,1657100,Private room,Mexico City,26.0,19.409211,99.163489
+780,13754789,Private room,Ciudad de México,31.0,19.434096,99.190066
+782,10588862,Private room,Ciudad de México,16.0,19.366728,99.153495
+783,14026778,Private room,Ciudad de México,26.0,19.436034,99.199912
+784,7874402,Private room,Ciudad de México,71.0,19.435855,99.183453
+786,12727055,Private room,Ciudad de México,26.0,19.432571,99.190927
+787,10576698,Private room,Ciudad de México,62.0,19.437104,99.205086
+788,5632011,Private room,Ciudad de México,46.0,19.430182000000002,99.201088
+789,4091882,Private room,Ciudad de México,13.0,19.354706,99.180347
+790,13974195,Private room,Ciudad de México,57.0,19.435666,99.15163
+791,11418084,Private room,Ciudad de México,28.0,19.436354,99.156021
+792,8699032,Private room,Ciudad de México,15.0,19.417762,99.162564
+796,579534,Private room,Mexico City,23.0,19.414841,99.156131
+798,12871264,Private room,Ciudad de México,29.0,19.412360999999997,99.166292
+799,2601887,Private room,Mexico City,31.0,19.416647,99.162253
+811,3932284,Private room,Ciudad de México,164.0,19.432676,99.15585
+812,6612793,Private room,Ciudad de México,38.0,19.416512,99.166859
+814,11394352,Private room,Ciudad de México,37.0,19.418764000000003,99.164923
+816,13432582,Private room,Ciudad de México,20.0,19.390079999999998,99.143345
+817,5021012,Private room,Ciudad de México,23.0,19.41839,99.161933
+820,9976238,Private room,Ciudad de México,16.0,19.436963000000002,99.15295
+824,14008902,Private room,Ciudad de México,36.0,19.419649,99.159613
+826,10283418,Private room,Cuautitlán,21.0,19.419401999999998,99.160529
+827,10906732,Private room,Ciudad de México,28.0,19.423641,99.157284
+828,3577419,Private room,Mexico City,52.0,19.429457,99.169675
+830,325779,Private room,Mexico City,23.0,19.41629,99.161626
+831,7630507,Private room,Ciudad de México,13.0,19.423941,99.156729
+832,13728202,Private room,Ciudad de México,22.0,19.419041,99.159075
+833,11774860,Private room,Ciudad de México,34.0,19.4227,99.158833
+835,12324270,Private room,Ciudad de México,36.0,19.420556,99.161638
+836,4251987,Private room,Mexico City,34.0,19.416828,99.157826
+837,1919273,Private room,Mexico City,21.0,19.422096,99.168859
+838,7092631,Private room,Ciudad de México,20.0,19.419397,99.171931
+839,8335657,Private room,Ciudad de México,15.0,19.419617000000002,99.158043
+840,8985163,Private room,Ciudad de México,21.0,19.417885000000002,99.15954
+841,12891732,Private room,Ciudad de México,62.0,19.417613,99.160718
+842,4000119,Private room,Mexico City,34.0,19.42164,99.168341
+843,8090193,Private room,Ciudad de México,23.0,19.417522,99.161543
+844,13509000,Private room,Ciudad de México,29.0,19.420167000000003,99.173083
+845,6028324,Private room,Ciudad de México,23.0,19.418953,99.156921
+846,4090649,Private room,Mexico City,21.0,19.417961,99.161348
+848,10035795,Private room,Ciudad de México,25.0,19.423859,99.15924
+850,5136355,Private room,Ciudad de México,25.0,19.417088,99.163625
+852,12522545,Private room,Ciudad de México,20.0,19.423443,99.157525
+854,8807230,Private room,Ciudad de México,18.0,19.420698,99.155788
+855,14389406,Private room,Ciudad de México,15.0,19.420239000000002,99.163287
+856,10042153,Private room,Cuauhtémoc ,16.0,19.419035,99.160424
+857,11825682,Private room,Ciudad de México,11.0,19.417638,99.160555
+859,13223794,Private room,Ciudad de México,31.0,19.413137,99.155777
+861,13318589,Private room,Ciudad de México,62.0,19.417888,99.162123
+862,10865029,Private room,Ciudad de México,18.0,19.413632999999997,99.159276
+863,5863028,Private room,Ciudad de México,34.0,19.41891,99.158429
+864,9591574,Private room,Ciudad de México,144.0,19.415143,99.164347
+865,13029428,Private room,Mexico City,20.0,19.422353,99.159435
+866,12949287,Private room,Ciudad de México,14.0,19.418692999999998,99.157824
+867,12793353,Private room,Ciudad de México,33.0,19.420115,99.161755
+868,3319324,Private room,Ciudad de México,31.0,19.412669,99.160588
+869,13378172,Private room,Ciudad de México,42.0,19.411702,99.165779
+870,8227624,Private room,Ciudad de México,23.0,19.414087,99.159458
+871,5135689,Private room,Ciudad de México,25.0,19.415623999999998,99.163505
+872,11224664,Private room,Ciudad de México,28.0,19.419034,99.170789
+873,12892319,Private room,Ciudad de México,41.0,19.420258999999998,99.158946
+874,13884300,Private room,Ciudad de México,25.0,19.421402,99.167876
+875,13621628,Private room,Ciudad de México,50.0,19.418438000000002,99.162725
+876,12828822,Private room,Ciudad de México,40.0,19.419697,99.164933
+877,12914316,Private room,Ciudad de México,57.0,19.415975,99.156165
+878,13943114,Private room,Ciudad de México,21.0,19.41787,99.165546
+879,7621246,Private room,Ciudad de México,28.0,19.422724,99.162353
+880,4793981,Private room,Ciudad de México,31.0,19.414118,99.156139
+881,13240114,Private room,Ciudad de México,37.0,19.422963,99.164507
+882,6574528,Private room,Ciudad de México,39.0,19.420238,99.173468
+883,9779904,Private room,Ciudad de México,29.0,19.422034,99.158705
+884,6327934,Private room,Ciudad de México,26.0,19.424988,99.154824
+886,3938183,Private room,Mexico City,62.0,19.419166,99.162155
+887,11140958,Private room,Ciudad de México,25.0,19.423347,99.158697
+888,5722652,Private room,Ciudad de México,46.0,19.416498999999998,99.15925
+889,3311971,Private room,Ciudad de México,70.0,19.423794,99.155368
+890,5136408,Private room,Ciudad de México,15.0,19.41786,99.162215
+891,9153157,Private room,Ciudad de México,31.0,19.424293,99.159484
+892,11042504,Private room,Ciudad de México,52.0,19.422179999999997,99.157105
+893,11950672,Private room,Ciudad de México,24.0,19.420583999999998,99.175998
+894,10711226,Private room,Ciudad de México,22.0,19.422693,99.164993
+895,6822349,Private room,Ciudad de México,46.0,19.41836,99.16673
+896,1668191,Private room,Mexico City,73.0,19.45658,99.144346
+897,7984591,Private room,San Simón,16.0,19.376348,99.14197
+900,5838818,Private room,Ciudad de México,16.0,19.371814,99.145325
+903,7967896,Private room,Ciudad de México,13.0,19.348839,99.14741
+905,4098137,Private room,Mexico City,80.0,19.421670000000002,99.170487
+906,8745460,Private room,Ciudad de México,23.0,19.412832,99.158914
+907,11339356,Private room,Ciudad de México,42.0,19.378358,99.14584
+909,7218216,Private room,Ciudad de México,26.0,19.356882000000002,99.148516
+910,13824671,Private room,Ciudad de México,22.0,19.355446,99.151119
+911,9284628,Private room,Ciudad de México,16.0,19.348387,99.147952
+914,13972910,Private room,Ciudad de México,36.0,19.354579,99.149738
+915,1222837,Private room,Mexico City,73.0,19.412733,99.158203
+917,10368450,Private room,Ciudad de México,28.0,19.345902,99.148018
+918,13466112,Private room,Ciudad de México,93.0,19.412132,99.1621
+920,9363640,Private room,Ciudad de México,23.0,19.355211999999998,99.146735
+921,347754,Private room,Mexico City,41.0,19.351793,99.149556
+925,6030414,Private room,Ciudad de México,28.0,19.416854,99.167199
+926,13715323,Private room,Ciudad de México,12.0,19.377233,99.14124
+927,8993306,Private room,Ciudad de México,35.0,19.419539999999998,99.170787
+928,957673,Private room,Mexico City,31.0,19.421888,99.16489
+929,11340701,Private room,Mexico City,57.0,19.351283,99.148098
+931,5194480,Private room,Ciudad de México,29.0,19.412566,99.183417
+932,457700,Private room,Mexico City,52.0,19.414715,99.185627
+933,6598487,Private room,Ciudad de México,22.0,19.363218,99.157189
+934,12580005,Private room,Ciudad de México,18.0,19.413806,99.187746
+935,2608105,Private room,Mexico City,29.0,19.410064000000002,99.18733
+936,12827079,Private room,Ciudad de México,197.0,19.364442,99.160601
+937,7602365,Private room,Ciudad de México,35.0,19.412682999999998,99.184503
+938,11189452,Private room,Ciudad de México,26.0,19.375637,99.184485
+939,9595823,Private room,Ciudad de México,25.0,19.414604,99.184873
+941,2749084,Private room,Mexico City,15.0,19.418286,99.178257
+943,8539886,Private room,Ciudad de México,13.0,19.369757,99.159277
+945,13828911,Private room,Ciudad de México,14.0,19.365148,99.158943
+946,12171387,Private room,Ciudad de México,20.0,19.377114000000002,99.184063
+947,6119255,Private room,Ciudad de México,23.0,19.408851000000002,99.186895
+948,8542522,Private room,Ciudad de México,36.0,19.367164000000002,99.156334
+951,2728417,Private room,Ciudad de México,14.0,19.411766,99.186869
+954,5251525,Private room,Ciudad de México,30.0,19.407943,99.189123
+955,14126385,Private room,Ciudad de México,258.0,19.408979000000002,99.189107
+956,14371044,Private room,Ciudad de México,36.0,19.41243,99.184948
+957,6119254,Private room,Ciudad de México,16.0,19.408243,99.188285
+958,9295773,Private room,Ciudad de México,11.0,19.457608999999998,99.144576
+959,4368899,Private room,Ciudad de México,24.0,19.411868,99.181827
+960,14451076,Private room,Ciudad de México,19.0,19.410069,99.185134
+961,6290325,Private room,San Miguel Chapultepec II Sección,28.0,19.41272,99.186891
+963,10408826,Private room,Ciudad de México,26.0,19.409781,99.185442
+965,13862626,Private room,Ciudad de México,26.0,19.419033,99.179106
+967,10090137,Private room,Ciudad de México,31.0,19.412249,99.185482
+968,11736490,Private room,Mexico City,14.0,19.452153,99.157184
+971,5385467,Private room,Ciudad de México,34.0,19.453454999999998,99.154988
+972,5933923,Private room,Ciudad de México,10.0,19.450349,99.15965
+975,10022759,Private room,Ciudad de México,28.0,19.408829,99.189485
+976,3812176,Private room,Mexico City,57.0,19.418245000000002,99.178234
+977,3049228,Private room,Mexico City,11.0,19.451593,99.156063
+979,7278674,Private room,Ciudad de México,28.0,19.412163,99.183826
+980,9883230,Private room,Ciudad de México,20.0,19.450464999999998,99.162531
+981,8541571,Private room,Ciudad de México,21.0,19.445376,99.160423
+982,13223793,Private room,Ciudad de México,18.0,19.445341,99.162926
+983,4439986,Private room,Ciudad de México,43.0,19.41185,99.182951
+984,4334377,Private room,Mexico City,10.0,19.451684,99.160877
+985,13976632,Private room,Ciudad de México,23.0,19.447516,99.153991
+986,3624106,Private room,Mexico City,31.0,19.412366,99.185259
+987,13281718,Private room,Ciudad de México,10.0,19.451805,99.15976
+988,13093208,Private room,Ciudad de México,16.0,19.41077,99.185611
+992,3751689,Private room,Mexico City,56.0,19.413593,99.18821
+995,1472774,Private room,Ciudad de México,31.0,19.411637,99.189891
+996,1462852,Private room,Mexico City,92.0,19.4072,99.189113
+998,12991274,Private room,Ciudad de México,11.0,19.445142,99.15783
+1001,3605835,Private room,Ciudad de México,16.0,19.449044,99.156786
+1016,10878747,Private room,Ciudad de México,11.0,19.451001,99.139646
+1023,10501458,Private room,Ciudad de México,31.0,19.379399,99.175781
+1026,12233292,Private room,Ciudad de México,12.0,19.377905,99.17718
+1028,8195136,Private room,Ciudad de México,26.0,19.375828,99.172808
+1030,6885758,Private room,Ciudad de México,26.0,19.374253,99.17727
+1033,5944939,Private room,Ciudad de México,15.0,19.450394,99.135352
+1038,13416101,Private room,Ciudad de México,12.0,19.36125,99.160014
+1040,5910275,Private room,Mexico City,24.0,19.41228,99.17778
+1043,7998444,Private room,Ciudad de México,11.0,19.390003,99.168289
+1044,9543129,Private room,Ciudad de México,45.0,19.363216,99.164454
+1049,11636762,Private room,Ciudad de México,25.0,19.361482000000002,99.16459
+1060,11941387,Private room,Mexico City,22.0,19.361797,99.164671
+1082,2345760,Private room,Mexico City,28.0,19.397826000000002,99.172936
+1149,12812191,Private room,Ciudad de México,23.0,19.412702,99.184179
+1219,8308196,Private room,Ciudad de México,25.0,19.421085,99.159462
+1478,6249767,Private room,México,22.0,19.424571,99.170168
+1615,13083874,Private room,Ciudad de México,46.0,19.412322,99.172367
+1688,7492595,Private room,Ciudad de México,11.0,19.440243,99.166189
+1689,7687977,Private room,Ciudad de México,33.0,19.426742,99.136368
+1692,4774754,Private room,Ciudad de México,31.0,19.428283,99.168826
+1693,3112616,Private room,Mexico City,57.0,19.406229999999997,99.175509
+1697,10615867,Private room,Ciudad de México,18.0,19.395726,99.168493
+1698,44616,Private room,Mexico City,98.0,19.410057000000002,99.176452
+1699,11552829,Private room,Ciudad de México,74.0,19.408941,99.169635
+1700,12848501,Private room,Ciudad de México,28.0,19.404255,99.175005
+1702,13225446,Private room,Ciudad de México,72.0,19.407334,99.173709
+1706,1228455,Private room,Mexico City,10.0,19.381919,99.150638
+1708,12831213,Private room,Ciudad de México,10.0,19.390045,99.169545
+1710,9908522,Private room,Ciudad de México,14.0,19.395748,99.185701
+1712,14105007,Private room,Ciudad de México,21.0,19.415208,99.168279
+1713,14196800,Private room,Ciudad de México,31.0,19.41226,99.179714
+1729,8033020,Private room,Ciudad de México,28.0,19.415531,99.155897
+1730,2288696,Private room,Mexico City,54.0,19.403644,99.182174
+1732,12147082,Private room,Benito Juárez,21.0,19.397568,99.177292
+1737,8801150,Private room,Ciudad de México,44.0,19.434376,99.1895
+1738,1476127,Private room,Ciudad de México,40.0,19.381248,99.16991
+1740,14282956,Private room,Mexico City,13.0,19.362918,99.156208
+1741,2351615,Private room,Mexico City,23.0,19.397170000000003,99.176557
+1742,6807546,Private room,Ciudad de México,26.0,19.413301,99.161187
+1744,13378940,Private room,Ejido del Centro,14.0,19.437373,99.132678
+1745,10853953,Private room,Ciudad de México,21.0,19.403253,99.162096
+1747,3843388,Private room,Mexico City,22.0,19.417892000000002,99.165565
+1748,7919625,Private room,Mexico City,23.0,19.410432,99.171507
+1752,8083709,Private room,Ciudad de México,26.0,19.431142,99.203386
+1753,6089097,Private room,Ciudad de México,16.0,19.392316,99.176053
+1759,12450608,Private room,Ciudad de México,16.0,19.371554,99.154891
+1763,14450945,Private room,Ciudad de México,23.0,19.348623999999997,99.161466
+1766,11603558,Private room,Ciudad de México,15.0,19.42865,99.133698
+1771,12071895,Private room,Ciudad de México,56.0,19.434664,99.194266
+1773,10189812,Private room,Ciudad de México,36.0,19.406994,99.194618
+1774,14304557,Private room,Ciudad de México,11.0,19.403192,99.150675
+1775,12285120,Private room,Ciudad de México,140.0,19.371078,99.182257
+1777,13841112,Private room,Cuatro de Marzo,26.0,19.407079,99.176574
+1778,11912756,Private room,Mexico City,96.0,19.352881,99.164859
+1779,13308973,Private room,Ciudad de México,11.0,19.403445,99.15914
+1780,7713707,Private room,Ciudad de México,29.0,19.427156,99.168208
+1782,7329601,Private room,Ciudad de México,28.0,19.406553,99.170794
+1783,13466517,Private room,Mexico City,36.0,19.4205,99.175785
+1784,8702074,Private room,Ciudad de México,20.0,19.430177,99.163547
+1786,10523780,Private room,Ciudad de México,20.0,19.434706,99.169827
+1787,12866533,Private room,Ciudad de México,23.0,19.410933,99.168786
+1793,6661195,Private room,Ciudad de México,11.0,19.412543,99.175061
+1794,13150042,Private room,Mexico City,15.0,19.389282,99.188303
+1796,11887441,Private room,Ciudad de México,36.0,19.414114,99.15921
+1798,935443,Private room,Mexico City,12.0,19.400192999999998,99.145153
+1799,7808411,Private room,Mexico City,20.0,19.409610999999998,99.179904
+1801,5229072,Private room,Ciudad de México,31.0,19.345085,99.161043
+1806,13411437,Private room,Ciudad de México,11.0,19.416935000000002,99.175741
+1808,13169197,Private room,Ciudad de México,36.0,19.417599,99.162252
+1809,10330088,Private room,Ciudad de México,26.0,19.415121,99.170006
+1810,12676942,Private room,Ciudad de México,26.0,19.430991,99.170403
+1811,7383989,Private room,Ciudad de México,36.0,19.434129000000002,99.161159
+1813,13083336,Private room,Ciudad de México,28.0,19.413444000000002,99.163554
+1815,14359439,Private room,Ciudad de México,20.0,19.417376,99.168375
+1816,10552021,Private room,Ciudad de México,52.0,19.409646,99.181288
+1817,3302366,Private room,Ciudad de México,132.0,19.442366,99.164753
+1821,10911504,Private room,Ciudad de México,36.0,19.384167,99.168508
+1822,13283510,Private room,Ciudad de México,103.0,19.396997,99.176603
+1828,14440574,Private room,Ciudad de México,20.0,19.430718,99.173648
+1829,12267907,Private room,Ciudad de México,45.0,19.435969,99.186231
+1832,4955354,Private room,México DF,23.0,19.396843,99.177483
+1833,5910528,Private room,Mexico City,36.0,19.413709,99.177161
+1835,2831698,Private room,Distrito Federal,90.0,19.432918,99.201499
+1836,7875188,Private room,Ciudad de México,31.0,19.411625,99.166936
+1837,6561000,Private room,Ciudad de México,14.0,19.394610999999998,99.150744
+1842,7697405,Private room,Del Valle Norte,20.0,19.395785,99.170115
+1846,12158590,Private room,Ciudad de México,10.0,19.380782999999997,99.164065
+1849,13005849,Private room,Ciudad de México,16.0,19.376863,99.154865
+1850,5945228,Private room,Ciudad de México,28.0,19.420917000000003,99.163286
+1852,9369600,Private room,Ciudad de México,47.0,19.360053,99.178573
+1863,7699671,Private room,Ciudad de México,52.0,19.431604999999998,99.164341
+1866,4475730,Private room,Ciudad de México,21.0,19.345217,99.158228
+1867,14276704,Private room,Ciudad de México,16.0,19.380105,99.161776
+1868,6864909,Private room,Ciudad de México,22.0,19.396226000000002,99.15044
+1870,4096427,Private room,Mexico City,103.0,19.413159,99.160343
+1872,13453244,Private room,Ciudad de México,30.0,19.409376,99.170951
+1874,6467721,Private room,Ciudad de México,31.0,19.363957,99.171487
+1875,13191784,Private room,Ciudad de México,14.0,19.34243,99.173608
+1878,10710471,Private room,Ciudad de México,36.0,19.363974,99.163579
+1879,6984094,Private room,Ciudad de México,19.0,19.407707000000002,99.175907
+1880,10252726,Private room,Ciudad de México,23.0,19.356945,99.191752
+1882,14427746,Private room,Ciudad de México,28.0,19.348026,99.151606
+1887,2406485,Private room,Mexico City,22.0,19.401706,99.17793
+1888,8226656,Private room,Ciudad de México,18.0,19.380464,99.140832
+1890,6767714,Private room,Ciudad de México,52.0,19.429932,99.170801
+1891,13318755,Private room,Ciudad de México,50.0,19.410383,99.180447
+1893,9813283,Private room,Ciudad de México,36.0,19.350196,99.149059
+1895,3011163,Private room,Mexico City,22.0,19.390121,99.18337
+1902,12168141,Private room,Ciudad de México,41.0,19.371269,99.188047
+1906,7163185,Private room,Ciudad de México,22.0,19.377942,99.180237
+1908,9223949,Private room,Ciudad de México,29.0,19.434406,99.192367
+1909,7693182,Private room,Ciudad de México,28.0,19.402649,99.155382
+1910,4509191,Private room,Ciudad de México,57.0,19.404522,99.167334
+1912,5280051,Private room,Colonia Juárez,15.0,19.423036,99.168297
+1916,14166338,Private room,Ciudad de México,41.0,19.431555,99.190651
+1919,5960660,Private room,Ciudad de México,31.0,19.415364999999998,99.171337
+1934,1601521,Private room,Mexico City,48.0,19.416114,99.16575
+1937,13585524,Private room,Ciudad de México,21.0,19.409647,99.182107
+1939,7082903,Private room,Escandón II Sección,56.0,19.399729999999998,99.1782
+1940,3789769,Private room,Ciudad de México,21.0,19.451707,99.160326
+1942,10851579,Private room,Ciudad de México,12.0,19.405361,99.168472
+1944,9729485,Private room,Ciudad de México,42.0,19.413261,99.17325
+1947,14471227,Private room,Ciudad de México,44.0,19.419175,99.156103
+1951,13789315,Private room,Ciudad de México,21.0,19.393357,99.162844
+1952,9530193,Private room,Ciudad de México,15.0,19.412466000000002,99.182398
+1954,8763909,Private room,Benito Juárez,11.0,19.394317,99.15653
+1958,13863962,Private room,Colonia Juárez,39.0,19.427341000000002,99.159258
+1959,10884493,Private room,Ciudad de México,41.0,19.431854,99.192606
+1960,12969457,Private room,Ciudad de México,28.0,19.407343,99.179608
+1961,14232125,Private room,Ciudad de México,28.0,19.415257999999998,99.15755
+1963,12701596,Private room,Ciudad de México,16.0,19.393831,99.175037
+1964,11183869,Private room,Ciudad de México,26.0,19.410768,99.17579
+1965,1514815,Private room,Mexico City,54.0,19.423757000000002,99.154552
+1966,8408560,Private room,Ciudad de México,24.0,19.420372,99.161267
+1967,895075,Private room,Mexico City,32.0,19.382517,99.171473
+1969,4463479,Private room,Mexico City,31.0,19.408945000000003,99.163773
+1970,9213397,Private room,Ciudad de México,34.0,19.396660999999998,99.178034
+1971,9975038,Private room,Ciudad de México,26.0,19.420918,99.162472
+1973,7025915,Private room,Ciudad de México,29.0,19.418511,99.159051
+1974,4832002,Private room,Ciudad de México,64.0,19.431822,99.177492
+1975,9237620,Private room,Ciudad de México,36.0,19.410738000000002,99.169621
+1976,4494729,Private room,Ciudad de México,47.0,19.429402,99.202979
+1981,6869939,Private room,Mexico City,23.0,19.393113,99.151627
+1983,14238305,Private room,Ciudad de México,31.0,19.404541000000002,99.164974
+1984,12023268,Private room,Ciudad de México,28.0,19.364956,99.144317
+1985,9632235,Private room,Ciudad de México,15.0,19.448755,99.106977
+1986,7749352,Private room,Ciudad de México,34.0,19.433878,99.169576
+1987,6185594,Private room,Cuahutemoc,36.0,19.422553,99.170043
+1988,13973169,Private room,Ciudad de México,41.0,19.412422,99.164213
+1989,6956618,Private room,Ciudad de México,26.0,19.414684,99.155414
+1992,12069176,Private room,Ciudad de México,14.0,19.385935999999997,99.177988
+1993,12322024,Private room,Ciudad de México,22.0,19.439852,99.142838
+1994,9416030,Private room,De los Deportes,15.0,19.384188,99.179608
+2000,7163822,Private room,Ciudad de México,18.0,19.405552,99.167433
+2001,10595504,Private room,Ciudad de México,19.0,19.370387,99.181527
+2002,2233440,Private room,Mexico City,256.0,19.40671,99.174675
+2006,325812,Private room,Mexico City,35.0,19.434531,99.146745
+2007,722057,Private room,Mexico City,36.0,19.355578,99.163321
+2008,8087876,Private room,Ciudad de México,16.0,19.350684,99.186135
+2009,6261421,Private room,Colonia Juárez,39.0,19.431478,99.153581
+2010,3766525,Private room,Mexico City,14.0,19.405858,99.170677
+2011,14333458,Private room,Ciudad de México,14.0,19.38883,99.181195
+2015,1051636,Private room,Mexico City,32.0,19.407376,99.168608
+2018,13802328,Private room,Ciudad de México,12.0,19.451726,99.149676
+2019,14314999,Private room,Ciudad de México,19.0,19.359613,99.150985
+2024,6451715,Private room,Ciudad de México,31.0,19.441978,99.166207
+2026,5030209,Private room,Ciudad de México,28.0,19.377987,99.15368
+2028,12953181,Private room,Ciudad de México ,13.0,19.418233999999998,99.171221
+2030,1428423,Private room,Mexico City,61.0,19.382206,99.171211
+2031,6607407,Private room,Ciudad de México,11.0,19.385305,99.164857
+2034,9317404,Private room,Ciudad de México,103.0,19.434396,99.187683
+2035,5251392,Private room,Ciudad de México,20.0,19.417089999999998,99.163836
+2037,14204902,Private room,Ciudad de México,10.0,19.355448000000003,99.153604
+2039,11061220,Private room,Ejido del Centro,18.0,19.438252,99.132472
+2040,4076841,Private room,Ciudad de México,27.0,19.4083,99.162718
+2041,7576746,Private room,Ciudad de México,39.0,19.346860999999997,99.172851
+2045,13172078,Private room,Ciudad de México,41.0,19.416493,99.180155
+2046,11903135,Private room,Ciudad de México,28.0,19.419972,99.161637
+2047,5719235,Private room,Ciudad de México,62.0,19.430039,99.200321
+2049,9595459,Private room,Ciudad de México,14.0,19.364403,99.160458
+2050,12796257,Private room,Mexico City,23.0,19.381704,99.185415
+2051,12601450,Private room,Ciudad de México,12.0,19.404061,99.174285
+2052,11649228,Private room,Ciudad de México,77.0,19.410225,99.172009
+2054,2284377,Private room,Mexico City,38.0,19.437177,99.207569
+2057,13117302,Private room,Colonia Juárez,16.0,19.426453,99.157504
+2060,5958345,Private room,Ciudad de México,23.0,19.411609,99.167442
+2062,12738366,Private room,Ciudad de México,38.0,19.394522,99.1547
+2064,9678140,Private room,Ciudad de México,23.0,19.370673,99.18417
+2069,6324180,Private room,México,26.0,19.406433,99.165191
+2070,10678558,Private room,Ciudad de México,82.0,19.41243,99.177685
+2074,14281294,Private room,Ciudad de México,56.0,19.433139,99.165747
+2076,14340166,Private room,Ciudad de México,20.0,19.418179000000002,99.179395
+2080,6768697,Private room,Ciudad de México,26.0,19.389129,99.166825
+2081,12192222,Private room,Ciudad de México,62.0,19.410239999999998,99.180952
+2084,7758466,Private room,Ciudad de México,23.0,19.392871,99.17487
+2085,7712515,Private room,Mexico City,20.0,19.440154999999997,99.164386
+2086,7178091,Private room,Ciudad de México,34.0,19.408336,99.170527
+2088,7275650,Private room,Ciudad de México,21.0,19.374413,99.161529
+2090,12603015,Private room,México City,20.0,19.42125,99.166795
+2092,9944588,Private room,Ciudad de México,20.0,19.41872,99.168812
+2093,11929245,Private room,Ciudad de México,13.0,19.43435,99.126113
+2094,6544944,Private room,Ciudad de México,29.0,19.413651,99.179237
+2095,10123224,Private room,Ciudad de México,28.0,19.355197,99.181403
+2096,9779657,Private room,Ciudad de México,27.0,19.423726000000002,99.157638
+2097,11735720,Private room,Ciudad de México,26.0,19.40996,99.166261
+2100,758602,Private room,Mexico City,39.0,19.374985000000002,99.182407
+2103,13260278,Private room,Ciudad de México,41.0,19.411610999999997,99.168209
+2104,8775880,Private room,Ciudad de México,20.0,19.400948,99.17394
+2106,5163432,Private room,Ciudad de México,18.0,19.403572,99.180786
+2107,7548173,Private room,Mexico City,15.0,19.431271,99.14175
+2109,14356261,Private room,Colonia Juárez,36.0,19.421615,99.174244
+2112,10435613,Private room,Ciudad de México,21.0,19.381120000000003,99.190007
+2113,8205612,Private room,Colonia Juárez,67.0,19.426605,99.155196
+2116,1919310,Private room,Mexico City,20.0,19.422245999999998,99.167142
+2120,6400898,Private room,Mexico City,196.0,19.435883,99.145477
+2122,13528432,Private room,Ciudad de México,26.0,19.413742000000003,99.18749
+2124,14417747,Private room,Ciudad de México,39.0,19.361335999999998,99.152159
+2125,13191844,Private room,Ciudad de México,16.0,19.403937,99.168531
+2126,13057867,Private room,Ciudad de México,21.0,19.403916,99.180136
+2129,12326133,Private room,Ciudad de México,16.0,19.402975,99.159448
+2132,7389625,Private room,Ciudad de México,28.0,19.391664000000002,99.162799
+2133,6444350,Private room,Ciudad de México,14.0,19.424228,99.154829
+2135,14015931,Private room,Ciudad de México,50.0,19.427263,99.190926
+2136,3485923,Private room,Ciudad de México,23.0,19.362460000000002,99.171658
+2137,12883581,Private room,Ciudad de México,12.0,19.389495,99.162878
+2139,8084311,Private room,Ciudad de México,45.0,19.391731,99.172511
+2143,12127387,Private room,Ciudad de México,21.0,19.437614,99.165471
+2144,6075482,Private room,San Miguel Chapultepec II Sección,26.0,19.411114,99.184374
+2146,7514386,Private room,Ciudad de México,21.0,19.43502,99.16453
+2153,13125262,Private room,Ciudad de México,21.0,19.384091,99.155368
+2158,14051268,Private room,Ciudad de México,31.0,19.355973000000002,99.150671
+2159,9683466,Private room,Ciudad de México,25.0,19.348141000000002,99.173239
+2163,9739521,Private room,Ciudad de México,26.0,19.407574,99.16091
+2165,9242657,Private room,Ciudad de México,34.0,19.407844,99.175546
+2166,12293652,Private room,Ciudad de México,10.0,19.423845,99.152474
+2170,12345337,Private room,Ciudad de México,66.0,19.360221,99.160081
+2171,11699034,Private room,Ciudad de México,21.0,19.415991,99.157699
+2173,13397102,Private room,Ciudad de México,82.0,19.419691,99.160056
+2174,14090017,Private room,Ciudad de México,14.0,19.422183,99.152533
+2176,5212601,Private room,Ciudad de México,44.0,19.407185000000002,99.170722
+2181,9715507,Private room,Ciudad de México,36.0,19.432654,99.167342
+2182,8294751,Private room,Ciudad de México,31.0,19.408313,99.173991
+2186,13209395,Private room,Ciudad de México,84.0,19.350768,99.177533
+2188,4278829,Private room,Mexico City,26.0,19.412558999999998,99.173724
+2191,10548909,Private room,Ciudad de México,15.0,19.402072,99.157998
+2192,13896692,Private room,Mexico City,20.0,19.451968,99.132647
+2193,13770018,Private room,Ciudad de México,44.0,19.416369,99.168302
+2194,9752051,Private room,Benito Juárez,46.0,19.379848000000003,99.170059
+2195,8026962,Private room,Ciudad de México,22.0,19.346830999999998,99.173136
+2196,12309502,Private room,Ciudad de México,31.0,19.425338,99.174227
+2199,8890615,Private room,Ciudad de México,13.0,19.402368,99.139004
+2200,8427663,Private room,Ciudad de México,36.0,19.4222,99.163192
+2201,13474008,Private room,Ejido del Centro,13.0,19.431593,99.149765
+2204,10659787,Private room,Ciudad de México,20.0,19.398906,99.170789
+2205,9512542,Private room,Ciudad de México,50.0,19.429314,99.16611
+2208,8646084,Private room,Ciudad de México,14.0,19.407641,99.164346
+2209,3513313,Private room,Mexico City,67.0,19.411669,99.175298
+2210,11234806,Private room,Ciudad de México,14.0,19.409488,99.163269
+2213,11839115,Private room,Mexico ,98.0,19.429783,99.198718
+2214,13655692,Private room,Mexico City,26.0,19.411696,99.157848
+2215,10731111,Private room,Ciudad de México,56.0,19.405787,99.168667
+2216,9533301,Private room,Ciudad de México,22.0,19.438436,99.190256
+2221,13771267,Private room,Ciudad de México,34.0,19.414684,99.168391
+2224,11237649,Private room,Ciudad de México,26.0,19.424374,99.158026
+2225,13065731,Private room,Ciudad de México,13.0,19.437332,99.153621
+2226,13126872,Private room,Ciudad de México,18.0,19.414026,99.183407
+2227,9556246,Private room,Buenavista,16.0,19.442285000000002,99.150265
+2230,4670591,Private room,Ciudad de México,15.0,19.409948,99.161582
+2232,14469977,Private room,Ciudad de México,66.0,19.424673000000002,99.16731
+2235,3756112,Private room,Mexico City,39.0,19.428888,99.176159
+2237,7344649,Private room,Ciudad de México,28.0,19.412219,99.159491
+2238,12618421,Private room,Ciudad de México,100.0,19.413710000000002,99.173349
+2239,4967543,Private room,Ciudad de México,26.0,19.403382,99.163236
+2240,11792283,Private room,Ciudad de México,28.0,19.408995,99.170611
+2243,12900032,Private room,Ciudad de México,21.0,19.392285,99.164172
+2244,7399174,Private room,Ciudad de México,42.0,19.40951,99.170673
+2246,11419613,Private room,Ciudad de México,309.0,19.427819,99.199249
+2247,14282071,Private room,Ciudad de México,26.0,19.356157999999997,99.167742
+2250,5979451,Private room,Ciudad de México,31.0,19.413075,99.17613
+2251,9644862,Private room,Ejido del Centro,20.0,19.43787,99.137012
+2253,12952812,Private room,Ciudad de México,46.0,19.396698,99.177335
+2263,14358270,Private room,Ciudad de México,34.0,19.419618,99.148383
+2264,10343244,Private room,Ciudad de México,19.0,19.379483,99.145688
+2266,6937364,Private room,Ciudad de México,52.0,19.415614,99.158236
+2268,13066825,Private room,Ciudad de México,28.0,19.415229,99.158313
+2269,10997374,Private room,Colonia Juárez,41.0,19.4317,99.155918
+2271,9260664,Private room,Ciudad de México,33.0,19.417379,99.15794
+2273,10380135,Private room,Cuautitlán,21.0,19.419286,99.16202
+2280,13438085,Private room,Ejido del Centro,11.0,19.427785,99.132026
+2282,12815456,Private room,Ciudad de México,84.0,19.413876000000002,99.173643
+2284,8250004,Private room,Ciudad de México,15.0,19.420422,99.167192
+2285,3469468,Private room,Mexico City,22.0,19.419787,99.176101
+2286,11944464,Private room,Ciudad de México,39.0,19.420388,99.175309
+2289,13094569,Private room,Ciudad de México,12.0,19.437853,99.153573
+2291,12738370,Private room,Ciudad de México,28.0,19.411011,99.176936
+2292,12525787,Private room,Ciudad de México,31.0,19.404015,99.171847
+2296,5709049,Private room,Ciudad de México,22.0,19.37267,99.177099
+2300,4285096,Private room,Ciudad de México,33.0,19.452102,99.155742
+2301,66109,Private room, México city,33.0,19.427042999999998,99.162749
+2302,12837463,Private room,Ciudad de México,26.0,19.379706,99.168239
+2303,3775173,Private room,Mexico City,124.0,19.348392999999998,99.17633
+2304,6590396,Private room,Ciudad de México,34.0,19.410439,99.169865
+2305,7936374,Private room,Ciudad de México,16.0,19.383281,99.182486
+2307,629630,Private room,Mexico City,54.0,19.406156,99.176206
+2310,8774985,Private room,Ciudad de México,0.0,19.406684,99.14857
+2311,3656464,Private room,Distrito Federal,20.0,19.411114,99.186438
+2312,5365127,Private room,Ciudad de México,39.0,19.429161999999998,99.177588
+2314,4439081,Private room,Mexico City,52.0,19.428263,99.201338
+2316,11020893,Private room,Ciudad de México,21.0,19.345978,99.162582
+2317,3125152,Private room,Mexico City,41.0,19.411119,99.190576
+2319,10626572,Private room,Ciudad de México,26.0,19.369491,99.169506
+2320,13093307,Private room,Ciudad de México,15.0,19.409444,99.184078
+2323,10992734,Private room,Ciudad de México,26.0,19.372509,99.169705
+2324,14293632,Private room,Ciudad de México,34.0,19.429198,99.200218
+2325,13031092,Private room,Ciudad de México,567.0,19.364476,99.149857
+2327,9884932,Private room,Ciudad de México,28.0,19.407841,99.13921
+2330,9430299,Private room,Ciudad de México,12.0,19.40771,99.160975
+2331,4575049,Private room,Mexico City,103.0,19.347873,99.177718
+2332,11982359,Private room,Ciudad de México,16.0,19.456834,99.144864
+2333,12134575,Private room,Ciudad de México,20.0,19.422025,99.150901
+2335,6810932,Private room,Ciudad de México,45.0,19.433685999999998,99.18179
+2342,5915739,Private room,Ciudad de México,22.0,19.400403,99.172224
+2343,6399071,Private room,Ciudad de México,23.0,19.387670999999997,99.187802
+2346,9029632,Private room,Ciudad de México,36.0,19.393976000000002,99.175082
+2347,4263188,Private room,Mexico City,20.0,19.383512,99.183289
+2348,7858821,Private room,Ciudad de México,31.0,19.379981,99.161875
+2349,7763243,Private room,Ciudad de México,52.0,19.414469,99.181664
+2350,247543,Private room,Mexico City,31.0,19.434166,99.137437
+2352,5999935,Private room,Ciudad de México,26.0,19.383879999999998,99.18552
+2353,9776868,Private room,Del Valle Norte,26.0,19.393598,99.16643
+2354,4390555,Private room,Mexico City,15.0,19.396357000000002,99.15458
+2356,11082082,Private room,Ciudad de México,33.0,19.415595,99.170189
+2357,6177485,Private room,Ciudad de México,26.0,19.407345,99.170372
+2362,12933605,Private room,Ciudad de México,26.0,19.396364000000002,99.177421
+2364,11551191,Private room,Ciudad de México,20.0,19.413867,99.170253
+2366,9778111,Private room,Ciudad de México,36.0,19.399629,99.155411
+2367,7698723,Private room,Ciudad de México,34.0,19.411025,99.177964
+2371,6951284,Private room,Ciudad de México,31.0,19.389374,99.181721
+2372,14234867,Private room,Ciudad de México,26.0,19.396449,99.143827
+2373,13477103,Private room,Ciudad de México,52.0,19.430949,99.142734
+2375,453318,Private room,Mexico City,82.0,19.430607000000002,99.179304
+2376,4896883,Private room,Ciudad de México,34.0,19.431995,99.16099
+2381,6854532,Private room,Ciudad de México,36.0,19.412878,99.158518
+2382,9593735,Private room,Ciudad de México,19.0,19.357219,99.154402
+2385,13863462,Private room,Colonia Juárez,42.0,19.428851,99.160119
+2386,7518465,Private room,Ciudad de México,26.0,19.349813,99.162827
+2387,2561343,Private room,Mexico City,103.0,19.416470999999998,99.166888
+2391,6132182,Private room,Ciudad de México,27.0,19.406675,99.164385
+2392,8507331,Private room,Ciudad de México,12.0,19.370848000000002,99.170873
+2393,9403224,Private room,Ciudad de México,34.0,19.390010999999998,99.180499
+2394,11068096,Private room,Ciudad de México,18.0,19.390832,99.175571
+2396,9290705,Private room,Ciudad de México,27.0,19.43214,99.165399
+2400,3457164,Private room,Mexico City,30.0,19.394937,99.182479
+2402,9796502,Private room,Ciudad de México,45.0,19.394856,99.175287
+2404,13624008,Private room,Mexico City,27.0,19.369185,99.177557
+2405,5144934,Private room,Ciudad de México,31.0,19.41584,99.177582
+2407,2777533,Private room,Mexico City,26.0,19.418712,99.175058
+2409,11478994,Private room,Ciudad de México,29.0,19.431535,99.205609
+2411,12999281,Private room,Ciudad de México,21.0,19.428110999999998,99.138648
+2413,6384748,Private room,Mexico City,124.0,19.411925,99.173107
+2415,9612464,Private room,Ciudad de México,18.0,19.40744,99.165458
+2416,271579,Private room,Mexico City,46.0,19.408476999999998,99.166397
+2417,12068374,Private room,Ciudad de México,62.0,19.435837,99.189903
+2418,6639313,Private room,Ciudad de México,31.0,19.432289,99.171632
+2419,13316117,Private room,Ciudad de México,15.0,19.443563,99.146059
+2420,9548789,Private room,Ciudad de México,179.0,19.416789,99.164093
+2421,10225903,Private room,Ejido del Centro,20.0,19.431051999999998,99.143265
+2422,13728479,Private room,Ciudad de México,21.0,19.353089,99.163237
+2424,7562346,Private room,Mexico,50.0,19.361735,99.188899
+2426,13566168,Private room,Ciudad de México,45.0,19.391299,99.188831
+2428,11777100,Private room,Niños Heroes,11.0,19.387411,99.145769
+2429,10875631,Private room,Ciudad de México,46.0,19.430173999999997,99.167902
+2430,10040233,Private room,Ciudad de México,21.0,19.355339999999998,99.183562
+2432,9093531,Private room,Ciudad de México,50.0,19.347407,99.163754
+2433,11841481,Private room,Ciudad de México,11.0,19.392156,99.15102
+2436,5548767,Private room,Ciudad de México,41.0,19.415053,99.178084
+2437,8733508,Private room,Mexico City,20.0,19.419488,99.15551
+2438,7728620,Private room,Ciudad de México,29.0,19.416467,99.17892
+2440,12049355,Private room,Ciudad de México,31.0,19.371006,99.182008
+2443,4935703,Private room,Ciudad de México,14.0,19.398708,99.169532
+2445,12682815,Private room,Ciudad de México,26.0,19.400988,99.177844
+2448,7367003,Private room,Ciudad de México,20.0,19.386467,99.170074
+2449,7201720,Private room,Mexico City,67.0,19.41077,99.17162
+2451,4257632,Private room,Ciudad de México,55.0,19.410752,99.162565
+2455,13318621,Private room,Ciudad de México,15.0,19.421842,99.154698
+2456,13064507,Private room,Ciudad de México,22.0,19.417417999999998,99.17126
+2458,7532070,Private room,Ciudad de México,26.0,19.356582,99.15572
+2459,11760450,Private room,Ciudad de México,29.0,19.415794,99.168125
+2466,8645853,Private room,Ciudad de mexico,20.0,19.385778,99.168475
+2467,1069089,Private room,Mexico City,24.0,19.403361999999998,99.170352
+2470,14059367,Private room,Mexico City,14.0,19.444807,99.141015
+2471,13822657,Private room,Ciudad de México,16.0,19.40527,99.168756
+2472,13880149,Private room,Ciudad de México,11.0,19.405734,99.17092
+2474,10360225,Private room,Ciudad de México,26.0,19.433826999999997,99.146558
+2475,11389165,Private room,Ciudad de México,40.0,19.425421,99.166153
+2476,14455587,Private room,Ciudad de México,28.0,19.366692999999998,99.176586
+2477,13317711,Private room,Ciudad de México,29.0,19.407360999999998,99.170707
+2479,6134920,Private room,Ciudad de México,46.0,19.42729,99.197411
+2480,10474069,Private room,Ciudad de México,31.0,19.427291,99.175423
+2481,3799143,Private room,Mexico City,16.0,19.421765,99.162998
+2482,5328932,Private room,Ciudad de México,28.0,19.377859,99.170409
+2483,6327331,Private room,Mexico City,23.0,19.385920000000002,99.17767
+2485,13996816,Private room,Ciudad de México,18.0,19.404944,99.165715
+2487,13190284,Private room,Ciudad de México,28.0,19.414036,99.167834
+2490,3924861,Private room,Mexico City,106.0,19.356306,99.167029
+2492,6389597,Private room,Ciudad de México,30.0,19.435579999999998,99.183063
+2496,14074547,Private room,Mexico City,31.0,19.426895000000002,99.159065
+2498,10681788,Private room,Ciudad de México,19.0,19.415885,99.161746
+2499,4567682,Private room,Mexico City,52.0,19.406827,99.177906
+2500,2030859,Private room,Mexico City,62.0,19.406579999999998,99.18761
+2501,567176,Private room,Ciudad de México,11.0,19.454501999999998,99.157919
+2502,7454827,Private room,Ciudad de México,28.0,19.438778,99.160294
+2503,4556475,Private room,Mexico City,26.0,19.401113,99.169209
+2506,3561990,Private room,Mexico City,61.0,19.398146,99.164488
+2514,3168058,Private room,Mexico City,37.0,19.40554,99.174516
+2516,14012466,Private room,Ciudad de México,80.0,19.433767,99.153187
+2517,11925618,Private room,Ciudad de México,20.0,19.452734,99.135811
+2518,14195966,Private room,Mexico City,26.0,19.400075,99.168494
+2520,10617246,Private room,Ciudad de México,26.0,19.410201,99.17168
+2523,6591145,Private room,Ciudad de México,27.0,19.406987,99.164336
+2526,8427144,Private room,Ciudad de México,28.0,19.365195,99.162419
+2527,12432627,Private room,Ciudad de México,252.0,19.357667000000003,99.169991
+2528,6045045,Private room,Ciudad de México,16.0,19.42481,99.156274
+2530,9061740,Private room,Ciudad de México,23.0,19.423251,99.130295
+2534,11753475,Private room,Ciudad de México,20.0,19.40093,99.184472
+2535,11283903,Private room,Ciudad de México,26.0,19.411343,99.178204
+2536,13855736,Private room,Ciudad de México,23.0,19.404722,99.16595
+2537,14203928,Private room,Ciudad de México,32.0,19.354329999999997,99.166548
+2538,11016052,Private room,Ciudad de México,19.0,19.405864,99.18107
+2539,11326168,Private room,Ciudad de México,28.0,19.416617000000002,99.160017
+2540,4639705,Private room,Ciudad de México,46.0,19.430425,99.152113
+2544,5599683,Private room,Mexico City,36.0,19.413899,99.177934
+2545,12457967,Private room,Ciudad de México,33.0,19.421847,99.163104
+2548,9250244,Private room,Ciudad de México,22.0,19.419644,99.177114
+2552,13020898,Private room,Del Valle Norte,13.0,19.392473000000003,99.164448
+2553,1194064,Private room,Mexico City,30.0,19.430011,99.171546
+2554,2302327,Private room,Mexico City,40.0,19.418104999999997,99.16226
+2555,13155424,Private room,Mexico City,18.0,19.427997,99.151905
+2558,4242690,Private room,Mexico City,72.0,19.376291000000002,99.171213
+2559,13463097,Private room,Ciudad de México,34.0,19.432707,99.180935
+2560,5082965,Private room,Ciudad de México,28.0,19.421217000000002,99.16425
+2564,10489518,Private room,Ciudad de México,23.0,19.402282,99.17591
+2565,12816115,Private room,Ciudad de México,28.0,19.407487,99.163161
+2566,10710466,Private room,Ciudad de México,36.0,19.362693,99.163211
+2569,9294159,Private room,Ciudad de México,37.0,19.411291000000002,99.180266
+2572,14127598,Private room,Ciudad de México,12.0,19.402371,99.151154
+2573,12813271,Private room,Mexico City,13.0,19.429896,99.149403
+2574,13479615,Private room,Ciudad de México,29.0,19.43161,99.187186
+2577,8226736,Private room,Ciudad de México,36.0,19.408481,99.17699
+2579,8342271,Private room,Ciudad de México,15.0,19.42301,99.129257
+2582,14302334,Private room,Ciudad de México,21.0,19.437694,99.168136
+2583,11803060,Private room,Ciudad de México,23.0,19.405642999999998,99.171808
+2585,11620539,Private room,Ciudad de México,16.0,19.381705,99.14829
+2586,1798108,Private room,Ciudad de México,23.0,19.415252,99.167931
+2588,7388976,Private room,Ciudad de México,10.0,19.410857999999998,99.188221
+2589,7984189,Private room,Ciudad de México,11.0,19.390629999999998,99.1699
+2593,13206812,Private room,Ciudad de México,19.0,19.412058,99.174878
+2595,6400161,Private room,Mexico City,78.0,19.411162,99.171143
+2597,5242417,Private room,Mexico City,23.0,19.415201999999997,99.177132
+2598,13325316,Private room,Ciudad de México,19.0,19.358566,99.159786
+2600,9490665,Private room,Ciudad de México,34.0,19.418488,99.170872
+2602,6413138,Private room,Ciudad de México,36.0,19.40436,99.173706
+2603,1792967,Private room,Ciudad de México,52.0,19.416833999999998,99.171206
+2604,9586746,Private room,Ciudad de México,25.0,19.409544,99.170819
+2605,6453167,Private room,Ciudad de México,31.0,19.387081,99.18058
+2606,13621681,Private room,Ciudad de México,118.0,19.43021,99.177711
+2609,5839163,Private room,Benito Juárez,14.0,19.393304,99.153888
+2611,5786203,Private room,Ciudad de México,16.0,19.408524,99.171119
+2616,10910130,Private room,Ciudad de México,40.0,19.395193,99.167009
+2619,13987902,Private room,Ciudad de México,26.0,19.37327,99.187445
+2621,13809366,Private room,Ciudad de México,28.0,19.43072,99.182884
+2623,11390834,Private room,Ciudad de México,26.0,19.413024,99.159616
+2624,10783534,Private room,Ciudad de México,16.0,19.375344000000002,99.171147
+2625,11573760,Private room,Ciudad de México,30.0,19.436068,99.189994
+2627,12736467,Private room,Ciudad de México,24.0,19.406093,99.174392
+2628,4343098,Private room,Mexico City,31.0,19.401119,99.16749
+2629,11591964,Private room,Ciudad de México,24.0,19.414201000000002,99.172938
+2637,10392989,Private room,Ciudad de México,15.0,19.347027999999998,99.146529
+2640,6627014,Private room,Ciudad de México,25.0,19.417408,99.17118
+2642,6185520,Private room,Ciudad de México,14.0,19.440738,99.152432
+2644,10773438,Private room,Tlacoquemecatl del Valle,23.0,19.374029,99.171495
+2645,6491191,Private room,Ciudad de México,62.0,19.412135,99.176427
+2646,6120619,Private room,Ciudad de México,20.0,19.423485999999997,99.157096
+2649,13559920,Private room,Ciudad de México,84.0,19.426083,99.173989
+2653,12270623,Private room,Ciudad de México,26.0,19.411858,99.163923
+2654,11149515,Private room,Ciudad de México,31.0,19.434673999999998,99.145446
+2655,3479520,Private room,Mexico City,25.0,19.354488,99.16567
+2657,11417244,Private room,Ciudad de México,18.0,19.424539000000003,99.153553
+2659,9257439,Private room,Ciudad de México,13.0,19.358773,99.147479
+2660,2730058,Private room,Mexico City,26.0,19.387337,99.152251
+2661,3372032,Private room,Mexico City,13.0,19.393718,99.158474
+2663,4197254,Private room,Ciudad de México,31.0,19.417171,99.171066
+2664,10540887,Private room,Ciudad de México,47.0,19.436533999999998,99.188696
+2667,10550187,Private room,Ciudad de México,36.0,19.438042000000003,99.136588
+2668,13152552,Private room,Ciudad de México,56.0,19.43304,99.155492
+2670,8293780,Private room,Ciudad de México,50.0,19.401881,99.169252
+2671,2865649,Private room,Mexico City,82.0,19.432154,99.190865
+2672,10808748,Private room,Miguel Hidalgo,16.0,19.436145,99.184913
+2674,14401820,Private room,Ciudad de México,14.0,19.442251000000002,99.157183
+2675,12684044,Private room,Ciudad de México,20.0,19.375486,99.176977
+2676,13909082,Private room,Ciudad de México,31.0,19.421694,99.158573
+2678,12831900,Private room,Ciudad de México,36.0,19.410079,99.164984
+2680,11658905,Private room,Ciudad de México,23.0,19.408205,99.174894
+2681,6453412,Private room,Ciudad de México,84.0,19.434110999999998,99.200729
+2682,5619681,Private room,Ciudad de México,31.0,19.405613,99.183945
+2683,11101330,Private room,Mexico City,12.0,19.453281,99.136611
+2684,14450381,Private room,Ciudad de México,47.0,19.427884,99.177588
+2686,8461781,Private room,Ciudad de México,45.0,19.415359,99.179089
+2687,3301552,Private room,Mexico City,143.0,19.440903,99.164025
+2689,11912604,Private room,Mexico City,96.0,19.352529,99.164791
+2692,12209373,Private room,Ciudad de México,23.0,19.383781,99.163605
+2693,5898283,Private room,Ciudad de México,22.0,19.408998,99.16933
+2695,5506780,Private room,Ciudad de México,41.0,19.413335999999997,99.176462
+2696,485282,Private room,Mexico City,18.0,19.417601,99.179598
+2698,14125121,Private room,Ciudad de México,16.0,19.363508,99.156363
+2700,11104755,Private room,Ciudad de México,12.0,19.390629999999998,99.158042
+2705,4606875,Private room,Mexico City,34.0,19.413039,99.167776
+2706,14010842,Private room,Ciudad de México,29.0,19.411745,99.164428
+2709,13701449,Private room,Ciudad de México,31.0,19.356138,99.157955
+2710,6800800,Private room,Ciudad de México,26.0,19.405485000000002,99.174967
+2712,10121413,Private room,Ciudad de México,26.0,19.395696,99.161282
+2713,8065333,Private room,Ciudad de México,31.0,19.404529,99.180251
+2714,7483509,Private room,Ciudad de México,22.0,19.424045,99.157225
+2716,8488083,Private room,Ciudad de México,28.0,19.412091,99.177521
+2719,14315734,Private room,Benito Juárez,15.0,19.384272,99.177296
+2721,13625655,Private room,Mexico City,10.0,19.44964,99.161457
+2723,13016093,Private room,Ciudad de México,103.0,19.401198,99.168362
+2724,11990446,Private room,Ciudad de México,14.0,19.403370000000002,99.13428
+2725,13464281,Private room,Ciudad de México,26.0,19.426932,99.155319
+2726,12073609,Private room,Ciudad de México,22.0,19.416554,99.175112
+2729,10729627,Private room,Miguel Hidalgo,34.0,19.433848,99.180812
+2730,6448544,Private room,Ciudad de México,23.0,19.400117,99.164437
+2733,13284369,Private room,Mexico City,72.0,19.434095000000003,99.187362
+2734,4580960,Private room,Distrito Federal ,31.0,19.348927,99.160763
+2736,10389015,Private room,Ciudad de México,26.0,19.408873999999997,99.169595
+2738,13450367,Private room,Ciudad de México,39.0,19.437279,99.182763
+2740,3876182,Private room,Mexico City,20.0,19.382108,99.172043
+2741,9909754,Private room,Ciudad de México,78.0,19.415968,99.158571
+2743,728372,Private room,Mexico City,19.0,19.443706,99.144425
+2744,14238651,Private room,Ciudad de México,12.0,19.402969,99.152069
+2745,13192169,Private room,Ciudad de México,31.0,19.444548,99.156388
+2746,9715236,Private room,Ciudad de México,24.0,19.428709,99.158491
+2747,10785578,Private room,Ciudad de México,47.0,19.432633,99.180538
+2748,9049040,Private room,Mexico City,12.0,19.402397,99.149904
+2749,6025798,Private room,Mexico City,31.0,19.411872,99.177195
+2750,6103915,Private room,Ciudad de México,31.0,19.41319,99.174998
+2751,14170367,Private room,Ciudad de México,15.0,19.429477,99.171554
+2752,9039723,Private room,Ciudad de México,20.0,19.426602,99.173316
+2753,6322409,Private room,Ciudad de México,28.0,19.385467000000002,99.148179
+2755,13374947,Private room,Ciudad de México,19.0,19.403013,99.162509
+2759,7734148,Private room,Ciudad de México,14.0,19.384012,99.168722
+2761,1702705,Private room,Ciudad de México,30.0,19.41104,99.167415
+2762,6316038,Private room,Mexico City,70.0,19.410176999999997,99.171908
+2763,14140937,Private room,Ciudad de México,34.0,19.414552,99.170022
+2764,11964505,Private room,Ciudad de México,20.0,19.428913,99.148372
+2767,10224529,Private room,Colonia Juárez,52.0,19.423792000000002,99.171418
+2770,12341398,Private room,Mexico City,11.0,19.410956,99.18903
+2772,8581715,Private room,Ciudad de México,45.0,19.414576999999998,99.171051
+2773,11300520,Private room,Ciudad de México,16.0,19.374844,99.180842
+2774,14467090,Private room,Ciudad de México,23.0,19.426852,99.16423
+2775,12186878,Private room,Ciudad de México,34.0,19.394202,99.175716
+2781,7633273,Private room,Ciudad de México,25.0,19.437955,99.136533
+2785,8302486,Private room,Ciudad de México,41.0,19.406157,99.177287
+2786,14108490,Private room,Ciudad de México,45.0,19.407366,99.172195
+2788,4942075,Private room,Mexico City,15.0,19.4249,99.157765
+2789,14029375,Private room,Ciudad de México,21.0,19.401419,99.180011
+2791,14110811,Private room,Ciudad de México,36.0,19.361047,99.190684
+2794,12137528,Private room,Ciudad de México,26.0,19.417102,99.169896
+2796,14143236,Private room,Ciudad de México,26.0,19.409038,99.184275
+2798,3977120,Private room,Mexico City,28.0,19.420371,99.159899
+2799,5393550,Private room,Narvarte Oriente,20.0,19.398788,99.149103
+2801,10040711,Private room,Ciudad de México,21.0,19.354488,99.184648
+2803,12604482,Private room,Ciudad de México,26.0,19.394806,99.170741
+2806,7779952,Private room,Ciudad de México,15.0,19.432017000000002,99.174379
+2811,2803940,Private room,Mexico City,49.0,19.406197,99.182314
+2812,13396919,Private room,Ciudad de México,45.0,19.425962,99.175545
+2815,2811981,Private room,Mexico City,31.0,19.409519,99.170881
+2817,10439925,Private room,Ciudad de México,16.0,19.391946,99.15939
+2818,4603824,Private room,Ciudad de México,39.0,19.419534,99.161791
+2821,10094599,Private room,Ciudad de México,82.0,19.431579,99.1734
+2822,12669464,Private room,Ciudad de México,23.0,19.376735999999998,99.185339
+2826,8972678,Private room,Ciudad de México,29.0,19.432023,99.16394
+2829,9031702,Private room,Ciudad de México,28.0,19.365212,99.173344
+2834,11868898,Private room,Ciudad de México,28.0,19.434849,99.179535
+2836,7939127,Private room,Ciudad de México,23.0,19.402544,99.1572
+2837,7750768,Private room,Ciudad de México,23.0,19.425004,99.168541
+2839,13411409,Private room,Ciudad de México,21.0,19.419878,99.170463
+2841,10852583,Private room,Ciudad de México,26.0,19.432420999999998,99.142889
+2842,6145442,Private room,Mexico City,27.0,19.408638,99.170381
+2843,13688429,Private room,Ciudad de México,50.0,19.411917000000003,99.173608
+2847,12516057,Private room,Ciudad de México,29.0,19.415312,99.164022
+2848,7033613,Private room,Mexico City,53.0,19.409857000000002,99.172855
+2849,5317883,Private room,mexico city,34.0,19.431873,99.152236
+2850,7036975,Private room,Ciudad de México,22.0,19.417213,99.176514
+2851,8683506,Private room,Ciudad de México,14.0,19.391384,99.184407
+2852,9935322,Private room,Ciudad de México,46.0,19.429188,99.177897
+2860,14315297,Private room,Colonia Juárez,19.0,19.423094,99.172771
+2862,12971803,Private room,Ciudad de México,24.0,19.451669,99.157341
+2864,5260261,Private room,Ciudad de México,34.0,19.433237,99.187178
+2865,291804,Private room,Mexico City,31.0,19.362935999999998,99.154151
+2866,3490114,Private room,Mexico City,206.0,19.408688,99.164179
+2868,10143554,Private room,Ciudad de México,23.0,19.428144,99.133911
+2870,13453079,Private room,Ciudad de México,31.0,19.436391,99.192194
+2871,6526462,Private room,Ciudad de México,49.0,19.416211999999998,99.175776
+2872,12158499,Private room,Ciudad de México,15.0,19.381158,99.165791
+2873,11417781,Private room,Ciudad de México,20.0,19.409635,99.17338
+2874,11356435,Private room,Colonia Juárez,19.0,19.429516,99.158021
+2876,5211362,Private room,Ciudad de México,62.0,19.346813,99.166921
+2877,9528150,Private room,Ciudad de México,16.0,19.408347,99.18661
+2879,14059191,Private room,Ciudad de México,22.0,19.395242,99.173944
+2883,7674523,Private room,Ciudad de México,34.0,19.428222,99.155826
+2884,6258836,Private room,De los Deportes,14.0,19.385075,99.175194
+2888,13128590,Private room,Ciudad de México,38.0,19.412433,99.174138
+2890,10357675,Private room,Colonia Juárez,31.0,19.428191,99.154373
+2892,14075008,Private room,Naucalpan de Juárez,18.0,19.412426,99.250081
+2893,9578939,Private room,Ciudad de México,46.0,19.412687,99.167455
+2895,8285422,Private room,Ciudad de México,25.0,19.384791,99.185031
+2897,4242689,Private room,Mexico City,52.0,19.375152,99.171484
+2898,14407235,Private room,Ciudad de México,23.0,19.43008,99.14534
+2899,10751256,Private room,Ciudad de México,37.0,19.413329,99.176861
+2900,10705157,Private room,Ciudad de México,12.0,19.384979,99.177169
+2902,4668485,Private room,Ciudad de México,45.0,19.41165,99.174384
+2905,10224603,Private room,Ciudad de México,23.0,19.392638,99.166439
+2907,4286935,Private room,Ciudad de México,57.0,19.405963,99.188503
+2908,13772149,Private room,Ciudad de México,20.0,19.413423,99.175504
+2913,13844825,Private room,Ciudad de México,26.0,19.360298,99.15467
+2914,10223311,Private room,Durango,26.0,19.422221,99.159746
+2915,8389215,Private room,Ciudad de México,29.0,19.365510999999998,99.14876
+2917,12345313,Private room,Ciudad de México,25.0,19.389859,99.156394
+2918,10854378,Private room,Ciudad de México,26.0,19.381572,99.167199
+2919,11724611,Private room,Ciudad de México,13.0,19.419655,99.154464
+2921,2265941,Private room,Ciudad de México,23.0,19.415005999999998,99.160714
+2922,7368362,Private room,Ciudad de México,18.0,19.405807,99.18008
+2923,11569413,Private room,Ciudad de México,20.0,19.408905999999998,99.172524
+2924,12023581,Private room,Ciudad de México,26.0,19.410610000000002,99.178209
+2927,13225537,Private room,Colonia Juárez,23.0,19.429637,99.155132
+2928,784107,Private room,Mexico City,25.0,19.416782,99.170715
+2929,13771039,Private room,Ciudad de México,14.0,19.440684,99.210045
+2930,12685847,Private room,Ciudad de México,14.0,19.401794,99.154346
+2931,14385884,Private room,Ciudad de México,30.0,19.404587,99.169449
+2932,14012639,Private room,Ciudad de México,21.0,19.422559,99.155729
+2934,8535152,Private room,Ciudad de México,26.0,19.430605,99.203766
+2938,7617297,Private room,Ciudad de México,21.0,19.411493,99.171038
+2939,2269143,Private room,Mexico City,23.0,19.418833,99.171621
+2940,13209483,Private room,Ciudad de México,42.0,19.414442,99.17554
+2942,8049491,Private room,Ciudad de México,14.0,19.345832,99.159011
+2943,14430272,Private room,Ciudad de México,21.0,19.388018,99.179137
+2949,5578728,Private room,Ciudad de México,31.0,19.404010999999997,99.165633
+2950,8319918,Private room,coyoacan,20.0,19.354758,99.159652
+2951,11973541,Private room,Ciudad de México,18.0,19.417238,99.159969
+2952,6446852,Private room,Ciudad de México,25.0,19.418564,99.158108
+2956,14470399,Private room,Ciudad de México,66.0,19.424273,99.16671
+2958,10772669,Private room,Ciudad de México,11.0,19.341295000000002,99.148619
+2967,12754434,Private room,Ciudad de México,18.0,19.379198000000002,99.162635
+2970,10592184,Private room,Ciudad de México,41.0,19.404739000000003,99.170392
+2971,8498510,Private room,Ciudad de México,28.0,19.407763,99.179459
+2972,13248633,Private room,Benito Juárez,13.0,19.392802,99.158983
+2973,13016066,Private room,Ciudad de México,29.0,19.371464000000003,99.187329
+2974,12267023,Private room,Ciudad de México,14.0,19.388282,99.180431
+2976,8191119,Private room,Ciudad de México,34.0,19.431845000000003,99.190524
+2978,14069068,Private room,Ciudad de México,38.0,19.433907,99.152903
+2981,13377463,Private room,Del Valle Norte,29.0,19.396321,99.169706
+2985,4582222,Private room,Mexico City,21.0,19.417952,99.174635
+2986,8146083,Private room,Mexico City,26.0,19.423962,99.156526
+2988,11532614,Private room,Ciudad de México,20.0,19.396908,99.164286
+2990,2508410,Private room,Mexico City,31.0,19.352267,99.141739
+2991,6315619,Private room,México City ,83.0,19.411133,99.17121
+2992,3679755,Private room,Ciudad de México,82.0,19.43236,99.156524
+2994,14339711,Private room,Ciudad de México,45.0,19.428109,99.168695
+2995,1812425,Private room,Ciudad de México,26.0,19.437579,99.15793
+2998,13392459,Private room,Ciudad de México,36.0,19.428143,99.137458
+2999,13897431,Private room,Ciudad de México,18.0,19.427347,99.132613
+3002,12533055,Private room,Ciudad de México,20.0,19.432842,99.169926
+3003,7367824,Private room,Ciudad de México,26.0,19.372477,99.159845
+3005,12675510,Private room,Motozintla,31.0,19.377057999999998,99.151876
+3006,9717429,Private room,Ciudad de México,23.0,19.404427,99.173562
+3008,13166929,Private room,Ciudad de México,31.0,19.389810999999998,99.160167
+3009,11711128,Private room,Ciudad de México,28.0,19.433648,99.166485
+3010,13047413,Private room,Ciudad de México,26.0,19.401345000000003,99.177202
+3012,4839303,Private room,Ciudad de México,34.0,19.360232,99.159207
+3014,2867671,Private room,Mexico City,77.0,19.379237,99.183312
+3017,6075172,Private room,Ciudad de Mexico,25.0,19.400748,99.180923
+3018,2368160,Private room,Mexico City,28.0,19.378939000000003,99.175191
+3020,13802116,Private room,Ciudad de México,16.0,19.415326999999998,99.16466
+3025,6262876,Private room,Mexico City,20.0,19.370732,99.171144
+3031,12153931,Private room,Ciudad de México,40.0,19.404457,99.170557
+3032,6414232,Private room,Ciudad de México,28.0,19.392713,99.158891
+3033,14442573,Private room,Ciudad de México,16.0,19.410151000000003,99.187038
+3034,14301422,Private room,Ciudad de México,13.0,19.410264,99.178912
+3036,6349295,Private room,México,21.0,19.390777,99.174336
+3037,906877,Private room,Mexico City,43.0,19.355462,99.164777
+3040,8326147,Private room,Colonia Juárez,13.0,19.429964000000002,99.160394
+3041,9534265,Private room,Ciudad de México,31.0,19.41106,99.170493
+3042,12872446,Private room,Ciudad de México,46.0,19.41486,99.173129
+3043,6282919,Private room,Ciudad de México,138.0,19.428743,99.192114
+3045,3066709,Private room,Mexico City,20.0,19.401061,99.167482
+3047,10070651,Private room,Ciudad de México,11.0,19.441027,99.150249
+3049,7601494,Private room,Ciudad de México,31.0,19.412029999999998,99.187112
+3050,5170983,Private room,Ciudad de México,26.0,19.409701000000002,99.168204
+3051,13883694,Private room,Ciudad de México,27.0,19.415328,99.17283
+3052,13125620,Private room,Mexico City,31.0,19.445795999999998,99.159926
+3054,13057477,Private room,Ciudad de México,41.0,19.428214,99.168804
+3055,7266252,Private room,Ciudad de México,16.0,19.395471,99.153558
+3056,11421708,Private room,Ciudad de México,28.0,19.412212,99.176181
+3057,13398508,Private room,Ciudad de México,18.0,19.406738,99.168963
+3058,13928018,Private room,Ciudad de México,11.0,19.394164,99.156077
+3059,7874286,Private room,Ciudad de México,62.0,19.436655,99.183389
+3060,5901714,Private room,Condesa,38.0,19.406322,99.170078
+3062,5601692,Private room,Ciudad de México,18.0,19.419991,99.171055
+3063,10998147,Private room,Delegación Cuauhtémoc ,34.0,19.424811,99.167624
+3064,13505648,Private room,Ciudad de México,19.0,19.438757,99.162261
+3065,4144661,Private room,Mexico City,28.0,19.396977,99.168012
+3069,2404572,Private room,Mexico City,40.0,19.427148000000003,99.168127
+3071,6836962,Private room,Ciudad de México,20.0,19.412704,99.161659
+3073,14485062,Private room,Ciudad de México,15.0,19.364978,99.148185
+3076,832805,Private room,Mexico City,19.0,19.44286,99.147189
+3078,12829492,Private room,Mexico City,20.0,19.411911,99.187973
+3079,8799255,Private room,Ciudad de México,18.0,19.366915,99.187425
+3080,10144554,Private room,Ciudad de México,54.0,19.431960999999998,99.172882
+3081,1162686,Private room,Mexico City,124.0,19.42916,99.201847
+3083,13859959,Private room,Ciudad de México,67.0,19.432736,99.178799
+3084,12311484,Private room,Ciudad de México,36.0,19.411016,99.176981
+3086,7461286,Private room,Benito Juárez,20.0,19.402979000000002,99.141658
+3087,3176344,Private room,Mexico City,15.0,19.418482,99.152594
+3094,13606238,Private room,Ciudad de México,22.0,19.387027,99.147581
+3102,9755163,Private room,Ciudad de México,10.0,19.397467000000002,99.142587
+3104,4285133,Private room,Mexico City,20.0,19.422877,99.162488
+3105,4359891,Private room,Ciudad de México,12.0,19.420472,99.151691
+3107,6851933,Private room,Ciudad de México,15.0,19.417164,99.156141
+3109,2202971,Private room,Ciudad de México,61.0,19.349220000000003,99.173883
+3112,8368935,Private room,Ciudad de México,39.0,19.390829,99.170503
+3113,11373128,Private room,Ciudad de México,20.0,19.438773,99.158703
+3115,7130147,Private room,Ciudad de México,28.0,19.409257,99.173348
+3116,12064240,Private room,Ciudad de México,34.0,19.428865,99.182821
+3117,14219547,Private room,Ciudad de México,43.0,19.355206,99.155802
+3118,3123534,Private room,Mexico City,36.0,19.435842,99.1316
+3119,9666108,Private room,Ciudad de México,14.0,19.386761,99.159302
+3121,8452235,Private room,Ciudad de México,20.0,19.419085,99.160044
+3126,13958752,Private room,Ciudad de México,28.0,19.43326,99.203727
+3129,9147210,Private room,Ciudad de México,26.0,19.423942999999998,99.158858
+3130,11207464,Private room,Ciudad de México,31.0,19.443611999999998,99.202073
+3140,9636492,Private room,Ejido del Centro,18.0,19.428832999999997,99.146759
+3141,10650343,Private room,Ciudad de México,36.0,19.414974,99.162995
+3145,14374954,Private room,Ciudad de México,20.0,19.400776,99.157493
+3147,4550512,Private room,Mexico City,56.0,19.351670000000002,99.165441
+3148,6004382,Private room,Ciudad de México,26.0,19.409959,99.186825
+3149,5969182,Private room,Ciudad de México,24.0,19.439196,99.154215
+3152,13377447,Private room,Ciudad de México,26.0,19.408418,99.161755
+3154,2046159,Private room,Mexico City,31.0,19.408601,99.16262
+3156,13707256,Private room,Ciudad de México,39.0,19.403359,99.173446
+3157,4074448,Private room,Mexico City,31.0,19.440178,99.161785
+3160,10930415,Private room,Ciudad de México,16.0,19.436111,99.130635
+3162,9478590,Private room,Ejido del Centro,20.0,19.43719,99.139992
+3163,10819620,Private room,Ciudad de México,47.0,19.435103,99.169825
+3165,10156896,Private room,Ciudad de México,34.0,19.354979,99.131762
+3166,8210258,Private room,Colonia Juárez,42.0,19.429883,99.155847
+3168,8426788,Private room,Mexico City,39.0,19.389594,99.170947
+3169,11278959,Private room,Ciudad de México,31.0,19.406335000000002,99.170537
+3170,1492707,Private room,Mexico City,41.0,19.414934,99.175672
+3172,7360615,Private room,Ciudad de México,30.0,19.42897,99.157508
+3174,11341047,Private room,Ciudad de México,27.0,19.424308,99.158009
+3175,8288173,Private room,Ciudad de México,67.0,19.352210999999997,99.158893
+3178,12175765,Private room,Ciudad de México,22.0,19.428624,99.161027
+3180,9715881,Private room,Ciudad de México,20.0,19.41323,99.179373
+3182,4951328,Private room,Ciudad de México,40.0,19.409492999999998,99.171047
+3184,8594327,Private room,Ciudad de México,41.0,19.359837,99.14709
+3185,9827620,Private room,Ciudad de México,13.0,19.351888,99.150144
+3187,5276059,Private room,Ciudad de México,40.0,19.409098999999998,99.169376
+3190,13111468,Private room,Ciudad de México,30.0,19.415484,99.167275
+3194,9135638,Private room,Ciudad de México,31.0,19.4272,99.159645
+3195,4832713,Private room,Mexico City,40.0,19.352759,99.182029
+3196,5261612,Private room,Ciudad de México,21.0,19.352098,99.143202
+3199,7401226,Private room,Ciudad de México,23.0,19.413099,99.176338
+3201,13957757,Private room,Ciudad de México,14.0,19.354585,99.15806
+3206,7843836,Private room,Ciudad de México,31.0,19.425082,99.168753
+3207,9253659,Private room,Ciudad de México,23.0,19.408975,99.173068
+3208,3821958,Private room,Mexico City,62.0,19.414464000000002,99.170731
+3209,6400779,Private room,Ciudad de México,160.0,19.435502,99.146849
+3210,13672997,Private room,Ciudad de México,57.0,19.425524,99.177433
+3212,9507327,Private room,Ciudad de México,13.0,19.40405,99.170227
+3214,13636595,Private room,Ciudad de México,155.0,19.356274,99.170062
+3216,8349742,Private room,Ciudad de México,39.0,19.36371,99.164685
+3218,6804857,Private room,Ciudad de México,28.0,19.45211,99.158147
+3220,13299881,Private room,Ciudad de México,22.0,19.431989,99.163419
+3221,1110514,Private room,Mexico City,64.0,19.413616,99.176022
+3222,4887760,Private room,Mexico City,11.0,19.412638,99.142455
+3223,8815692,Private room,Ciudad de México,36.0,19.410954,99.16863
+3224,12093516,Private room,Mexico City,23.0,19.39134,99.156589
+3225,6466064,Private room,Ciudad de México,42.0,19.384583,99.179136
+3227,13941610,Private room,Ciudad de México,39.0,19.419124,99.15708
+3229,13728948,Private room,Ciudad de México,14.0,19.404784,99.158666
+3231,11235826,Private room,Ciudad de México,23.0,19.402627,99.176357
+3233,9575157,Private room,Mexico City,22.0,19.426791,99.13812
+3234,10414926,Private room,Ciudad de México,93.0,19.347261,99.166061
+3236,13787920,Private room,Ciudad de México,10.0,19.377151,99.158366
+3240,7965563,Private room,Ciudad de México,34.0,19.377238000000002,99.184192
+3241,2318781,Private room,Ciudad de México,40.0,19.427920999999998,99.137942
+3243,12656876,Private room,Ciudad de México,23.0,19.408304,99.168558
+3245,13951334,Private room,Ciudad de México,31.0,19.361784,99.15955
+3246,12321344,Private room,Ciudad de México,21.0,19.432766,99.171106
+3247,10369456,Private room,Ciudad de México,23.0,19.392578,99.180317
+3251,14254601,Private room,Mexico City,43.0,19.390911,99.17915
+3253,14025785,Private room,Ciudad de México,23.0,19.420005,99.171229
+3256,8409035,Private room,Ciudad de México,45.0,19.426291,99.170406
+3259,4808703,Private room,Ciudad de México,31.0,19.39979,99.168699
+3261,13135148,Private room,Ciudad de México,52.0,19.432354999999998,99.188363
+3262,6090688,Private room,Ciudad de México,31.0,19.408484,99.163285
+3263,5901010,Private room,Mexico City,49.0,19.415182,99.176303
+3264,11858652,Private room,Ciudad de México,20.0,19.404865,99.167559
+3265,1114859,Private room,Mexico City,41.0,19.434438,99.178125
+3266,5682672,Private room,Ciudad de México,21.0,19.403805,99.162327
+3270,7238293,Private room,Ciudad de México,22.0,19.408355,99.178392
+3271,7357508,Private room,Ciudad de México,70.0,19.433385,99.178895
+3273,6835507,Private room,Ciudad de México,16.0,19.38058,99.178401
+3274,8371245,Private room,San Juan,16.0,19.378816,99.184463
+3276,13015694,Private room,Ejido del Centro,31.0,19.436332,99.1336
+3278,3627303,Private room,Distrito Federal,68.0,19.386631,99.179428
+3281,11138455,Private room,Ciudad de México,16.0,19.430781,99.163419
+3285,5580282,Private room,Ciudad de México,20.0,19.369754,99.157854
+3287,12366118,Private room,Ciudad de México,41.0,19.442624,99.155844
+3288,10000152,Private room,Ciudad de México,20.0,19.393107999999998,99.177749
+3290,13624213,Private room,Ciudad de México,16.0,19.410976,99.172853
+3291,5406624,Private room,Ciudad de México,40.0,19.417937,99.156447
+3294,11079187,Private room,Ciudad de México,36.0,19.413505999999998,99.16546
+3295,14058058,Private room,Ciudad de México,21.0,19.419256,99.171024
+3296,9884203,Private room,Ciudad de México,19.0,19.413465,99.173821
+3297,12731363,Private room,Ciudad de México,56.0,19.414404,99.173527
+3298,9371097,Private room,Ciudad de México,34.0,19.365855,99.169674
+3303,2076291,Private room,Ciudad de México,22.0,19.440966,99.142289
+3307,7613096,Private room,Ciudad de México,50.0,19.348833,99.172489
+3309,9992317,Private room,Ciudad de México,31.0,19.39185,99.15802
+3311,12836125,Private room,Ciudad de México,46.0,19.425788,99.167611
+3313,10964705,Private room,Ciudad de México,18.0,19.429978,99.175495
+3319,4831011,Private room,Ciudad de México,64.0,19.43308,99.177609
+3320,12972372,Private room,Coyoacan ,31.0,19.352969,99.162299
+3321,1786411,Private room,Mexico City,48.0,19.417145,99.167141
+3326,12737819,Private room,Ciudad de México,19.0,19.420589,99.171176
+3327,14094162,Private room,Ciudad de México,46.0,19.408465,99.171756
+3328,2204129,Private room,Mexico City,24.0,19.347625,99.159084
+3331,13829368,Private room,Ciudad de México,20.0,19.403836,99.170596
+3332,7294206,Private room,Ciudad de México,16.0,19.389530999999998,99.186447
+3333,2702354,Private room,Ciudad de México,46.0,19.413693,99.169402
+3334,6376382,Private room,Mexico City,57.0,19.433256,99.209588
+3335,6575423,Private room,Mexico DF,11.0,19.426855,99.157456
+3337,12954492,Private room,Ciudad de México,36.0,19.412142000000003,99.163241
+3338,9668861,Private room,Mexico City,15.0,19.415378,99.176383
+3342,6481315,Private room,Ciudad de México,36.0,19.348724,99.173414
+3345,1271287,Private room,Mexico City,36.0,19.412001,99.177929
+3347,9409784,Private room,Ciudad de México,19.0,19.372373,99.187198
+3350,12652703,Private room,Ciudad de México,19.0,19.39697,99.158438
+3355,10019358,Private room,Ciudad de México,18.0,19.394344,99.162651
+3356,7895022,Private room,Ciudad de México,22.0,19.42676,99.137908
+3357,8926896,Private room,Ciudad de México,24.0,19.438337,99.136502
+3359,7983564,Private room,Ciudad de México,11.0,19.388655,99.169795
+3365,4908714,Private room,Miguel Hidalgo,103.0,19.42897,99.192327
+3366,5171852,Private room,Ciudad de México,23.0,19.413356,99.161424
+3368,14356840,Private room,Ciudad de México,10.0,19.388417999999998,99.187818
+3374,7921833,Private room,Ciudad de México,12.0,19.391667,99.155712
+3376,12406484,Private room,Ciudad de México,11.0,19.353879,99.158156
+3378,3458154,Private room,Mexico City,43.0,19.432033999999998,99.154355
+3379,4263660,Private room,Ciudad de México,31.0,19.426555,99.135803
+3380,5812786,Private room,Ciudad de México,81.0,19.421479,99.165814
+3383,7009950,Private room,Mexico City,18.0,19.431651000000002,99.132845
+3384,14357157,Private room,Ciudad de México,16.0,19.418495999999998,99.169968
+3385,10124457,Private room,Ciudad de México,40.0,19.389951999999997,99.178885
+3389,3343735,Private room,Mexico City,23.0,19.432941,99.159571
+3395,14127727,Private room,Ciudad de México,43.0,19.452164,99.154614
+3398,6378055,Private room,Ciudad de México,15.0,19.371893,99.16647
+3400,13203920,Private room,Ciudad de México,23.0,19.413369,99.16698
+3403,14388148,Private room,Ciudad de México,28.0,19.42117,99.158636
+3404,13487645,Private room,Ciudad de México,21.0,19.435194,99.152975
+3405,13602760,Private room,Ciudad de México,18.0,19.428893,99.171039
+3407,6850010,Private room,Ciudad de México,31.0,19.380375,99.179023
+3409,14320664,Private room,Ciudad de México,22.0,19.401495999999998,99.141079
+3410,13446241,Private room,Ciudad de México,32.0,19.412094,99.188033
+3413,7899724,Private room,Ciudad de México,18.0,19.420179,99.172552
+3414,11344183,Private room,Ciudad de México,23.0,19.363466,99.170324
+3417,9991400,Private room,Ciudad de México,21.0,19.411002,99.172799
+3419,12927661,Private room,Mexico City,27.0,19.412792,99.177224
+3420,12856656,Private room,Ciudad de México,21.0,19.36648,99.177037
+3421,13954031,Private room,Ciudad de México,29.0,19.410898,99.177702
+3422,9220789,Private room,Ciudad de México,22.0,19.426345,99.155385
+3423,13605376,Private room,Ciudad de México,16.0,19.421470000000003,99.171159
+3425,13605876,Private room,Ciudad de México,20.0,19.410642000000003,99.175207
+3429,14012827,Private room,Del Valle Norte,41.0,19.40005,99.162742
+3430,8328233,Private room,Ciudad de México,28.0,19.425383,99.174184
+3433,13549327,Private room,[no name],56.0,19.437482,99.190761
+3435,12231805,Private room,Ciudad de México,20.0,19.399992,99.161796
+3436,14336303,Private room,Ciudad de México,26.0,19.410573,99.181841
+3437,8847053,Private room,Ciudad de México,20.0,19.405327,99.18086
+3438,4461736,Private room,Mexico City,124.0,19.348157,99.177968
+3439,11292467,Private room,Ciudad de México,27.0,19.390511,99.149327
+3444,11564613,Private room,Ciudad de México,42.0,19.434075,99.190235
+3448,3595167,Private room,Mexico City,52.0,19.432239000000003,99.169422
+3451,3047414,Private room,Mexico City,36.0,19.406498000000003,99.175756
+3452,9740407,Private room,Ciudad de México,14.0,19.410192000000002,99.162153
+3454,13317884,Private room,Ciudad de México,27.0,19.412757,99.174135
+3455,12814395,Private room,Ciudad de México,36.0,19.412007,99.17561
+3458,8226505,Private room,Ciudad de México,16.0,19.362172,99.146558
+3459,10957089,Private room,Ciudad de México,81.0,19.413067,99.180521
+3461,7243468,Private room,Ciudad de México,10.0,19.453178,99.156483
+3463,12497021,Private room,Ciudad de México,15.0,19.408072,99.184523
+3464,9149038,Private room,Ciudad de México,21.0,19.418988,99.155646
+3465,10696454,Private room,Mexico City,41.0,19.431172,99.156168
+3467,10366321,Private room,Del Valle Norte,13.0,19.397642,99.168653
+3468,5308318,Private room,Ciudad de México,29.0,19.40198,99.169675
+3469,9448799,Private room,Ciudad de México,21.0,19.371973,99.173042
+3472,2936188,Private room,Mexico City,20.0,19.412844,99.160524
+3474,13815293,Private room,Mexico City,52.0,19.429268,99.156511
+3475,10748690,Private room,Ciudad de México,19.0,19.419071,99.172211
+3476,5180895,Private room,Ciudad de México,15.0,19.394182,99.177782
+3478,723655,Private room,Mexico City,80.0,19.403782999999997,99.173092
+3479,2071519,Private room,Mexico City,46.0,19.405883,99.176609
+3480,5298161,Private room,Ciudad de México,23.0,19.434368,99.102214
+3481,8174686,Private room,Ciudad de México,16.0,19.411518,99.149827
+3484,5738254,Private room,Ciudad de México,22.0,19.352964,99.158339
+3485,14450756,Private room,Ciudad de México,45.0,19.413879,99.178029
+3487,10750465,Private room,Ciudad de México,26.0,19.433153,99.169031
+3493,857286,Private room,Mexico City,42.0,19.407272,99.172143
+3494,805166,Private room,Ciudad de México,15.0,19.409623999999997,99.160128
+3495,2729425,Private room,Mexico City,15.0,19.394364000000003,99.176878
+3497,12519383,Private room,Ciudad de México,26.0,19.432473,99.147099
+3498,11334711,Private room,Ciudad de México,31.0,19.442828,99.201799
+3499,12485561,Private room,Ciudad de México,29.0,19.410785,99.169766
+3501,5363904,Private room,Ciudad de México,40.0,19.420503,99.166055
+3504,10155312,Private room,Ciudad de México,16.0,19.388288,99.174461
+3506,9747965,Private room,Mexico City,50.0,19.431385000000002,99.203298
+3508,1547284,Private room,Ciudad de México,26.0,19.377871,99.169682
+3510,12024339,Private room,Ciudad de México,20.0,19.435495,99.165802
+3512,2332505,Private room,Mexico City,258.0,19.426517,99.165829
+3513,4162660,Private room,Mexico City,34.0,19.428764,99.131089
+3514,4144599,Private room,Ciudad de México,28.0,19.434145,99.190719
+3517,7194863,Private room,Ciudad de México,24.0,19.418329999999997,99.177361
+3520,11297043,Private room,Mexico City,25.0,19.346254000000002,99.166136
+3521,13015975,Private room,Ciudad de México,26.0,19.432991,99.170259
+3523,2702917,Private room,Mexico City,34.0,19.418027,99.179802
+3525,1571327,Private room,Mexico City,26.0,19.372317000000002,99.146366
+3526,11300190,Private room,Ciudad de México,28.0,19.41487,99.159882
+3527,10438061,Private room,Ciudad de México,28.0,19.417579999999997,99.177893
+3530,6086162,Private room,Ciudad de México,20.0,19.398135,99.147024
+3531,12609513,Private room,Ciudad de México,16.0,19.406101,99.170907
+3532,1599474,Private room,Mexico City,62.0,19.438679,99.213135
+3533,4835517,Private room,Mexico City,18.0,19.353164000000003,99.185208
+3534,2285373,Private room,Mexico City,41.0,19.416655,99.167507
+3535,12834281,Private room,Ciudad de México,19.0,19.425948,99.155385
+3536,13079377,Private room,Ciudad de México,20.0,19.410664999999998,99.185896
+3539,13636258,Private room,Ciudad de México,50.0,19.413202,99.154923
+3540,10077456,Private room,Ciudad de México,21.0,19.399267000000002,99.180636
+3543,2031170,Private room,Mexico City,24.0,19.406775,99.187246
+3545,9413099,Private room,Ciudad de México,16.0,19.423468,99.159828
+3547,14086544,Private room,Ciudad de México,23.0,19.436575,99.138148
+3549,12327679,Private room,Ciudad de México,45.0,19.404929,99.172133
+3551,6923539,Private room,Mexico,69.0,19.411786,99.172133
+3552,6505781,Private room,Ciudad de México,26.0,19.348104,99.171947
+3554,13865437,Private room,Colonia Juárez,36.0,19.424271,99.172599
+3555,7381360,Private room,Benito Juárez,26.0,19.402069,99.141168
+3556,4954901,Private room,Ciudad de México,25.0,19.412051,99.162167
+3559,13328543,Private room,Ciudad de México,21.0,19.430741,99.168688
+3560,14430567,Private room,Ciudad de México,13.0,19.372582,99.169856
+3561,9361363,Private room,Ciudad de México,12.0,19.390921,99.177726
+3563,7255838,Private room,Ciudad de México,16.0,19.39493,99.185465
+3566,883511,Private room,Mexico City,19.0,19.441992000000003,99.146545
+3567,99972,Private room,Mexico City,148.0,19.442681,99.163708
+3570,8294840,Private room,Ciudad de México,22.0,19.421589,99.159668
+3573,9613233,Private room,Ciudad de México,18.0,19.414896,99.168592
+3574,7432841,Private room,Ciudad de México,26.0,19.400024,99.161658
+3575,12496522,Private room,Ciudad de México,21.0,19.407657,99.173374
+3576,12144716,Private room,Ciudad de México,26.0,19.393585,99.155891
+3577,5309321,Private room,Ciudad de México,31.0,19.428034,99.191543
+3578,6414228,Private room,Ciudad de México,24.0,19.368924,99.167818
+3582,9826970,Private room,Ciudad de México,62.0,19.399955,99.179293
+3584,11824569,Private room,Ciudad de México,53.0,19.432748999999998,99.156068
+3585,4509009,Private room,San Miguel Chapultepec II Sección,31.0,19.419745000000002,99.17784
+3587,7603493,Private room,Mexico City,21.0,19.408129000000002,99.17443
+3588,2547576,Private room,Mexico City,27.0,19.347048,99.167379
+3589,13183373,Private room,Ciudad de México,31.0,19.437929,99.183243
+3592,7556771,Private room,Portales Sur,14.0,19.361128,99.146814
+3593,12138898,Private room,Ciudad de México,14.0,19.383935,99.165261
+3595,6952022,Private room,Ciudad de México,36.0,19.406368,99.174544
+3601,14120527,Private room,Ciudad de México,11.0,19.39404,99.153179
+3602,7681301,Private room,Ciudad de México,45.0,19.426771,99.160887
+3603,8027590,Private room,Ciudad de México,102.0,19.418608,99.164279
+3604,7968415,Private room,Ciudad de México,23.0,19.384256,99.181425
+3605,10569956,Private room,Ciudad de México,27.0,19.386423999999998,99.178143
+3609,7178136,Private room,Ciudad de México,34.0,19.409445,99.169614
+3613,13003530,Private room,Ciudad de México,36.0,19.418086,99.176446
+3617,12136821,Private room,Ciudad de México,20.0,19.405838,99.182154
+3620,8153276,Private room,Ciudad de México,27.0,19.414202,99.172868
+3621,14339894,Private room,Ciudad de México,44.0,19.386432,99.157517
+3623,1125048,Private room,Mexico City,103.0,19.372045999999997,99.169084
+3624,5374172,Private room,Ciudad de México,36.0,19.414210999999998,99.169982
+3625,7837506,Private room,Ciudad de México,26.0,19.411417,99.17061
+3629,12831105,Private room,Ciudad de México,11.0,19.443168,99.162047
+3630,2809916,Private room,Ciudad de México,26.0,19.420576,99.159189
+3631,8862420,Private room,Ciudad de México,23.0,19.408208,99.165926
+3632,7987940,Private room,Ciudad de México,62.0,19.429560000000002,99.197012
+3634,7115509,Private room,Mexico City,29.0,19.416207,99.167071
+3635,2417762,Private room,Mexico City,16.0,19.436025,99.135795
+3636,419110,Private room,Mexico City,28.0,19.412378,99.177218
+3638,9218812,Private room,Mexico City,39.0,19.41735,99.162449
+3640,5965434,Private room,Ciudad de México,46.0,19.412026,99.17083
+3642,11573528,Private room,Ciudad de México,22.0,19.395104999999997,99.148681
+3648,7996977,Private room,Ciudad de México,15.0,19.389162,99.15708
+3651,7171332,Private room,Ciudad de México,30.0,19.368183,99.179395
+3653,5880883,Private room,Ciudad de México,29.0,19.406932,99.172222
+3654,5917455,Private room,Ciudad de México,28.0,19.43127,99.161971
+3657,7293102,Private room,Ciudad de México,31.0,19.415167999999998,99.168014
+3660,13042347,Private room,Ciudad de México,37.0,19.408848000000003,99.175399
+3664,10248760,Private room,Ciudad de México,20.0,19.42684,99.172059
+3665,11822675,Private room,Ciudad de México,18.0,19.430042,99.172534
+3667,14429731,Private room,Mexico City,27.0,19.427802,99.154194
+3668,13752286,Private room,Ciudad de México,15.0,19.41476,99.16014
+3670,6516200,Private room,Ciudad de México,34.0,19.410606,99.171672
+3671,6065186,Private room,Ciudad de México,20.0,19.414726,99.176436
+3672,5881278,Private room,México,70.0,19.412395,99.17095
+3673,12385394,Private room,Ciudad de México,21.0,19.407047,99.18157
+3674,12814651,Private room,Ciudad de México,34.0,19.412557999999997,99.176245
+3676,10520830,Private room,Ciudad de México,18.0,19.407641,99.128088
+3682,11654360,Private room,Ciudad de México,20.0,19.402273,99.170677
+3683,10367708,Private room,Del Valle Norte,26.0,19.398184,99.168773
+3684,12359099,Private room,Ciudad de México,28.0,19.398253,99.173571
+3688,13688387,Private room,Ciudad de México,20.0,19.422567,99.157766
+3690,13669503,Private room,Ciudad de México,19.0,19.458754000000003,99.141986
+3691,9065681,Private room,Ciudad de México,36.0,19.405155,99.156677
+3693,485329,Private room,Mexico City,16.0,19.41761,99.178939
+3694,14485533,Private room,Ciudad de México,44.0,19.422293,99.158911
+3696,12751458,Private room,Ciudad de México,18.0,19.400728,99.172209
+3697,5860327,Private room,Ciudad de México,14.0,19.389392,99.183157
+3698,13154638,Private room,Ciudad de México,15.0,19.401685999999998,99.161053
+3699,12682295,Private room,Ciudad de México,34.0,19.397234,99.143215
+3702,14321366,Private room,Ciudad de México,18.0,19.381304999999998,99.15366
+3704,8069501,Private room,Ciudad de México,39.0,19.427951,99.172665
+3705,5433172,Private room,Ciudad de México,35.0,19.415257,99.167082
+3707,13686424,Private room,Ciudad de México,18.0,19.393937,99.144629
+3710,12045720,Private room,Ciudad de México,15.0,19.406338,99.179013
+3711,12853374,Private room,Ciudad de México,14.0,19.44075,99.165605
+3713,12782466,Private room,Mexico City,12.0,19.414626000000002,99.179281
+3715,13829960,Private room,Ciudad de México,27.0,19.41198,99.177897
+3716,7902171,Private room,Ciudad de México,16.0,19.386326999999998,99.148144
+3717,11604021,Private room,Ciudad de México,26.0,19.425657,99.156962
+3718,4895742,Private room,Ciudad de México,20.0,19.397621,99.14903
+3719,3617518,Private room,Mexico City,38.0,19.434217,99.185756
+3720,5669999,Private room,Ciudad de México,23.0,19.42245,99.160673
+3722,1934478,Private room,Mexico City,68.0,19.41861,99.173268
+3723,14474843,Private room,Ciudad de México,29.0,19.364741,99.169088
+3726,12434377,Private room,Ciudad de México,16.0,19.370620000000002,99.187279
+3730,8493768,Private room,Ciudad de México,27.0,19.431679000000003,99.200727
+3731,11872355,Private room,Ciudad de México,26.0,19.421751999999998,99.156835
+3732,11677103,Private room,Ciudad de México,23.0,19.489461,99.118475
+3733,4100072,Private room,Ciudad de México,16.0,19.438901,99.154927
+3736,4257141,Private room,Mexico City,31.0,19.410098,99.162332
+3740,12435619,Private room,Ciudad de México,21.0,19.43584,99.157168
+3742,9153162,Private room,Ciudad de México,392.0,19.374727,99.157753
+3743,6887605,Private room,Ciudad de México,45.0,19.41659,99.176471
+3744,1135302,Private room,Mexico City,22.0,19.366875,99.179065
+3746,10020318,Private room,Ciudad de México,19.0,19.361125,99.15328
+3747,10931443,Private room,Ciudad de México,47.0,19.381282000000002,99.173201
+3748,6227464,Private room,México,16.0,19.411739,99.159481
+3750,4268947,Private room,Ciudad de México,28.0,19.395402,99.164108
+3751,9736726,Private room,Ciudad de México,18.0,19.387109,99.150313
+3753,5984262,Private room,Ciudad de México,25.0,19.394374,99.148997
+3754,11059123,Private room,Ciudad de México,54.0,19.422244,99.157131
+3755,14316759,Private room,Ciudad de México,20.0,19.432733,99.153856
+3756,6590793,Private room,Ciudad de México,27.0,19.407086,99.164894
+3757,14300209,Private room,Ciudad de México,28.0,19.436838,99.166105
+3759,11412021,Private room,Ciudad de México,31.0,19.402148999999998,99.174433
+3760,9880725,Private room,Ciudad de México,14.0,19.386218,99.17639
+3770,9025068,Private room,Ciudad de México,55.0,19.434707999999997,99.185371
+3775,4097894,Private room,Ciudad de México,26.0,19.353238,99.168275
+3777,6968498,Private room,Ciudad de México,33.0,19.416152,99.174993
+3778,3030227,Private room,Mexico City,23.0,19.397387,99.166465
+3780,13954515,Private room,Ciudad de México,31.0,19.431835999999997,99.170613
+3785,10470723,Private room,Colonia Juárez,31.0,19.418333999999998,99.169068
+3787,2848002,Private room,Mexico City,43.0,19.353333,99.161391
+3788,11087490,Private room,Ciudad de México,27.0,19.386129999999998,99.159836
+3789,3030022,Private room,Mexico City,41.0,19.40362,99.175347
+3790,11379072,Private room,Ciudad de México,13.0,19.369117000000003,99.182643
+3793,7455126,Private room,Ciudad de México,15.0,19.435782999999997,99.136921
+3794,2461282,Private room,Cuauhtémoc,21.0,19.433086,99.167665
+3796,13098666,Private room,Ciudad de México,70.0,19.408227,99.161992
+3798,9527955,Private room,Ejido del Centro,174.0,19.426619,99.137217
+3800,13768451,Private room,Ciudad de México,20.0,19.410313000000002,99.178746
+3801,13689064,Private room,Ciudad de México,20.0,19.407697,99.179297
+3802,10088727,Private room,Ciudad de México,23.0,19.428354000000002,99.170209
+3803,3715858,Private room,México ,21.0,19.345494,99.149967
+3804,11236333,Private room,Ciudad de México,23.0,19.393024,99.177658
+3806,10617983,Private room,Ciudad de México,52.0,19.349912,99.16943
+3811,5104882,Private room,Ciudad de México,32.0,19.40675,99.177295
+3812,7887445,Private room,Ciudad de México,31.0,19.422548000000003,99.159445
+3813,13973018,Private room,Ciudad de México,20.0,19.421738,99.169505
+3817,10213513,Private room,Ciudad de México,26.0,19.40268,99.179915
+3820,8488697,Private room,Ciudad de México,20.0,19.386022,99.152911
+3821,12985689,Private room,Ciudad de México,41.0,19.42967,99.203347
+3822,11337977,Private room,Ciudad de México,11.0,19.385127,99.151199
+3825,11148770,Private room,Ciudad de México,20.0,19.387142,99.154257
+3827,6799702,Private room,Ciudad de México,26.0,19.453559,99.140241
+3830,8206406,Private room,Ciudad de México,13.0,19.421402,99.160909
+3831,9116697,Private room,Ciudad de México,14.0,19.420076,99.159152
+3833,12972492,Private room,Ciudad de México,12.0,19.394479999999998,99.157707
+3835,10105055,Private room,Ciudad de México,18.0,19.381427,99.149254
+3836,13280786,Private room,Ciudad de México,52.0,19.436158,99.207091
+3837,4280348,Private room,Mexico City,39.0,19.431676,99.204845
+3839,608312,Private room,Ciudad de México,60.0,19.407158,99.176938
+3842,10358132,Private room,Ciudad de México,21.0,19.414282999999998,99.168623
+3843,4271065,Private room,Mexico City,26.0,19.427647,99.145717
+3847,6783187,Private room,Ciudad de México,31.0,19.411364000000003,99.176648
+3849,14336836,Private room,Ciudad de México,52.0,19.351044,99.155281
+3850,5298333,Private room,Ciudad de México,20.0,19.345447,99.162387
+3852,14264784,Private room,Ciudad de México,28.0,19.421702,99.163744
+3853,8672694,Private room,Ciudad de México,26.0,19.416712,99.164424
+3854,12567708,Private room,Mexico City,13.0,19.440849,99.166165
+3855,13005588,Private room,Mexico City,28.0,19.449,99.163893
+3856,13585210,Private room,Ciudad de México,23.0,19.350048,99.15056
+3857,10192777,Private room,Ciudad de México,14.0,19.368327999999998,99.160896
+3859,10613863,Private room,Ciudad de México,21.0,19.397495000000003,99.17835
+3860,7652478,Private room,Ciudad de México,23.0,19.414779,99.158024
+3862,12783934,Private room,Ciudad de México,16.0,19.413413000000002,99.169488
+3863,6560568,Private room,Ciudad de México,21.0,19.415453,99.168116
+3867,9941641,Private room,Ciudad de México,28.0,19.410782,99.149704
+3868,6375106,Private room,Ciudad de México,16.0,19.383796,99.178407
+3869,13606596,Private room,Ciudad de México,35.0,19.412391,99.168978
+3870,9823138,Private room,Ciudad de México,22.0,19.396866,99.158232
+3871,12515370,Private room,Ciudad de México,26.0,19.414122,99.178273
+3872,10434114,Private room,Colonia Juárez,31.0,19.429088,99.155695
+3873,13079686,Private room,Ciudad de México,16.0,19.409249,99.185907
+3874,6357196,Private room,México,28.0,19.387556,99.150021
+3876,2650267,Private room,Mexico City,31.0,19.417672,99.177
+3878,13746705,Private room,Ciudad de México,14.0,19.369208,99.175566
+3879,8520962,Private room,Ciudad de México,34.0,19.429782,99.180939
+3881,10364200,Private room,Ciudad de México,21.0,19.412706,99.178393
+3882,4902176,Private room,Ciudad de México,12.0,19.434291,99.158085
+3883,6951646,Private room,Del Valle Centro,32.0,19.392235,99.165568
+3884,11948004,Private room,Ciudad de México,18.0,19.416956,99.178845
+3885,11410070,Private room,Ciudad de México,26.0,19.403477,99.17056
+3893,12957248,Private room,Ciudad de México,21.0,19.391849,99.170708
+3894,9171114,Private room,Ciudad de México,19.0,19.349324,99.145246
+3895,10254764,Private room,Ciudad de México,21.0,19.367798,99.161895
+3896,12202667,Private room,Ciudad de México,20.0,19.368417,99.179937
+3897,6187536,Private room,Ciudad de México,29.0,19.403998,99.161295
+3899,14026274,Private room,Ciudad de México,31.0,19.414468,99.178061
+3901,8672807,Private room,Ciudad de México,25.0,19.418018,99.162633
+3903,350079,Private room,Mexico City,57.0,19.404206,99.16553
+3906,9842135,Private room,México ,21.0,19.362395000000003,99.159314
+3909,13698014,Private room,Mexico City,52.0,19.362966,99.155433
+3910,2465241,Private room,Polanco ,81.0,19.431608999999998,99.202004
+3911,5605670,Private room,Ciudad de México,41.0,19.423241,99.17156
+3912,13601215,Private room,Ciudad de México,36.0,19.415379,99.157756
+3913,8256629,Private room,Ciudad de México,15.0,19.408537,99.178885
+3915,2789086,Private room,Ciudad de México,36.0,19.428092000000003,99.157207
+3919,14058480,Private room,Ciudad de México,44.0,19.417011,99.173144
+3923,6571073,Private room,Mexico City,45.0,19.411433,99.176291
+3924,5599867,Private room,Mexico City,36.0,19.413969,99.177101
+3926,13175922,Private room,Ciudad de México,28.0,19.380909,99.163055
+3928,13548620,Private room,Ciudad de México,21.0,19.412392,99.156738
+3929,1408478,Private room,Mexico City,26.0,19.40864,99.166277
+3930,11419808,Private room,Ciudad de México,16.0,19.355975,99.153659
+3932,10721818,Private room,Ciudad de México,19.0,19.398823,99.175643
+3935,8821717,Private room,Ciudad de México,23.0,19.362816,99.171883
+3938,12593017,Private room,Ciudad de México,26.0,19.350341,99.163876
+3939,6544130,Private room,Ciudad de México,14.0,19.4022,99.174328
+3940,13293661,Private room,Ciudad de México,20.0,19.410368,99.174106
+3942,7615873,Private room,Ciudad de México,52.0,19.416798999999997,99.161806
+3943,11986519,Private room,Ciudad de México,20.0,19.393442,99.175497
+3944,10811909,Private room,Ciudad de México,40.0,19.435593,99.184052
+3946,13841612,Private room,Ciudad de México,15.0,19.405661,99.183913
+3947,6686157,Private room,Ciudad de México,31.0,19.396997,99.173711
+3950,11477319,Private room,Ciudad de México,16.0,19.353047,99.177896
+3951,4342963,Private room,Mexico City,31.0,19.408561,99.163418
+3957,12021162,Private room,Ciudad de México,16.0,19.388109,99.173096
+3960,7006283,Private room,Ciudad de México,20.0,19.432451999999998,99.174024
+3961,7389956,Private room,Ciudad de México,16.0,19.410435999999997,99.159816
+3964,9257856,Private room,Ciudad de México,26.0,19.409653,99.172233
+3969,1847748,Private room,Mexico City,26.0,19.415302,99.177773
+3970,13637960,Private room,Ciudad de México,40.0,19.423948,99.136758
+3971,717874,Private room,Mexico City,72.0,19.411703,99.178214
+3972,3369259,Private room,Mexico DF,34.0,19.430756,99.185462
+3974,1393660,Private room,Ciudad de México,16.0,19.378439,99.174357
+3976,2183269,Private room,Mexico City,16.0,19.385206,99.169363
+3977,12603091,Private room,Ciudad de México,16.0,19.400238,99.158233
+3979,2863665,Private room,Mexico City,23.0,19.432103,99.173228
+3982,12709669,Private room,Ciudad de México,15.0,19.375965,99.185301
+3984,6119256,Private room,San Miguel Chapultepec I Sección,16.0,19.409009,99.187268
+3990,3737766,Private room,Mexico City,20.0,19.417582,99.163937
+3996,13412127,Private room,Ciudad de México,26.0,19.45318,99.155515
+3997,2984717,Private room,San Miguel Chapultepec I Sección,16.0,19.410787,99.186585
+3999,11462782,Private room,Ciudad de México,19.0,19.348488,99.160373
+4001,12215830,Private room,Ciudad de México,23.0,19.410944,99.186877
+4002,9209020,Private room,Ciudad de México,36.0,19.349676000000002,99.143939
+4006,10928496,Private room,Ciudad de México,30.0,19.42493,99.167821
+4007,7636481,Private room,Ciudad de México,56.0,19.432506,99.195423
+4008,13493219,Private room,Ciudad de México,18.0,19.38877,99.173633
+4009,7875440,Private room,Ciudad de México,35.0,19.423235000000002,99.173607
+4013,14414604,Private room,Ciudad de México,33.0,19.355551000000002,99.166319
+4014,960414,Private room,Mexico City,36.0,19.399335,99.174513
+4018,9995371,Private room,Ciudad de México,28.0,19.413151,99.144026
+4019,2262438,Private room,Ciudad de México,22.0,19.419545,99.157839
+4020,7162767,Private room,Ciudad de México,45.0,19.404258,99.173535
+4021,12714540,Private room,Mexico City,20.0,19.386214000000002,99.139767
+4022,11376753,Private room,Ciudad de México,21.0,19.421295999999998,99.171444
+4024,5183850,Private room,Ciudad de México,33.0,19.398488,99.173283
+4025,9609918,Private room,Ciudad de México,26.0,19.430717,99.166825
+4026,10389776,Private room,Ciudad de México,35.0,19.429539000000002,99.163763
+4027,12363618,Private room,Ciudad de México,16.0,19.399686,99.155354
+4028,6171066,Private room,Ciudad de Mexico,21.0,19.40343,99.169905
+4029,6391102,Private room,Ciudad de México,22.0,19.429327,99.147068
+4030,13830864,Private room,Ciudad de México,20.0,19.433556,99.157003
+4037,9863971,Private room,Ciudad de México,21.0,19.416443,99.162914
+4038,6102296,Private room,Mexico City,31.0,19.391984,99.180035
+4040,7680595,Private room,Ciudad de México,24.0,19.390403,99.15916
+4041,6052413,Private room,Ciudad de México,30.0,19.369985,99.177888
+4042,13601357,Private room,Ciudad de México,20.0,19.389810999999998,99.183529
+4043,13099370,Private room,Ciudad de México,36.0,19.428278,99.159083
+4044,6370236,Private room,Ciudad de México,18.0,19.440429,99.1641
+4046,6654921,Private room,Escandón II Sección,19.0,19.400569,99.171129
+4047,12624074,Private room,Ciudad de México,28.0,19.395967000000002,99.157819
+4051,7157458,Private room,Ciudad de México,23.0,19.380177,99.147601
+4053,4668026,Private room,Ciudad de México,26.0,19.394923000000002,99.182308
+4054,911088,Private room,Mexico City,71.0,19.424501,99.138018
+4055,9717071,Private room,Ciudad de México,18.0,19.409854,99.185422
+4057,13416015,Private room,Ciudad de México,39.0,19.411954,99.177425
+4058,12272304,Private room,Ciudad de México,57.0,19.385751000000003,99.171256
+4060,4423115,Private room,Ciudad de México,27.0,19.426262,99.154653
+4065,14362672,Private room,Ciudad de México,26.0,19.434061,99.159617
+4071,7881121,Private room,Ciudad de México,26.0,19.418672,99.159725
+4073,2837105,Private room,Mexico City,28.0,19.452404,99.155568
+4075,7853589,Private room,Portales Norte,16.0,19.371557,99.155099
+4076,10616158,Private room,Colonia Juárez,22.0,19.428161,99.155504
+4077,11948481,Private room,Ciudad de México,25.0,19.414847,99.166707
+4078,11060732,Private room,Ciudad de México,25.0,19.397357999999997,99.250197
+4081,12762721,Private room,Ciudad de México,38.0,19.412179000000002,99.167312
+4084,6436314,Private room,Ciudad de México,21.0,19.4069,99.159532
+4086,2291674,Private room, Mexico DF,22.0,19.422347,99.161307
+4087,13862291,Private room,Colonia Juárez,50.0,19.429305,99.160976
+4088,10306359,Private room,Ciudad de México,50.0,19.38534,99.149479
+4090,6305913,Private room,México,34.0,19.35249,99.165346
+4092,10732251,Private room,Colonia Juárez,34.0,19.428933999999998,99.156614
+4093,13084907,Private room,Ciudad de México,25.0,19.413965,99.167941
+4094,8636279,Private room,Ciudad de México,26.0,19.421253,99.168934
+4096,936382,Private room,Mexico City,26.0,19.410055,99.16869
+4098,1324525,Private room,Mexico City,28.0,19.383515,99.166033
+4100,11689564,Private room,Ciudad de México,23.0,19.426988,99.175155
+4102,9238355,Private room,Ciudad de México,31.0,19.430101999999998,99.168613
+4104,4735000,Private room,Ciudad de México,16.0,19.404784,99.159284
+4105,13857602,Private room,Colonia Juárez,48.0,19.427247,99.161584
+4106,12410237,Private room,Ciudad de México,31.0,19.356835,99.186349
+4109,12932702,Private room,Ciudad de México,15.0,19.403203,99.161752
+4110,4464917,Private room,Mexico City,44.0,19.419273,99.174652
+4111,4787539,Private room,Ciudad de México,20.0,19.384075,99.176098
+4112,14327357,Private room,Ciudad de México,20.0,19.407573,99.184058
+4114,12069421,Private room,Ciudad de México,37.0,19.416669,99.157035
+4115,6731694,Private room,Ciudad de México,16.0,19.434707999999997,99.137257
+4116,7871298,Private room,Ciudad de México,39.0,19.368201000000003,99.160144
+4119,11626028,Private room,Ciudad de México,70.0,19.407633999999998,99.17619
+4121,12874397,Private room,Ciudad de México,16.0,19.409026,99.168527
+4122,4430765,Private room,Mexico ,23.0,19.352795,99.162429
+4123,6328012,Private room,México,16.0,19.374973999999998,99.175599
+4124,11463424,Private room,Ciudad de méxico,24.0,19.418758999999998,99.161635
+4126,9060672,Private room,Ciudad de México,15.0,19.394573,99.185864
+4128,10838282,Private room,Ciudad de México,19.0,19.398148000000003,99.185809
+4129,11039333,Private room,Ciudad de México,55.0,19.434147,99.18721
+4130,14067229,Private room,Ciudad de México,26.0,19.440813000000002,99.163094
+4131,9224083,Private room,Ciudad de México,26.0,19.431096,99.192337
+4132,14318231,Private room,Ciudad de México,26.0,19.414126,99.177372
+4133,4469994,Private room,Ciudad de México,82.0,19.406523,99.173566
+4136,13781111,Private room,Ciudad de México,50.0,19.413615,99.172152
+4138,12780151,Private room,Ciudad de México,20.0,19.451496,99.15777
+4139,10357910,Private room,Mexico City,26.0,19.390345,99.150443
+4141,13044253,Private room,Ciudad de México,27.0,19.427378,99.154134
+4142,13168721,Private room,Ciudad de México,15.0,19.413964,99.172691
+4143,11273597,Private room,Ciudad de México,21.0,19.401335999999997,99.17167
+4150,14356804,Private room,Ciudad de México,34.0,19.34858,99.161675
+4154,10493315,Private room,Ciudad de México,14.0,19.391896,99.186655
+4158,6949812,Private room,Ciudad de México,24.0,19.402148999999998,99.147134
+4160,6551205,Private room,Ciudad de México,34.0,19.408147,99.171973
+4166,8516421,Private room,Ciudad de México,11.0,19.40553,99.162042
+4167,2127400,Private room,Mexico City,77.0,19.418705,99.159225
+4169,9616276,Private room,Ciudad de México,39.0,19.409014000000003,99.169714
+4170,3732354,Private room,Mexico City,50.0,19.43355,99.187006
+4171,3093758,Private room,Ciudad de México,15.0,19.383508,99.189394
+4173,6534636,Private room,Ciudad de México,15.0,19.364103,99.169613
+4175,5591793,Private room,Ciudad de México,29.0,19.361289000000003,99.183469
+4181,8644402,Private room,Ciudad de México,21.0,19.412435000000002,99.157628
+4183,14218161,Private room,Ciudad de México,103.0,19.434278,99.139716
+4184,10175359,Private room,Ciudad de México,20.0,19.420087,99.17482
+4185,14384486,Private room,Ciudad de México,24.0,19.395325,99.142772
+4186,11795708,Private room,Mexico City,28.0,19.388821,99.149995
+4187,6623051,Private room,Ciudad de México,21.0,19.414752,99.15777
+4189,10853259,Private room,Ciudad de México,20.0,19.432048,99.186232
+4190,11166835,Private room,Ciudad de México,13.0,19.34443,99.160391
+4192,14341236,Private room,Ciudad de México,20.0,19.403792000000003,99.162075
+4193,12435623,Private room,Ciudad de México,339.0,19.379998,99.179721
+4194,13901474,Private room,Ciudad de México,16.0,19.416462,99.148997
+4196,1403218,Private room,Mexico City,19.0,19.443393,99.147357
+4197,13192022,Private room,Ciudad de México,31.0,19.445207,99.156454
+4198,13659973,Private room,Ciudad de México,34.0,19.43565,99.192539
+4199,9046175,Private room,Ciudad de México,20.0,19.407169,99.171897
+4200,14187210,Private room,Ciudad de México,19.0,19.402343,99.148157
+4202,11451731,Private room,Ciudad de México,24.0,19.420599,99.158284
+4204,7543845,Private room,Colonia Juárez,26.0,19.423014000000002,99.166893
+4206,7109819,Private room,Ciudad de México,20.0,19.403147,99.181879
+4207,14092687,Private room,Ciudad de México,20.0,19.368178,99.172267
+4211,3286979,Private room,Mexico City,49.0,19.406462,99.175354
+4214,8698952,Private room,Ciudad de México,21.0,19.417817000000003,99.162275
+4215,5172383,Private room,Ciudad de México,26.0,19.411573,99.16262
+4216,5289079,Private room,Ciudad de México,21.0,19.410255,99.159375
+4218,12934894,Private room,Ciudad de México,15.0,19.435734,99.132382
+4222,12761755,Private room,Ciudad de México,361.0,19.420282,99.158586
+4225,6952557,Private room,Distrito Federal,29.0,19.427937,99.134231
+4228,13082776,Private room,Ejido del Centro,18.0,19.427239,99.133383
+4230,13109590,Private room,Ciudad de México,19.0,19.420735,99.163638
+4233,10732010,Private room,Del Valle Norte,21.0,19.392613,99.171691
+4234,10100537,Private room,Ciudad de México,152.0,19.392072,99.174402
+4235,12323263,Private room,Ciudad de México,62.0,19.349892,99.163955
+4240,13299278,Private room,Ciudad de México,21.0,19.378945,99.173958
+4243,13724419,Private room,Ciudad de México,20.0,19.38759,99.181924
+4245,11572279,Private room,Del Valle Norte,16.0,19.392363,99.170697
+4246,12971403,Private room,Ciudad de México,21.0,19.366925,99.169418
+4249,14466223,Private room,Ciudad de México,66.0,19.423004000000002,99.166592
+4250,6800634,Private room,Ciudad de México,14.0,19.398621,99.172251
+4251,4403737,Private room,Mexico City,52.0,19.416182,99.146365
+4252,13830629,Private room,Ciudad de México,20.0,19.404455,99.158397
+4255,10809920,Private room,Ciudad de México,21.0,19.415342000000003,99.153131
+4256,9446446,Private room,Ciudad de México,46.0,19.397792000000003,99.154393
+4257,12886340,Private room,Ciudad de México,19.0,19.412532000000002,99.162684
+4258,13925657,Private room,Ciudad de México,45.0,19.383773,99.187506
+4260,14027445,Private room,Ciudad de México,11.0,19.410009,99.184384
+4262,3031671,Private room,Ciudad de México,211.0,19.433945,99.150643
+4263,14323191,Private room,Ciudad de México,27.0,19.426854000000002,99.136545
+4266,5293731,Private room,Ciudad de México,12.0,19.409009,99.174872
+4267,13184392,Private room,Ciudad de México,36.0,19.413005,99.157255
+4272,13997833,Private room,Ciudad de México,21.0,19.406318,99.165818
+4275,13912503,Private room,Mexico City,11.0,19.398155,99.152722
+4279,6026377,Private room,Mexico City,41.0,19.41195,99.177276
+4284,1142373,Private room,Mexico City,23.0,19.344766,99.149137
+4288,5581616,Private room,Ciudad de México,23.0,19.420044,99.154599
+4292,7340446,Private room,Ciudad de México,36.0,19.438588,99.158953
+4293,9385670,Private room,Ciudad de México,39.0,19.420532,99.17271
+4295,5807336,Private room,Juárez,15.0,19.421988,99.172764
+4296,6783842,Private room,Ciudad de México,31.0,19.434179,99.168459
+4298,12830869,Private room,Ciudad de México,10.0,19.374323999999998,99.168875
+4302,9409102,Private room,Ciudad de México,23.0,19.422121,99.132434
+4304,14330979,Private room,Benito Juárez,48.0,19.394957,99.167803
+4305,1007174,Private room,Mexico City,41.0,19.439179,99.155183
+4306,7903222,Private room,Ciudad de México,18.0,19.398158,99.16062
+4307,12886927,Private room,Ciudad de México,20.0,19.435343,99.18862
+4309,11439553,Private room,Ciudad de México,16.0,19.446362,99.15704
+4311,7984806,Private room,Ciudad de México,11.0,19.389809,99.169894
+4314,8763306,Private room,Ciudad de México,25.0,19.421452,99.159277
+4317,10450752,Private room,Ciudad de México,28.0,19.413089000000003,99.14558
+4319,1142206,Private room,Ciudad de México,41.0,19.419273,99.156608
+4320,11087816,Private room,Ciudad de México,26.0,19.369038,99.16731
+4321,10884709,Private room,Ciudad de México,23.0,19.402455,99.171545
+4323,1093003,Private room,Mexico City,41.0,19.355514000000003,99.16311
+4324,9278898,Private room,Mexico,37.0,19.430823999999998,99.202182
+4325,11394430,Private room,Ciudad de México,12.0,19.41955,99.157049
+4326,4926123,Private room,Ciudad de México,28.0,19.403246,99.160263
+4327,7987072,Private room,Ciudad de México,20.0,19.388479999999998,99.154097
+4329,12550195,Private room,Ciudad de México,129.0,19.429660000000002,99.192687
+4331,5251177,Private room,Ciudad de México,20.0,19.417676999999998,99.16242
+4332,13578613,Private room,Ciudad de México,22.0,19.411724,99.175488
+4333,7652703,Private room,Ciudad de México,46.0,19.397744,99.172579
+4335,7363474,Private room,Mexico City,70.0,19.432235000000002,99.178058
+4336,4719784,Private room,Mexico City,26.0,19.409982,99.164045
+4337,6511538,Private room,san rafael,20.0,19.439044,99.157946
+4339,4169838,Private room,Mexico City,41.0,19.416801,99.167473
+4341,14028553,Private room,Ciudad de México,52.0,19.412209,99.165333
+4344,5261581,Private room,Ciudad de México,31.0,19.414582,99.157239
+4345,10616517,Private room,Ciudad de México,20.0,19.416297,99.160015
+4347,8498863,Private room,Ciudad de México,124.0,19.388795000000002,99.17823
+4348,10163749,Private room,Ciudad de México,33.0,19.40889,99.170804
+4351,7515745,Private room,Ciudad de México,21.0,19.369319,99.167676
+4356,14074134,Private room,Ciudad de México,27.0,19.409232,99.187398
+4357,3468410,Private room,Mexico City,28.0,19.380028,99.181569
+4358,4856659,Private room,Ciudad de México,27.0,19.355515,99.150744
+4359,12369779,Private room,Ciudad de México,21.0,19.407465,99.171711
+4363,6062796,Private room,Escandón I Sección,34.0,19.405242,99.18104
+4368,7677101,Private room,Ciudad de México,29.0,19.412748,99.160423
+4369,22787,Private room,Mexico City,106.0,19.440761,99.163245
+4370,14105814,Private room,Ciudad de México,103.0,19.348257,99.17584
+4371,6213956,Private room,México,21.0,19.398029,99.178801
+4372,2273640,Private room,Mexico City,20.0,19.38006,99.175186
+4373,13672837,Private room,Ciudad de México,57.0,19.426781,99.177398
+4375,14187413,Private room,Ciudad de México,84.0,19.433566,99.188114
+4378,5905624,Private room,Mexico City,25.0,19.413492,99.176232
+4379,13402271,Private room,Ciudad de México,48.0,19.416531,99.178829
+4380,5519427,Private room,Ciudad de México,28.0,19.387294,99.146954
+4382,13361482,Private room,Ciudad de México,11.0,19.341977,99.147277
+4383,8740546,Private room,Ciudad de México,15.0,19.4015,99.175215
+4386,8065822,Private room,Colonia Juárez,67.0,19.426665,99.156696
+4389,8487951,Private room,Ciudad de México,22.0,19.36768,99.158047
+4391,6325114,Private room,Ciudad de México,11.0,19.451788,99.16054
+4393,7223097,Private room,Ciudad de México,18.0,19.398411,99.162894
+4397,13099906,Private room,Colonia Juárez,40.0,19.422628,99.170445
+4398,454356,Private room,Mexico City,22.0,19.414483999999998,99.155919
+4399,3922584,Private room,Mexico City,16.0,19.416709,99.174312
+4402,3912400,Private room,Mexico City,45.0,19.438596,99.212474
+4403,11803369,Private room,Ciudad de México,28.0,19.396394,99.163128
+4404,5685383,Private room,Ciudad de México,25.0,19.419807000000002,99.155026
+4405,6453485,Private room,Ciudad de México,26.0,19.437649,99.160382
+4410,4978810,Private room,Ciudad de México,15.0,19.450975,99.160041
+4413,6031748,Private room,Mexico City,23.0,19.432342000000002,99.170035
+4414,8254153,Private room,Ciudad de México,25.0,19.424446,99.175834
+4415,394589,Private room,Ciudad de México,30.0,19.424991000000002,99.174791
+4417,11068938,Private room,Ciudad de méxico,21.0,19.417421,99.16185
+4418,9613968,Private room,Ciudad de México,19.0,19.394847,99.179484
+4419,3897209,Private room,Mexico City,30.0,19.393046,99.152115
+4421,5892296,Private room,Polanco IV Sección,44.0,19.437163,99.194165
+4422,11282367,Private room,Colonia Juárez,16.0,19.427144000000002,99.155035
+4423,7584003,Private room,Ciudad de México,22.0,19.398225,99.162077
+4426,12829320,Private room,Mexico City,20.0,19.412973,99.188361
+4428,5003771,Private room,Ciudad de México,62.0,19.408504,99.175179
+4429,13046617,Private room,Ciudad de México,16.0,19.412147,99.158845
+4432,11583072,Private room,Ciudad de México,15.0,19.38171,99.181591
+4435,4621933,Private room,Mexico City,23.0,19.383982999999997,99.152132
+4438,7147480,Private room,Ciudad de México,35.0,19.435230999999998,99.187515
+4439,14055708,Private room,Ciudad de México,26.0,19.442124,99.202679
+4440,14413678,Private room,Ciudad de México,27.0,19.357105999999998,99.165897
+4441,6044222,Private room,Ciudad de México,30.0,19.429610999999998,99.158653
+4442,13394485,Private room,Ciudad de México,13.0,19.404656,99.158492
+4443,13828914,Private room,Ciudad de México,19.0,19.415279,99.17747
+4446,10609821,Private room,Ciudad de México,15.0,19.355110999999997,99.183292
+4447,11553675,Private room,Ciudad de México,50.0,19.416342999999998,99.178941
+4449,8597635,Private room,Ciudad de México,26.0,19.361083999999998,99.171186
+4450,6555715,Private room,Ciudad de México,43.0,19.389307000000002,99.179134
+4452,8105837,Private room,Ciudad de México,23.0,19.411656,99.172605
+4454,11124631,Private room,Ciudad de México,26.0,19.38254,99.169328
+4455,2026652,Private room,Mexico City,25.0,19.41473,99.161603
+4458,9028047,Private room,Ciudad de México,33.0,19.416981,99.179409
+4461,2848113,Private room,Ciudad de México,44.0,19.353988,99.161384
+4462,4791533,Private room,Ciudad de México,28.0,19.424619,99.17026
+4463,10635168,Private room,Ciudad de México,28.0,19.427884,99.141078
+4465,12201291,Private room,Ciudad de México,15.0,19.345998,99.158158
+4466,12363919,Private room,Ciudad de México,28.0,19.416991,99.164557
+4468,11760189,Private room,Ciudad de México,57.0,19.396378,99.14502
+4469,421607,Private room,Mexico City,16.0,19.403141,99.151639
+4471,7312615,Private room,Ciudad de México,41.0,19.381057000000002,99.190429
+4473,12969338,Private room,Ciudad de México,56.0,19.411098000000003,99.166812
+4475,12092553,Private room,Ciudad de México,23.0,19.438144,99.137254
+4476,12517261,Private room,Ciudad de México,24.0,19.413723,99.180155
+4479,8889471,Private room,Ciudad de México,40.0,19.410669,99.172245
+4481,13061355,Private room,Ciudad de México,20.0,19.406502,99.171512
+4482,13672756,Private room,Ciudad de México,57.0,19.426279,99.177064
+4489,13463360,Private room,Ciudad de México,109.0,19.351670000000002,99.162439
+4490,7516885,Private room,Escandón II Sección,23.0,19.401909,99.17236
+4492,10731620,Private room,Ciudad de México,46.0,19.411078,99.188454
+4493,12159986,Private room,Ciudad de México,31.0,19.429393,99.163736
+4495,2867405,Private room,Mexico City,16.0,19.427670000000003,99.153343
+4497,12815380,Private room,Ciudad de México,84.0,19.412441,99.174672
+4498,1353243,Private room,Mexico City,26.0,19.415519,99.161837
+4499,6912769,Private room,Ciudad de México,20.0,19.408762,99.165163
+4502,6315462,Private room,Mexico City ,70.0,19.412032,99.172742
+4503,5328333,Private room,Ciudad de México,36.0,19.417423,99.177328
+4504,6701535,Private room,Ciudad de México,29.0,19.405993,99.171103
+4505,5058982,Private room,Ciudad de México,16.0,19.347723000000002,99.15493
+4507,12138626,Private room,Ciudad de México,31.0,19.418228,99.173203
+4508,12791164,Private room,De los Deportes,26.0,19.3823,99.181636
+4510,9819832,Private room,Ciudad de México,23.0,19.412666,99.170416
+4511,7007719,Private room,Ciudad de México,21.0,19.417310999999998,99.171518
+4512,5934191,Private room,Portales Norte,14.0,19.366815,99.154437
+4513,2807016,Private room,Ciudad de México,20.0,19.438482,99.136193
+4519,13911542,Private room,Ciudad de México,20.0,19.422601999999998,99.167275
+4521,3702372,Private room,Mexico City,31.0,19.348572,99.159838
+4522,5871679,Private room,Escandón II Sección,26.0,19.401301,99.173819
+4523,11873535,Private room,Ciudad de México,23.0,19.430087,99.169864
+4527,6954790,Private room,Ciudad de México,19.0,19.39005,99.142182
+4528,12380322,Private room,Ciudad de México,23.0,19.356198000000003,99.188689
+4529,12115934,Private room,Ciudad de México,22.0,19.396238,99.175008
+4530,6031333,Private room,Ciudad de México,22.0,19.405207,99.171401
+4531,13982959,Private room,Ciudad de México,12.0,19.380035,99.150366
+4532,9666752,Private room,Ciudad de México,45.0,19.416741000000002,99.175412
+4535,13635699,Private room,Ciudad de México,31.0,19.393528,99.186809
+4536,6077371,Private room,Ciudad de México,15.0,19.408517,99.177623
+4537,13431887,Private room,Ciudad de México,19.0,19.417579999999997,99.15642
+4539,7239447,Private room,Ciudad de México,23.0,19.372871,99.177326
+4541,11192110,Private room,Ciudad de México,16.0,19.363252,99.174653
+4545,256062,Private room,Ciudad de México,28.0,19.410187,99.168978
+4547,11920279,Private room,Ciudad de México,37.0,19.43264,99.184609
+4548,11047433,Private room,Ciudad de México,21.0,19.439584,99.16295
+4551,10014933,Private room,Ciudad de México,21.0,19.369112,99.185498
+4553,8665129,Private room,Ciudad de México,20.0,19.435615,99.179097
+4555,11803521,Private room,Ciudad de México,28.0,19.396293,99.161579
+4557,10827023,Private room,Ciudad de México,16.0,19.338186,99.180878
+4559,13445824,Private room,Ciudad de México,27.0,19.413234,99.18987
+4564,11104999,Private room,Ciudad de México,40.0,19.417254,99.172117
+4567,13092756,Private room,Ciudad de México,14.0,19.424205999999998,99.170452
+4568,8653718,Private room,Ciudad de México,21.0,19.36673,99.187096
+4571,10158337,Private room,Ciudad de México,23.0,19.382044,99.146048
+4573,5784225,Private room,Ciudad de México,32.0,19.400320999999998,99.170967
+4576,9591180,Private room,Ciudad de México,33.0,19.347629,99.156262
+4578,8505975,Private room,Ciudad de México,28.0,19.402117,99.164546
+4580,10001394,Private room,Ciudad de México,10.0,19.399538,99.176552
+4582,13657609,Private room,Ciudad de México,40.0,19.422716,99.137395
+4583,5115318,Private room,Ciudad de México,29.0,19.41235,99.1788
+4584,9144783,Private room,Ciudad de México,34.0,19.40762,99.17378
+4587,13375816,Private room,Ciudad de México,52.0,19.4354,99.186935
+4588,9025016,Private room,Ciudad de México,36.0,19.36271,99.154029
+4589,8409555,Private room,Ciudad de México,20.0,19.402777,99.168905
+4593,4833571,Private room,Ciudad de México,22.0,19.408465,99.170918
+4594,10928856,Private room,Ciudad de México,21.0,19.351639000000002,99.156554
+4595,13533390,Private room,Mexico City,29.0,19.366063,99.163048
+4597,1614697,Private room,Mexico City,40.0,19.407238,99.176284
+4606,6759220,Private room,Ciudad de México,43.0,19.436559,99.208438
+4607,12684299,Private room,Ciudad de México,73.0,19.374744,99.157575
+4608,9838944,Private room,Ciudad de México,23.0,19.412029999999998,99.179349
+4612,6087805,Private room,Ciudad de México,34.0,19.392819,99.175643
+4614,6108916,Private room,Ciudad de México,29.0,19.405089,99.173541
+4615,14222981,Private room,Ciudad de México,42.0,19.43092,99.192347
+4617,11452232,Private room,Ciudad de México,32.0,19.420035000000002,99.16137
+4620,7500434,Private room,Ciudad de México,45.0,19.43705,99.212302
+4623,13238303,Private room,Ciudad de México,37.0,19.412570000000002,99.167542
+4629,2701524,Private room,Mexico City,20.0,19.387339,99.139158
+4630,5957054,Private room,Ciudad de México,28.0,19.412761,99.16053
+4631,13658546,Private room,Benito Juárez,23.0,19.396279,99.176976
+4634,5671067,Private room,Ciudad de México,15.0,19.418963,99.17229
+4635,7966192,Private room,Ciudad de México,11.0,19.34862,99.148681
+4637,6662809,Private room,Ciudad de México,24.0,19.410331,99.171348
+4638,6105800,Private room,Ciudad de México,20.0,19.361667999999998,99.174021
+4639,3310016,Private room,Ciudad de México,14.0,19.404804000000002,99.173918
+4640,10363348,Private room,Ciudad de México,28.0,19.408775,99.166791
+4641,6970368,Private room,Ciudad de México,26.0,19.41685,99.15907
+4642,8992907,Private room,Ciudad de México,28.0,19.412308,99.164026
+4643,1915601,Private room,Mexico City,31.0,19.371351,99.144736
+4645,14313268,Private room,Ciudad de México,44.0,19.432266000000002,99.16934
+4646,5152169,Private room,Ciudad de México,26.0,19.393712,99.137904
+4648,14070279,Private room,Ciudad de México,14.0,19.397605,99.143766
+4649,3479817,Private room,Mexico City,50.0,19.410830999999998,99.169909
+4650,4932593,Private room,Ciudad de México,28.0,19.441934,99.185677
+4651,14118344,Private room,Ciudad de México,72.0,19.405167000000002,99.169546
+4652,12134632,Private room,Ciudad de México,19.0,19.385251999999998,99.149695
+4653,3827359,Private room,Ciudad de México,18.0,19.438287,99.15552
+4656,5918194,Private room,Ciudad de México,69.0,19.432819,99.144774
+4657,3985437,Private room,Mexico City,42.0,19.349196,99.172331
+4658,9826954,Private room,Ciudad de México,62.0,19.399995,99.179078
+4662,12559961,Private room,Ciudad de México,18.0,19.421517,99.162669
+4664,13957958,Private room,Ciudad de México,45.0,19.412986,99.174204
+4666,9557821,Private room,Ciudad de México,162.0,19.416398,99.16293
+4667,14409447,Private room,Ciudad de México,39.0,19.401974,99.165241
+4668,6759506,Private room,Ciudad de México,49.0,19.434285,99.207457
+4670,3646546,Private room,Ciudad de México,34.0,19.428514,99.161335
+4671,9027347,Private room,Ciudad de México,31.0,19.417251999999998,99.180293
+4672,5838906,Private room,Mexico City,31.0,19.389329,99.163361
+4673,12456107,Private room,Ciudad de México,36.0,19.4072,99.175084
+4674,9954885,Private room,Ciudad de México,24.0,19.403607,99.14759
+4677,8848374,Private room,Mexico City,20.0,19.383903,99.184437
+4679,14451129,Private room,Ciudad de México,34.0,19.348398,99.163401
+4683,7868757,Private room,Ciudad de México,77.0,19.352416,99.162955
+4684,10723488,Private room,Ciudad de México,26.0,19.367909,99.166794
+4685,11880505,Private room,México ,23.0,19.388498000000002,99.16309
+4687,8185711,Private room,Mexico City,462.0,19.439163,99.157021
+4688,13193058,Private room,Ciudad de México,21.0,19.428852,99.173617
+4689,12514161,Private room,Ciudad de México,26.0,19.411839999999998,99.178914
+4690,11025832,Private room,Ciudad de México,23.0,19.373673999999998,99.167652
+4691,6522506,Private room,Ciudad de México,13.0,19.403013,99.162522
+4693,14069178,Private room,Ciudad de México,12.0,19.401773000000002,99.151312
+4699,2297850,Private room,Mexico City,34.0,19.429106,99.175523
+4701,11101032,Private room,Mexico City,22.0,19.409086,99.173951
+4702,5125712,Private room,Ciudad de México,57.0,19.395561999999998,99.153044
+4703,9158693,Private room,Ciudad de México,16.0,19.410352,99.190883
+4705,13066247,Private room,Ciudad de México,16.0,19.379545,99.183246
+4709,1467388,Private room,Mexico City,36.0,19.413498,99.176652
+4710,5406728,Private room,Ciudad de México,13.0,19.367566,99.177935
+4713,7362231,Private room,Ciudad de México,34.0,19.407512,99.174142
+4717,14484431,Private room,Ciudad de México,29.0,19.365138,99.167892
+4718,13281954,Private room,Ciudad de México,21.0,19.415657,99.178881
+4720,5606203,Private room,Ciudad de México,12.0,19.45586,99.145199
+4721,5441350,Private room,Ciudad de México,27.0,19.429835999999998,99.155768
+4722,6306735,Private room,Mexico City,20.0,19.414257,99.164628
+4725,9978767,Private room,Ciudad de México,15.0,19.433889999999998,99.145752
+4727,5681851,Private room,Ciudad de México,84.0,19.428569,99.19873
+4728,13638733,Private room,Ciudad de México,40.0,19.422960999999997,99.138151
+4729,14470454,Private room,Ciudad de México,66.0,19.42344,99.165486
+4730,2932151,Private room,Ciudad de México,14.0,19.396411999999998,99.185472
+4731,9144531,Private room,Ciudad de México,16.0,19.441473000000002,99.164121
+4732,7996656,Private room,Ciudad de México,28.0,19.397783999999998,99.177356
+4733,1013504,Private room,Mexico City,16.0,19.339833,99.182661
+4734,11906881,Private room,Ciudad de México,20.0,19.420739,99.168167
+4736,13815068,Private room,Ciudad de México,21.0,19.407434,99.186234
+4741,9169805,Private room,Ciudad de México,20.0,19.409429,99.171158
+4742,12406507,Private room,Ciudad de México,20.0,19.412885,99.172081
+4743,5534116,Private room,Ciudad de México,39.0,19.415597,99.15843
+4745,6475335,Private room,Ciudad de México,11.0,19.392373000000003,99.193646
+4748,5536585,Private room,Ciudad de México,24.0,19.373783,99.172911
+4749,13547763,Private room,Ciudad de México,31.0,19.413035,99.157151
+4750,7019455,Private room,Ciudad de México,23.0,19.364367,99.160249
+4751,5956986,Private room,Ciudad de México,75.0,19.460764,99.139219
+4753,5642013,Private room,Ciudad de México,24.0,19.349482000000002,99.159195
+4755,12916456,Private room,Ciudad de México,23.0,19.351277,99.15767
+4756,2691955,Private room,Mexico City,52.0,19.406303,99.171023
+4757,10907055,Private room,Ciudad de México,16.0,19.414163000000002,99.172548
+4758,1526333,Private room,Mexico City,28.0,19.346483,99.159405
+4759,12408752,Private room,Ciudad de México,21.0,19.407484,99.179087
+4760,10435940,Private room,Ciudad de México,31.0,19.438137,99.158849
+4762,13136547,Private room,Ciudad de México,26.0,19.399923,99.174549
+4763,1066945,Private room,Mexico City,44.0,19.353714,99.162921
+4765,6853613,Private room,Portales Sur,21.0,19.360722,99.148084
+4767,12888094,Private room,Ciudad de México,13.0,19.433689,99.173316
+4770,14167051,Private room,Ciudad de México,26.0,19.421448,99.167519
+4772,4835724,Private room,Ciudad de México,18.0,19.352912,99.183892
+4773,6134462,Private room,Ciudad de México,16.0,19.423032,99.155665
+4774,4074709,Private room,Mexico City,32.0,19.419117,99.155105
+4777,12815198,Private room,Ciudad de México,84.0,19.41385,99.174857
+4778,13908753,Private room,Mexico City,12.0,19.393589000000002,99.151107
+4779,9459239,Private room,Ciudad de México,33.0,19.441233999999998,99.184377
+4781,12817874,Private room,Ciudad de México,21.0,19.410255,99.180577
+4784,10865468,Private room,Ciudad de México,26.0,19.361116,99.147532
+4790,9709548,Private room,Del Valle Norte,23.0,19.396266,99.171471
+4793,5143806,Private room,Ciudad de México,31.0,19.409203,99.179256
+4795,13424819,Private room,Ciudad de México,31.0,19.434534,99.180157
+4796,13700105,Private room,Ciudad de México,37.0,19.403465,99.170626
+4801,14135964,Private room,Ciudad de México,10.0,19.340671,99.148226
+4802,10175818,Private room,Ciudad de México,254.0,19.372451,99.173907
+4803,11984575,Private room,Colonia Juárez,21.0,19.427866,99.159991
+4804,13866060,Private room,Ciudad de México,31.0,19.395439,99.176833
+4810,11508487,Private room,Ciudad de México,23.0,19.355945000000002,99.148132
+4811,11337279,Private room,Ciudad de México,28.0,19.419096,99.178793
+4812,6425547,Private room,Ciudad de México,18.0,19.424993,99.137582
+4814,6379574,Private room,Ciudad de México,14.0,19.355145,99.156624
+4815,13865921,Private room,Ciudad de México,14.0,19.394975,99.152294
+4817,4523635,Private room,Ciudad de México,16.0,19.426863,99.173507
+4818,10515363,Private room,Ciudad de México,25.0,19.403544,99.164898
+4820,8085199,Private room,Ciudad de México,23.0,19.407292,99.173671
+4821,12778810,Private room,Ciudad de México,20.0,19.418385999999998,99.156589
+4826,373792,Private room,Mexico City,72.0,19.411824,99.173994
+4829,5318552,Private room,Ciudad de México,23.0,19.356906,99.154732
+4830,2350051,Private room,Ciudad de México,23.0,19.372425,99.142341
+4831,13816771,Private room,Ciudad de México,19.0,19.41376,99.156595
+4832,14358602,Private room,Ciudad de México,23.0,19.37942,99.184455
+4837,9735945,Private room,Ciudad de México,19.0,19.38766,99.179614
+4838,12764938,Private room,Ciudad de México,10.0,19.405247,99.173989
+4839,8241530,Private room,Ciudad de México,10.0,19.410052,99.161644
+4840,13591386,Private room,Ciudad de México,21.0,19.408827,99.178683
+4841,9508182,Private room,Ciudad de México,36.0,19.414011,99.171165
+4843,10686526,Private room,Ciudad de México,39.0,19.412629000000003,99.187051
+4844,2305260,Private room,Mexico City,34.0,19.421777,99.161886
+4845,8468222,Private room,Colonia Juárez,15.0,19.426689,99.161303
+4849,3368742,Private room,Mexico DF,34.0,19.430792999999998,99.185814
+4850,9820247,Private room,Ciudad de México,14.0,19.393782,99.186099
+4854,2641315,Private room,Mexico City,23.0,19.399936999999998,99.172499
+4857,14090719,Private room,Ciudad de México,22.0,19.407714000000002,99.162639
+4859,9779513,Private room,Ciudad de México,37.0,19.422857999999998,99.159293
+4860,13389168,Private room,Ciudad de México,16.0,19.350832,99.148817
+4862,6259657,Private room,De los Deportes,13.0,19.383498,99.176021
+4863,9299407,Private room,Ciudad de México,15.0,19.401899,99.153541
+4866,12042187,Private room,Ciudad de México,57.0,19.415926000000002,99.176149
+4869,14317006,Private room,Ciudad de México,88.0,19.412184,99.163716
+4871,14430415,Private room,Ciudad de México,15.0,19.430670000000003,99.136445
+4872,3061812,Private room,Mexico City,26.0,19.410338,99.168046
+4873,14466919,Private room,Ciudad de México,28.0,19.426735,99.16423
+4876,12294700,Private room,Mexico City,23.0,19.405852,99.143653
+4877,11242372,Private room,Ciudad de México,42.0,19.35353,99.166136
+4879,10594450,Private room,Coyoacán,36.0,19.346567,99.150788
+4880,5840003,Private room,Ciudad de México,35.0,19.451891,99.161994
+4882,6637551,Private room,Ciudad de México,33.0,19.406994,99.174001
+4883,10908728,Private room,Ciudad de México,31.0,19.417433,99.164035
+4887,9371371,Private room,Ciudad de México,29.0,19.423657000000002,99.175418
+4890,1251704,Private room,Mexico City,44.0,19.412454999999998,99.177089
+4893,1120281,Private room,Mexico City,42.0,19.410327,99.186075
+4897,13434397,Private room,Ciudad de México,27.0,19.404869,99.167266
+4902,11471525,Private room,Ciudad de México,16.0,19.375014,99.159584
+4903,2960815,Private room,Mexico City,29.0,19.369999,99.178616
+4908,2273772,Private room,Mexico City,20.0,19.381492,99.176006
+4912,14183605,Private room,Ciudad de México,31.0,19.405295000000002,99.1759
+4914,9736845,Private room,Ciudad de México,29.0,19.432651,99.192962
+4915,13769281,Private room,Ciudad de México,14.0,19.434051999999998,99.147336
+4917,8669975,Private room,Ciudad de México,19.0,19.367313,99.142916
+4918,10116980,Private room,Ciudad de México,31.0,19.409379,99.180817
+4919,252618,Private room,Mexico City,18.0,19.413281,99.155131
+4920,2546210,Private room,Mexico City,14.0,19.395805,99.1521
+4926,14140436,Private room,Ciudad de México,84.0,19.429596,99.196782
+4929,3051857,Private room,Mexico City,36.0,19.349282000000002,99.173732
+4932,10354989,Private room,Ciudad de México,52.0,19.386745,99.163115
+4937,8236970,Private room,Ciudad de México,50.0,19.430068,99.201409
+4939,9865098,Private room,Ciudad de México,26.0,19.412135,99.175063
+4941,14153497,Private room,Ciudad de México,13.0,19.379507999999998,99.152153
+4942,12715247,Private room,Ciudad de México,10.0,19.406481,99.107365
+4944,5581532,Private room,Ciudad de México,45.0,19.415809,99.162226
+4946,14058722,Private room,Mexico City,26.0,19.426581,99.140555
+4949,11297079,Private room,Mexico City,35.0,19.347967999999998,99.16695
+4950,9367006,Private room,Ciudad de México,23.0,19.410026000000002,99.176114
+4952,10140446,Private room,Colonia Juárez,21.0,19.421633,99.172781
+4955,14469808,Private room,Ciudad de México,65.0,19.424201,99.166725
+4958,12155823,Private room,Ciudad de México,11.0,19.479670000000002,99.125189
+4962,13430622,Private room,Ciudad de México,57.0,19.392814,99.180226
+4964,10037789,Private room,Ciudad de México,39.0,19.413165,99.171363
+4965,9780219,Private room,Ciudad de México,31.0,19.447272,99.159133
+4967,7542124,Private room,Ciudad de México,31.0,19.461094,99.138722
+4968,8985536,Private room,Ciudad de México,27.0,19.430353,99.167162
+4973,13641161,Private room,Ciudad de México,31.0,19.40975,99.173753
+4977,11229697,Private room,Ciudad de México,19.0,19.426726000000002,99.172379
+4980,14232804,Private room,Ciudad de México,20.0,19.429828,99.174976
+4985,782912,Private room,Mexico City,19.0,19.421356,99.159045
+4987,12814543,Private room,Ciudad de México,42.0,19.412528,99.177591
+4988,9682908,Private room,Benito Juárez,20.0,19.393498,99.158845
+4989,8303741,Private room,Ciudad de México,41.0,19.407554,99.177312
+4991,6263727,Private room,Benito Juárez,42.0,19.362761,99.165527
+4992,10097947,Private room,Ciudad de México,28.0,19.426606,99.174124
+4995,9117088,Private room,Ciudad de México,15.0,19.410984,99.160301
+4997,10911072,Private room,Ciudad de México,23.0,19.432091,99.149896
+4999,8614913,Private room,Ciudad de México,26.0,19.3929,99.157954
+5000,9326263,Private room,Ciudad de México,124.0,19.433545000000002,99.189663
+5001,6881128,Private room,Ciudad de México,31.0,19.386797,99.167584
+5002,12346676,Private room,Ciudad de México,16.0,19.353739,99.159132
+5005,7983086,Private room,Ciudad de México,11.0,19.38839,99.169748
+5008,10827198,Private room,Ciudad de México,11.0,19.367116,99.154574
+5009,10059923,Private room,Ciudad de México,15.0,19.390128,99.155388
+5010,5469584,Private room,Ciudad de México,14.0,19.404135999999998,99.180452
+5011,6893779,Private room,Ciudad de México,36.0,19.413851,99.167551
+5016,6545002,Private room,Ciudad de México,14.0,19.453818,99.146311
+5017,7716052,Private room,Ciudad de México,26.0,19.413948,99.182811
+5018,12757892,Private room,Ciudad de México,42.0,19.428905,99.161285
+5019,6797451,Private room,Ciudad de México,52.0,19.438434,99.21224
+5020,13459567,Private room,Colonia Juárez,40.0,19.422351000000003,99.174288
+5021,13782943,Private room,Ciudad de México,21.0,19.417969,99.154873
+5024,2233718,Private room,Mexico City,98.0,19.42016,99.160768
+5025,5890219,Private room,Ciudad de México,23.0,19.394099,99.187351
+5026,13513341,Private room,Ciudad de México,118.0,19.430161,99.177496
+5027,9846306,Private room,Ciudad de México,15.0,19.431849,99.156528
+5028,13558950,Private room,Ciudad de México,24.0,19.421505,99.170935
+5030,11212583,Private room,Ciudad de México,42.0,19.412634,99.172192
+5031,14317757,Private room,Ciudad de México,82.0,19.426592000000003,99.164884
+5036,9792141,Private room,Ciudad de México,22.0,19.396387,99.157853
+5038,187745,Private room,Mexico City,55.0,19.410863,99.177036
+5039,14087790,Private room,Ciudad de México,26.0,19.422016,99.167647
+5041,3731841,Private room,Ciudad de México,45.0,19.37975,99.179574
+5042,12111217,Private room,Ciudad de México,12.0,19.350656,99.143701
+5043,4745097,Private room,Mexico City,35.0,19.410671,99.16909
+5044,6066232,Private room,Ciudad de México,26.0,19.415416,99.08652
+5046,3293792,Private room,Ciudad de México,39.0,19.425279999999997,99.162396
+5049,9819060,Private room,Ciudad de México,10.0,19.389641,99.148951
+5052,3835329,Private room,Mexico City,57.0,19.42034,99.167693
+5053,13152895,Private room,Ciudad de México,13.0,19.402844,99.174122
+5055,12445404,Private room,Ciudad de México,34.0,19.415684,99.15837
+5056,1170780,Private room,Mexico City,27.0,19.391737,99.188506
+5057,8072997,Private room,Ciudad de México,19.0,19.405797,99.1871
+5059,3422086,Private room,Mexico City,26.0,19.377632000000002,99.160107
+5061,9542520,Private room,Ciudad de México,27.0,19.410528,99.175183
+5062,13847048,Private room,Ciudad de México,20.0,19.358304999999998,99.158692
+5063,13318299,Private room,Ciudad de México,36.0,19.431447,99.200477
+5064,13251518,Private room,Ciudad de México,26.0,19.431803,99.200277
+5068,11357109,Private room,Ciudad de México,52.0,19.434753,99.181522
+5071,3962866,Private room,Mexico City,36.0,19.410095000000002,99.177666
+5074,10661112,Private room,Ciudad de México,21.0,19.373203,99.175652
+5075,9776360,Private room,Ciudad de México,52.0,19.430452,99.200598
+5076,10033824,Private room,Ciudad de México,28.0,19.408416,99.163875
+5077,11438761,Private room,Mexico,31.0,19.401449,99.178754
+5081,6400524,Private room,Ciudad de México,123.0,19.435548,99.145356
+5084,13448414,Private room,Ciudad de México,22.0,19.366832000000002,99.162457
+5085,8069700,Private room,Ciudad de México,18.0,19.431204,99.167301
+5087,8644752,Private room,Ciudad de México,34.0,19.432423999999997,99.182362
+5088,44840,Private room,Mexico City,41.0,19.414006,99.169982
+5090,12867298,Private room,Ciudad de México,52.0,19.411932,99.161908
+5091,14027382,Private room,Ciudad de México,36.0,19.414742,99.177674
+5095,9728865,Private room,Ciudad de México,39.0,19.406057999999998,99.170965
+5096,163273,Private room,Mexico City,57.0,19.426576,99.158971
+5098,1211383,Private room,Mexico City,40.0,19.355291,99.162998
+5102,13563659,Private room,Ciudad de México,26.0,19.408982,99.165985
+5104,12567457,Private room,Ciudad de México,28.0,19.38126,99.177255
+5105,9369994,Private room,Ciudad de México,11.0,19.375465,99.160468
+5107,12191710,Private room,Ciudad de México,13.0,19.406018,99.175098
+5108,6927009,Private room,Ciudad de México,14.0,19.371782999999997,99.182591
+5110,13674148,Private room,Ciudad de México,46.0,19.357526,99.156948
+5111,9409801,Private room,Ciudad de México,30.0,19.381832,99.167195
+5113,5557597,Private room,Ciudad de México,98.0,19.409848999999998,99.178091
+5114,12462403,Private room,México ,12.0,19.369797,99.143362
+5115,9291197,Private room,Colonia Juárez,39.0,19.431489000000003,99.155423
+5116,6914583,Private room,Ciudad de México,11.0,19.41048,99.186476
+5118,8880976,Private room,Ejido del Centro,16.0,19.429221,99.136421
+5119,7638597,Private room,Ciudad de México,14.0,19.450939,99.161145
+5120,350488,Private room,Ciudad de México,31.0,19.435824,99.138808
+5121,13894755,Private room,Ciudad de México,18.0,19.404364,99.170656
+5122,5060419,Private room,Ciudad de México,34.0,19.362517,99.161621
+5123,13532865,Private room,Ciudad de México,26.0,19.429502,99.172201
+5125,2633325,Private room,Mexico City,26.0,19.407035,99.171068
+5131,9698428,Private room,Ciudad de México,21.0,19.394375,99.155097
+5134,281134,Private room,Mexico City,165.0,19.411247,99.176339
+5135,12231939,Private room,Ciudad de México,28.0,19.431181,99.171941
+5138,10609468,Private room,Ciudad de México,41.0,19.363617,99.157565
+5140,10053024,Private room,Ciudad de México,31.0,19.434033,99.188166
+5142,12273906,Private room,Ciudad de México,26.0,19.424041,99.170975
+5143,8322826,Private room,Ciudad de México,23.0,19.392871,99.187133
+5144,650287,Private room,Mexico City,26.0,19.428585,99.155128
+5146,7872327,Private room,Ciudad de México,11.0,19.340889,99.146807
+5148,10359194,Private room,Del Valle Norte,19.0,19.395192,99.164579
+5149,1839211,Private room,Mexico City,57.0,19.416125,99.165791
+5155,4073755,Private room,Ciudad de México,48.0,19.437538,99.212599
+5156,1665016,Private room,Mexico City,26.0,19.389685999999998,99.184452
+5160,8609920,Private room,Colonia Juárez,16.0,19.429735,99.156326
+5161,11622362,Private room,Ciudad de México,37.0,19.360942,99.188844
+5162,11534658,Private room,Ciudad de México,23.0,19.374809,99.176803
+5163,13875150,Private room,Ciudad de México,16.0,19.373872,99.164239
+5166,9116827,Private room,Ciudad de México,29.0,19.408493,99.175069
+5168,11594060,Private room,Ciudad de México,82.0,19.405392000000003,99.169028
+5169,11759164,Private room,Ciudad de México,23.0,19.431789000000002,99.141306
+5170,7938252,Private room,Ciudad de México,24.0,19.374495,99.177322
+5173,9732103,Private room,Ciudad de México,26.0,19.416301999999998,99.178368
+5175,13245678,Private room,Ciudad de México,12.0,19.430391,99.147228
+5176,13116318,Private room,Ciudad de México,57.0,19.429285999999998,99.165937
+5180,5276313,Private room,Ciudad de México,48.0,19.429371,99.177227
+5181,10910773,Private room,Ciudad de México,34.0,19.416532,99.176248
+5188,11866136,Private room,Ciudad de México,16.0,19.436649,99.162336
+5189,4244029,Private room,Mexico City,26.0,19.409967,99.18678
+5191,10547699,Private room,Ciudad de México,16.0,19.376594,99.165537
+5192,11455560,Private room,Ciudad de México,50.0,19.430252,99.146224
+5194,9523763,Private room,Ciudad de México,10.0,19.382088,99.177883
+5195,12190935,Private room,Ciudad de México,16.0,19.375403,99.154708
