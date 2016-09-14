@@ -778,9 +778,9 @@ draw_graph2("score")
 #combination
 draw_comb <- function (column){
   dd <- cbind(rand$train, density[,column], past[,column],past_cdr[,column], 
-              past_lag[,column], past_lag_cdr[,column], entoropy_lag[,column], cdr_lag[,column] )
+              past_lag[,column], past_lag_cdr[,column],  cdr_lag[,column] )
   colnames(dd) <- c("train", "density", "past","past+CDR", 
-                    "past+lag","past+lag+cdr","entropy+lag","cdr+lag")
+                    "past+lag","past+lag+cdr","cdr+lag")
   dd <- as.data.frame(dd)
   df <- melt(dd, id.vars='train')
   colindex <- round(as.integer(as.factor(df$variable) ))
