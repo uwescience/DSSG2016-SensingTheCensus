@@ -14,6 +14,9 @@ createdb -O$USER -Eutf8 DATABASE
 # format database with the a a schema
 psql -d DATABASE -a -f schema.sql
 
+# save room data as .csv 
+psql -d airbnb -t -A -F"," -c "select * from room" > room_airbnb.csv
+
 # resources 
 # postgis extensions: http://postgis.net/install/
 
