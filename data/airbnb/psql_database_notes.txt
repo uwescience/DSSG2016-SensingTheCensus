@@ -1,0 +1,22 @@
+# restore postgresql dump
+#createdb DATABASE
+#pg_restore -d DATABASE DATABASE_DUMP.gz
+createdb airbnb
+pg_restore -d airbnb airbnb.gz
+
+# open database and initialize postgis extension
+psql -U $USER -W DATABASE
+CREATE EXTENSION postgis;
+
+# create database
+createdb -O$USER -Eutf8 DATABASE
+
+# format database with the a a schema
+psql -d DATABASE -a -f schema.sql
+
+# save room data as .csv 
+psql -d airbnb -t -A -F"," -c "select * from room" > room_airbnb.csv
+
+# resources 
+# postgis extensions: http://postgis.net/install/
+
