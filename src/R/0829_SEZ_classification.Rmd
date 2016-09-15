@@ -31,6 +31,7 @@ library(reshape2)
 library(igraph)
 library(Hmisc)
 library(randomForest)
+library(caret)
 ```
 
 # Random Baseline
@@ -40,20 +41,21 @@ census = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON")  %>% sp
 raw = read_delim("data/census/R03_indicatori_2011_sezioni.csv", delim = ";",col_names = TRUE ) 
 cdr = read_delim("data/CDR/hash/0831_region_time.csv", delim = ",",col_names = TRUE ) 
 street = read_delim("data/OSM/centrality_sez.csv", delim = ",",col_names = TRUE ) 
-# oa <-  read_delim("data/OSM/offering_advantage_sez.csv", delim = ",",col_names = TRUE ) 
-deprivation = read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
+oa <-  read_delim("data/OSM/offering_advantage_sez.csv", delim = ",",col_names = TRUE ) 
 
 census@data <- census@data %>% left_join(street, by = c("SEZ2011"))
-# census@data$SEZ2011 <- as.factor(census@data$SEZ2011)
+census@data <- census@data %>% left_join(raw, by = c("SEZ2011"))
 
-# street$ACE <- as.character(street$ACE)
-# street$ACE <- as.factor(street$ACE)
-# deprivation$SEZ <- as.character(deprivation$SEZ)
-# deprivation$SEZ <- as.factor(deprivation$SEZ)
-# raw$SEZ2011 <- as.character(raw$SEZ2011)
-# raw$SEZ2011 <- as.factor(raw$SEZ2011)
-# oa$ACE <- as.character(oa$ACE)
-# oa$ACE <- as.factor(oa$ACE)
+deprivation = read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
+deprivation <- deprivation[deprivation$SEZ %in% census@data$SEZ2011,]
+
+
+# Super categories for Offering Advantage
+
+
+
+census@data <- census@data %>% left_join(oa, by = c("SEZ2011"))
+
 
 networks = read_delim("data/CDR/hash/sez_network.csv", delim = ",",col_names = TRUE ) 
 # networks$time = paste(networks$month, str_pad(networks$day, 2, pad = "0"), str_pad(networks$hour, 2, pad = "0"), sep="")
@@ -80,7 +82,6 @@ introversion <- get_introversion(networks)
 introversion$source <- as.numeric(levels(introversion$source))[introversion$source]
 
 census@data <-  census@data %>% left_join(introversion, by = c("SEZ2011" = "source"))
-census@data <- census@data %>% left_join(raw, by = c("SEZ2011"))
 
 
 # Total Time Aggregation
