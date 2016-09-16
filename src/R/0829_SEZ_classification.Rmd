@@ -5,7 +5,6 @@ date: "September 7, 2016"
 output: html_document
 ---
 
-This is a regression analysis for CDR and poverty data following the methods presented by Chirs (WWW 16). 
 
 ```{r, echo=FALSE}
 library(maps)
@@ -32,6 +31,7 @@ library(igraph)
 library(Hmisc)
 library(randomForest)
 library(caret)
+
 ```
 
 # Random Baseline
@@ -42,20 +42,29 @@ raw = read_delim("data/census/R03_indicatori_2011_sezioni.csv", delim = ";",col_
 cdr = read_delim("data/CDR/hash/0831_region_time.csv", delim = ",",col_names = TRUE ) 
 street = read_delim("data/OSM/centrality_sez.csv", delim = ",",col_names = TRUE ) 
 oa <-  read_delim("data/OSM/offering_advantage_sez.csv", delim = ",",col_names = TRUE ) 
+deprivation <- read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
 
 census@data <- census@data %>% left_join(street, by = c("SEZ2011"))
 census@data <- census@data %>% left_join(raw, by = c("SEZ2011"))
-
-deprivation = read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
-deprivation <- deprivation[deprivation$SEZ %in% census@data$SEZ2011,]
-
+census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"))
 
 # Super categories for Offering Advantage
+super_oa <- data.frame(matrix(nrow=length(oa$SEZ2011), ncol=4))
+colnames(super_oa) <- c("SEZ2011", "comm_service", "third_places", "commercial")
+
+super_oa$SEZ2011 <- oa$SEZ2011
+super_oa$comm_service <- apply(subset(oa, select=c(arts_centre, bench, bicycle, toilet, childcare, townhall, college, community_center, conference_centre, courthouse, dormitory, veterinary, embassy, emergency_phone, fire_station, gym, kindergarten, language_school, place_of_worship, hospital, police, university, post_office, ranger_station, school, swimming_pool)), 1, mean,na.rm=TRUE)
+
+super_oa$third_places <- apply(subset(oa, select=c(bar,bbq,bookshop,cafe,fast_food,food_court,marketplace,library,public_bookcase,public_building,restaurant)), 1, mean,na.rm=TRUE)
+
+super_oa$commercial <- apply(subset(oa, select=c(atm,bank,bureau_de_change,vending_machine,car_rental,car_sharing,car_wash,casino,charging_station,driving_school,fuel,ice_cream,massage,cinema,nightclub,parking,rental)), 1, mean,na.rm=TRUE)
+
+census@data <- census@data %>% left_join(super_oa, by = c("SEZ2011"))
 
 
-
-census@data <- census@data %>% left_join(oa, by = c("SEZ2011"))
-
+rm(oa)
+rm(raw)
+rm(street)
 
 networks = read_delim("data/CDR/hash/sez_network.csv", delim = ",",col_names = TRUE ) 
 # networks$time = paste(networks$month, str_pad(networks$day, 2, pad = "0"), str_pad(networks$hour, 2, pad = "0"), sep="")
