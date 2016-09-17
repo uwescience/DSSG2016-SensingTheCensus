@@ -27,6 +27,10 @@ read_census_data = function(file_path) {
   ))
 }
 
+read_census_data_old = function(file_path) {
+  require(readxl)
+  read_excel(file_path, col_names = TRUE, na = "null") 
+}
 
 pal <- function(x, palette = "YlGnBu",method = "quantile", n =5) {
   by = 1/n

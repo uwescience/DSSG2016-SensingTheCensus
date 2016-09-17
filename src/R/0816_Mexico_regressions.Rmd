@@ -150,7 +150,7 @@ calculate_error_table <- function (variable){
     
     for (j in 1:num_test){
       index <- 1:nrow(census@data)
-      testindex <- sample(index, trunc(length(index) * (100-proportions[1]) / 100 ))
+      testindex <- sample(index, trunc(length(index) * (100-proportions[i]) / 100 ))
       testset <- census@data[testindex,]
       row.names(testset) <- testset$CVE_GEOAGE
       trainset <- census@data[-testindex,]
