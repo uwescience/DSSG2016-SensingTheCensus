@@ -39,8 +39,11 @@ data/CDR/hash/region_network_final.csv
 data/CDR/hash/0805_networks.csv
 data/CDR/hash/sez_network.csv
 data/CDR/hash/0831_region_time.csv
+data/CDR/hash/0918_region_weekday_signature.csv
+data/CDR/hash/0918_region_weekend_signature.csv
+data/CDR/hash/0918_weekday_grid_signature.csv
 src/notebooks/*.csv
-
+data/GeoJSON/0916_sez_with_features.geojson
 
 # Rmd generated HTML files
 *.html

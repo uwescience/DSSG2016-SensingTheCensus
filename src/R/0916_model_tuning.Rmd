@@ -1,0 +1,256 @@
+---
+title: "Parameter Tuning for Random Forests"
+author: "Myeong Lee"
+date: "September 16, 2016"
+output: html_document
+---
+
+```{r}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(rgeos)
+library(ggplot2)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(MASS)
+library(e1071)
+library(reshape2)
+library(Hmisc)
+library(randomForest)
+library(caret)
+library(mlbench)
+
+```
+
+
+```{r}
+setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+census = read.csv("data/0917_features.csv")  
+
+colnames(census)[9] <- "dep11"
+colnames(census)[10] <- "dep01"
+
+census$dep_class_7 <- as.factor(census$dep_class_7)
+
+census <- subset(census, select=c(dep_class_7, rand_base, density, spatial_lag, spatial_lag_square, dep01, calls, entropy, eigen_cent, page_rank, region_based_rate, commercial, third_places, comm_service, closeness, betweenness, SEZ2011))
+
+#all
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+mtry <- sqrt(ncol(census))
+
+rf_default <- train(dep_class_7~density + spatial_lag + calls + entropy + page_rank + eigen_cent + region_based_rate + closeness + betweenness + commercial + third_places + comm_service, data=census, method="rf", metric=metric, tuneLength=15, trControl=control, na.action=na.omit)
+print(rf_default)
+
+# CDR + Street Network
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+tunegrid <- expand.grid(.mtry=c(1:5))
+
+modellist <- list()
+for (ntree in c(500, 1000, 1500, 2000)) {
+  set.seed(seed)
+	fit <- train(dep_class_7~ spatial_lag + calls + entropy + page_rank + eigen_cent + region_based_rate + closeness + betweenness, data=census, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control, na.action=na.omit, ntree=ntree)
+	key <- toString(ntree)
+	modellist[[key]] <- fit
+  print(fit)
+}
+
+# PAST
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+tunegrid <- expand.grid(.mtry=c(1:5))
+
+modellist <- list()
+for (ntree in c(500, 1000, 1500, 2000)) {
+  set.seed(seed)
+  fit <- train(dep_class_7~ dep01, data=census, method="rf", metric=metric, tuneGrid=tunegrid, trControl=control, na.action=na.omit, ntree=ntree)
+	key <- toString(ntree)
+	modellist[[key]] <- fit
+  print(fit)
+}
+
+results <- resamples(modellist)
+summary(results)
+dotplot(results)
+
+
+# Past + Spatial Lag + CDR
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+
+rf_default <- train(dep_class_7~ dep01 + spatial_lag + calls + entropy + page_rank + eigen_cent + region_based_rate, data=census, method="rf", metric=metric, tuneLength=15, trControl=control, na.action=na.omit)
+print(rf_default)
+
+# Past + Spatial Lag Square + CDR
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+
+rf_default <- train(dep_class_7~ dep01 + spatial_lag_square + calls + entropy + page_rank + eigen_cent + region_based_rate, data=census, method="rf", metric=metric, tuneLength=15, trControl=control, na.action=na.omit)
+print(rf_default)
+```
+
+# Processing CDR Activity Signature (10-minute interval)
+```{r}
+cdr_day <- read_delim("data/CDR/hash/0918_region_weekday_signature.csv", delim = ",",col_names = TRUE )
+cdr_end <- read_delim("data/CDR/hash/0918_region_weekend_signature.csv", delim = ",",col_names = TRUE )
+
+cdr_end$unique_time <- as.integer(cdr_end$unique_time)
+
+day_sum <- cdr_day %>% dplyr::group_by(region_id) %>% 
+      dplyr::summarize(callIn = sum(adjusted_callIn), callOut = sum(adjusted_callOut),
+                       smsIn = sum(adjusted_smsIn), smsOut = sum(adjusted_smsOut),
+                       internet = sum(adjusted_internet))
+end_sum <- cdr_end %>% dplyr::group_by(region_id) %>% 
+      dplyr::summarize(callIn = sum(adjusted_callIn), callOut = sum(adjusted_callOut),
+                       smsIn = sum(adjusted_smsIn), smsOut = sum(adjusted_smsOut),
+                       internet = sum(adjusted_internet))
+
+cdr_sum <- rbind(day_sum, end_sum)
+cdr_sum <- cdr_sum %>% dplyr::group_by(region_id) %>% dplyr::summarize(
+       callIn = sum(callIn), callOut = sum(callOut),
+       smsIn = sum(smsIn), smsOut = sum(smsOut),
+       internet = sum(internet))
+
+rm (day_sum)
+rm (end_sum)
+
+cdr_day <- cdr_day %>% left_join(cdr_sum, by=c("region_id"))
+cdr_end <- cdr_end %>% left_join(cdr_sum, by=c("region_id"))
+
+cdr_day$day <- "day"
+cdr_end$day <- "end"
+
+cdr_sig <- rbind(cdr_day, cdr_end)
+
+rm (cdr_day)
+rm (cdr_end)
+rm (cdr_sum)
+
+cdr_sig$callIn <- cdr_sig$adjusted_callIn / cdr_sig$callIn
+cdr_sig$callOut <- cdr_sig$adjusted_callOut / cdr_sig$callOut
+cdr_sig$smsIn <- cdr_sig$adjusted_smsIn / cdr_sig$smsIn
+cdr_sig$smsOut <- cdr_sig$adjusted_smsOut / cdr_sig$smsOut
+cdr_sig$internet <- cdr_sig$adjusted_internet / cdr_sig$internet
+
+cdr_sig <- subset(cdr_sig, select=c(region_id, unique_time, callIn, callOut, smsIn, smsOut, internet, day))
+
+cdr_sig$day <- sapply(cdr_sig$day, function(x) {ifelse(x == "day", 10000, 20000)})
+cdr_sig$unique_time <- cdr_sig$unique_time + cdr_sig$day
+cdr_sig <- subset(cdr_sig, select=c(region_id, unique_time, callIn, callOut, smsIn, smsOut, internet))
+
+library(reshape)
+cdr_sig <- cdr_sig[order(cdr_sig$region_id, cdr_sig$unique_time),] 
+time_series <- cast(cdr_sig, region_id ~ unique_time, value = c("callOut"))
+time_series[time_series$region_id==151460004029,"20410"] <- 0
+
+library(clusterSim)
+DBs <- vector(mode="integer", length=6)
+
+k2 <- kmeans(na.omit(time_series[, 2:289]), 2)
+clusters <- data.frame(k2$cluster)
+row.names(clusters) <- time_series$region_id
+DBs[1] <- index.DB(time_series[, 2:289], clusters, centrotypes="centroids" )$DB
+
+k3 <- kmeans(na.omit(time_series[, 2:289]), 3)
+clusters <- data.frame(k3$cluster)
+row.names(clusters) <- time_series$region_id
+DBs[2] <- index.DB(time_series[, 2:289], clusters, centrotypes="centroids" )$DB
+
+k4 <- kmeans(na.omit(time_series[, 2:289]), 4)
+clusters <- data.frame(k4$cluster)
+row.names(clusters) <- time_series$region_id
+DBs[3] <- index.DB(time_series[, 2:289], clusters, centrotypes="centroids" )$DB
+
+k5 <- kmeans(na.omit(time_series[, 2:289]), 5)
+clusters <- data.frame(k5$cluster)
+row.names(clusters) <- time_series$region_id
+DBs[4] <- index.DB(time_series[, 2:289], clusters, centrotypes="centroids" )$DB
+
+k6 <- kmeans(na.omit(time_series[, 2:289]), 6)
+clusters <- data.frame(k6$cluster)
+row.names(clusters) <- time_series$region_id
+DBs[5] <- index.DB(time_series[, 2:289], clusters, centrotypes="centroids" )$DB
+
+k7 <- kmeans(na.omit(time_series[, 2:289]), 7)
+clusters <- data.frame(k7$cluster)
+row.names(clusters) <- time_series$region_id
+DBs[6] <- index.DB(time_series[, 2:289], clusters, centrotypes="centroids" )$DB
+
+plot(c(2:7), DBs, xlab="Number of Clusters")
+
+## Loading Cluster with K=2 and 3
+cluster2 <- read_delim("data/CDR/hash/k2_cluster.csv", delim=",", col_names=TRUE)
+colnames(cluster2) <- c("SEZ2011", "cluster2")
+
+cluster3 <- read_delim("data/CDR/hash/k3_cluster.csv", delim=",", col_names=TRUE)
+colnames(cluster3) <- c("SEZ2011", "cluster3")
+
+## Plotting the average plot
+time_series <- time_series %>% left_join(cluster3, by=c("region_id" = "SEZ2011"))
+c1 <- time_series[time_series$cluster3 == 1,]
+c1 <- subset(c1, select = -c(region_id, cluster3) )
+c1 <- apply(c1, 2, mean)
+c1 <- as.data.frame(c1)
+c1$time <- c(1:288)
+c1$day <- ifelse(c1$time<=144, "weekday", "weekend")
+c1$day <- as.factor(c1$day)
+
+ggplot(data=c1, aes(x=time, y=c1, group=day, colour=factor(day))) + geom_line() + xlab("10-minute Time Index") + ylab("Relative Call Amount, Cluster=1") + ylim(0,0.012)
+
+c2 <- time_series[time_series$cluster3 == 2,]
+c2 <- subset(c2, select = -c(region_id, cluster3) )
+c2 <- apply(c2, 2, mean)
+c2 <- as.data.frame(c2)
+c2$time <- c(1:288)
+c2$day <- ifelse(c2$time<=144, "weekday", "weekend")
+c2$day <- as.factor(c2$day)
+
+ggplot(data=c2, aes(x=time, y=c2, group=day, colour=factor(day))) + geom_line() + xlab("10-minute Time Index") + ylab("Relative Call Amount, Cluster=2") + ylim(0,0.012)
+
+c3 <- time_series[time_series$cluster3 == 3,]
+c3 <- subset(c3, select = -c(region_id, cluster3) )
+c3 <- apply(c3, 2, mean)
+c3 <- as.data.frame(c3)
+c3$time <- c(1:288)
+c3$day <- ifelse(c3$time<=144, "weekday", "weekend")
+c3$day <- as.factor(c3$day)
+
+ggplot(data=c3, aes(x=time, y=c3, group=day, colour=factor(day))) + geom_line() + xlab("10-minute Time Index") + ylab("Relative Call Amount, Cluster=3") + ylim(0,0.012)
+```
+
+# Adding Cluster Factors
+```{r}
+
+census <- census %>% left_join(cluster2, by = c("SEZ2011"))
+census$cluster2 <- as.factor(census$cluster2)
+
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+seed <- 7
+metric <- "Accuracy"
+set.seed(seed)
+mtry <- sqrt(ncol(census))
+
+rf_default <- train(dep_class_7~ spatial_lag_square + calls + entropy + page_rank + eigen_cent + region_based_rate + closeness + betweenness + cluster2, data=census, method="rf", metric=metric, tuneLength=15, trControl=control, na.action=na.omit)
+
+print(rf_default)
+
+
+```
+
