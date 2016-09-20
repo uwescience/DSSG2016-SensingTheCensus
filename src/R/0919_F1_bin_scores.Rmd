@@ -1,0 +1,261 @@
+---
+title: "Bin-based F1 Scores"
+author: "Myeong Lee"
+date: "September 18, 2016"
+output: html_document
+---
+
+```{r}
+library(maps)
+library(geosphere)
+library(readr)
+library(dplyr)
+library(magrittr)
+library(lubridate)
+library(rgdal)
+library(raster)
+library(rgeos)
+require(ggplot2)
+library(cwhmisc)
+library(utils)
+library(rpart)
+library(stringr)
+library(hydroGOF)
+library(fields)
+library(MASS)
+library(e1071)
+library(Hmisc)
+library(randomForest)
+library(caret)
+library(reshape2)
+
+```
+
+
+```{r}
+setwd("C:/Users/Myeong/git/DSSG2016-SensingTheCensus")
+census = read.csv("data/0917_features.csv")  
+
+colnames(census)[9] <- "dep11"
+colnames(census)[10] <- "dep01"
+
+census$dep_class_7 <- as.factor(census$dep_class_7)
+
+census <- subset(census, select=c(dep_class_7, rand_base, density, spatial_lag, spatial_lag_square, dep01, dep11, calls, entropy, eigen_cent, page_rank, region_based_rate, commercial, third_places, comm_service, closeness, betweenness, SEZ2011))
+
+cluster2 <- read_delim("data/CDR/hash/k2_cluster.csv", delim=",", col_names=TRUE)
+colnames(cluster2) <- c("SEZ2011", "cluster2")
+
+cluster3 <- read_delim("data/CDR/hash/k3_cluster.csv", delim=",", col_names=TRUE)
+colnames(cluster3) <- c("SEZ2011", "cluster3")
+
+census <- census %>% left_join(cluster2, by = c("SEZ2011"))
+census$cluster2 <- as.factor(census$cluster2)
+
+census <- census %>% left_join(cluster3, by = c("SEZ2011"))
+census$cluster3 <- as.factor(census$cluster3)
+```
+
+
+```{r}
+proportions <- seq(50, 90, 10)
+num_test <- 20
+
+f1_bin <- matrix(NA,nrow=length(proportions),ncol=7)
+colnames(f1_bin) <- c("1_poor","2","3","4","5","6","7_rich")
+
+
+calculate_rf_bin_f1 <- function (variable){
+  
+  f1_bin <- matrix(NA,nrow=length(proportions),ncol=8)
+  colnames(f1_bin) <- c("train", "1_rich","2","3","4","5","6","7_poor")
+  
+  for (i in 1:length(proportions) ){
+    temp_table <- matrix(nrow=num_test, ncol=3)
+    colnames(temp_table) <- c("accuracy", "error", "F1")
+    
+    temp_f1 <- matrix(nrow=num_test, ncol=7)
+    colnames(temp_f1) <- c("1","2","3","4","5","6","7")
+    
+    for (j in 1:num_test){
+      index <- 1:nrow(census)
+      testindex <- sample(index, trunc(length(index) * (100-proportions[i]) / 100 ))
+      testset <- census[testindex,]      
+      trainset <- census[-testindex,]
+      row.names(testset) <- testset$SEZ2011
+      testset<- testset[!is.na(testset$dep_class_7),]
+      trainset<- trainset[!is.na(trainset$dep_class_7),]
+            
+      if (variable == "random"){   
+        rand1 <- rnorm (5000, mean(census$dep11, na.rm=TRUE), sd(census$dep11, na.rm=TRUE))
+        rand2 <- rnorm (5000, mean(census$dep11, na.rm=TRUE), sd(census$dep11, na.rm=TRUE))
+        rand <- c(rand1, rand2)        
+        trainset$rand_base <- sample(rand, length(trainset$dep11), replace = FALSE, prob = NULL)     
+        #trainset <- trainset[!is.na(testset$rand_base),]      
+        ee <- tryCatch(model <- randomForest (formula("dep_class_7 ~ rand_base"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit), 
+                       error = function(e){
+                         print("error in RF...")
+                       })
+      } else if (variable == "density"){
+        model <- randomForest (formula("dep_class_7 ~ density"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)     
+        testset <- testset[!is.na(testset$density),]
+      } else if (variable == "past"){
+        model <- randomForest (formula("dep_class_7 ~ dep01"), data=trainset,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$dep01),]       
+      }else if (variable == "spatial_lag"){
+        ee <- tryCatch(model <- randomForest (formula("dep_class_7 ~ spatial_lag"), data=trainset,importance=TRUE, proximity=TRUE, na.action=na.omit), 
+                       error = function(e){
+                         print("error in RF...")
+                       })
+        testset <- testset[!is.na(testset$spatial_lag),]
+      } else if (variable == "volume"){
+        model <- randomForest (formula("dep_class_7 ~ calls"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls),]
+      } else if (variable == "introversion"){
+        model <- randomForest (formula("dep_class_7 ~ region_based_rate"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$region_based_rate),]
+      } else if (variable == "page_rank"){
+        model <- randomForest (formula("dep_class_7 ~ page_rank"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$page_rank),]
+      } else if (variable == "eigen_cent"){
+        model <- randomForest (formula("dep_class_7 ~ eigen_cent"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$eigen_cent),]
+      } else if (variable == "entropy"){
+        model <- randomForest (formula("dep_class_7 ~ entropy"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$entropy),]
+      } else if (variable == "past_cdr"){
+        model <- randomForest (formula("dep_class_7 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag"){
+        model <- randomForest (formula("dep_class_7 ~ dep01 + spatial_lag"), mtry=3,data=trainset,na.action=na.omit, importance=TRUE, proximity=TRUE)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$dep01) ,]
+      } else if (variable == "past_lag_cdr"){
+        model <- randomForest (formula("dep_class_7 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01 + spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, mtry=3,na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) & !is.na(testset$spatial_lag),]
+      } else if (variable == "entoropy_lag"){
+        model <- randomForest (formula("dep_class_7 ~ entropy + spatial_lag"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$entropy) ,]
+      } else if (variable == "cdr_lag"){
+        model <- randomForest (formula("dep_class_7 ~ spatial_lag + calls + region_based_rate + page_rank + eigen_cent + entropy"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$spatial_lag),]
+      } else if (variable == "betweenness"){
+        model <- randomForest (formula("dep_class_7 ~ betweenness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness),]
+      } else if (variable == "closeness"){
+        model <- randomForest (formula("dep_class_7 ~ closeness"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$closeness),]
+      } else if (variable == "street_network"){
+        model <- randomForest (formula("dep_class_7 ~ closeness + betweenness"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness),]
+      } else if (variable == "street_oa"){
+        model <- randomForest (formula("dep_class_7 ~ closeness + betweenness + commercial + third_places + comm_service"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness) & !is.na(testset$commercial),]
+      } else if (variable == "cdr"){
+        model <- randomForest (formula("dep_class_7 ~ region_based_rate + calls + page_rank + eigen_cent + entropy"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
+      } else if (variable == "cdr_k2"){
+        model <- randomForest (formula("dep_class_7 ~ region_based_rate + calls + page_rank + eigen_cent + entropy + cluster2"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
+      } else if (variable == "cdr_k3"){
+        model <- randomForest (formula("dep_class_7 ~ region_based_rate + calls + page_rank + eigen_cent + entropy + cluster3"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy),]
+      } else if (variable == "cdr_osm"){
+        model <- randomForest (formula("dep_class_7 ~ dep01 + calls + region_based_rate + page_rank + eigen_cent + entropy + closeness + betweenness"), mtry=3,data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
+      } else if (variable == "street+lag"){
+        model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag_square) & !is.na(testset$closeness),]
+      } else if (variable == "street+oa+lag"){
+        model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness + commercial + third_places + comm_service"), data=trainset,mtry=3, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag_square) & !is.na(testset$commercial),]
+      }else if (variable == "cdr+osm+lag"){
+        ee <- tryCatch(model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness + commercial + third_places + comm_service + region_based_rate + calls + page_rank + eigen_cent + entropy + cluster3"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit), 
+                       error = function(e){
+                         print("error in RF...")
+                       })
+        testset <- testset[!is.na(testset$calls) & !is.na(testset$commercial) & !is.na(testset$closeness) & !is.na(testset$spatial_lag_square),]
+      } 
+      
+      
+      # Visual representation
+      # pred.w.plim <- predict(random, testset, interval = "prediction")
+      # pred.w.clim <- predict(random, testset, interval = "confidence")
+      # matplot(testset$rand_base, cbind(pred.w.clim, pred.w.plim[,-1]), lty = c(1,2,2,3,3), col=c("black", "red", "red", "blue", "blue"), type = "l", ylab = "predicted y")
+     
+      pred <- predict(model,testset)
+      
+      tb <- as.matrix(table(Actual = testset$dep_class_7, Predicted = pred))
+      
+      n = sum(tb)
+      nc = nrow(tb)
+      diag = diag(tb)
+      rowsums = apply(tb, 1, sum, na.rm=TRUE)
+      colsums = apply(tb, 2, sum, na.rm=TRUE)
+      
+      precision = diag / colsums 
+      recall = diag / rowsums 
+      
+      F1 <- (2 * precision * recall) / (precision + recall)
+
+      mean_F1 <- mean(F1, na.rm = TRUE)
+      
+      temp_f1[j,] <- c(F1[1],F1[2],F1[3],F1[4],F1[5],F1[6],F1[7])
+    
+    } 
+    temp_f1[is.nan(temp_f1)] <- 0
+    temp_f1 <- apply(temp_f1, 2, mean, na.rm=TRUE) 
+        
+    f1_bin[i,] <- c(proportions[i], temp_f1[1],temp_f1[2],temp_f1[3],temp_f1[4],temp_f1[5],temp_f1[6],temp_f1[7])
+  }
+  f1_bin <- as.data.frame(f1_bin)
+  return (f1_bin)
+}
+```
+
+
+
+# making F1 table
+```{r}
+# F1's for each bin
+rand_f1 <- calculate_rf_bin_f1 ("random")
+past_f1 <- calculate_rf_bin_f1 ("past")
+density_f1 <- calculate_rf_bin_f1 ("density")
+spatial_lag_f1 <- calculate_rf_bin_f1 ("spatial_lag")
+intro_f1 <- calculate_rf_bin_f1 ("introversion")
+eigen_cent_f1 <- calculate_rf_bin_f1 ("eigen_cent")
+entropy_f1 <- calculate_rf_bin_f1 ("entropy")
+page_rank_f1 <- calculate_rf_bin_f1 ("page_rank")
+cdr_f1 <- calculate_rf_bin_f1 ("cdr")
+vol_f1 <- calculate_rf_bin_f1 ("volume")
+betweenness_f1 <- calculate_rf_bin_f1 ("betweenness")
+closeness_f1 <- calculate_rf_bin_f1 ("closeness")
+final_f1 <- calculate_rf_bin_f1 ("cdr+osm+lag")
+
+past_cdr <- calculate_rf_bin_f1 ("past_cdr")
+past_lag <- calculate_rf_bin_f1 ("past_lag")
+past_lag_cdr <- calculate_rf_bin_f1 ("past_lag_cdr")
+cdr_lag <- calculate_rf_bin_f1 ("cdr_lag")
+cdr_k2 <- calculate_rf_bin_f1 ("cdr_k2")
+cdr_k3 <- calculate_rf_bin_f1 ("cdr_k3")
+street_network <- calculate_rf_bin_f1 ("street_network")
+street_oa <- calculate_rf_bin_f1 ("street_oa")
+street_oa_lag <- calculate_rf_bin_f1 ("street+oa+lag")
+street_lag <- calculate_rf_bin_f1 ("street+lag")
+
+
+f1_table <- matrix(nrow=13, ncol=8)
+colnames(f1_table) <- c("", "1_poor","2","3","4","5","6","7_rich")
+f1_table[1,] <- unlist(c(c("random"), rand_f1[4, 2:8]))
+f1_table[2,] <- unlist(c(c("density"), density_f1[4, 2:8]))
+f1_table[3,] <- unlist(c(c("spatial_lag"), spatial_lag_f1[4, 2:8]))
+f1_table[4,] <- unlist(c(c("introversion"), intro_f1[4, 2:8]))
+f1_table[5,] <- unlist(c(c("eigen"), eigen_cent_f1[4, 2:8]))
+f1_table[6,] <- unlist(c(c("entropy"), entropy_f1[4, 2:8]))
+f1_table[7,] <- unlist(c(c("page_rank"), page_rank_f1[4, 2:8]))
+f1_table[8,] <- unlist(c(c("cdr"), cdr_f1[4, 2:8]))
+f1_table[9,] <- unlist(c(c("vol"), vol_f1[4, 2:8]))
+f1_table[10,] <- unlist(c(c("betweenness"), betweenness_f1[4, 2:8]))
+f1_table[11,] <- unlist(c(c("closeness"), closeness_f1[4, 2:8]))
+f1_table[12,] <- unlist(c(c("cdr+osm+lag"), final_f1[4, 2:8]))
+f1_table[13,] <- unlist(c(c("past"), past_f1[4, 2:8]))
+
+```
