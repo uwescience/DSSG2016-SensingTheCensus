@@ -24,7 +24,6 @@ library(hydroGOF)
 library(fields)
 library(MASS)
 library(e1071)
-library(raster)
 library(Hmisc)
 library(randomForest)
 library(caret)
@@ -34,7 +33,7 @@ library(reshape2)
 
 
 ```{r}
-setwd("/Users/myeong/git/DSSG/DSSG2016-SensingTheCensus/")
+setwd("/Users/mlee/git/DSSG2016-SensingTheCensus/")
 census = read.csv("data/0917_features.csv")  
 
 colnames(census)[9] <- "dep11"
@@ -60,7 +59,7 @@ census$cluster3 <- as.factor(census$cluster3)
 
 ```{r}
 proportions <- seq(50, 90, 10)
-num_test <- 20
+num_test <- 35
 
 f1_bin <- matrix(NA,nrow=length(proportions),ncol=7)
 colnames(f1_bin) <- c("1_poor","2","3","4","5","6","7_rich")
@@ -224,6 +223,7 @@ calculate_rf_bin_f1 <- function (variable){
       testset <- census[testindex,]      
       trainset <- census[-testindex,]
       row.names(testset) <- testset$SEZ2011
+      trainset <- trainset[!is.na(trainset$dep_class_7),] 
             
       if (variable == "random"){   
         rand1 <- rnorm (5000, mean(census$dep11, na.rm=TRUE), sd(census$dep11, na.rm=TRUE))
@@ -232,16 +232,16 @@ calculate_rf_bin_f1 <- function (variable){
         trainset$rand_base <- sample(rand, length(trainset$dep11), replace = FALSE, prob = NULL)     
         #trainset <- trainset[!is.na(testset$rand_base),]      
         model <- randomForest (formula("dep_class_7 ~ rand_base"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
-        
+        testset <- testset[!is.na(testset$rand_base) & !is.na(testset$dep_class_7),]   
       } else if (variable == "density"){
         model <- randomForest (formula("dep_class_7 ~ density"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)     
         testset <- testset[!is.na(testset$density),]
       } else if (variable == "past"){
         model <- randomForest (formula("dep_class_7 ~ dep01"), data=trainset,importance=TRUE, proximity=TRUE, na.action=na.omit)
-        testset <- testset[!is.na(testset$dep01),]       
+        testset <- testset[!is.na(testset$dep01) & !is.na(testset$dep_class_7),]       
       }else if (variable == "spatial_lag"){
-        model <- randomForest (formula("dep_class_7 ~ spatial_lag"), data=trainset,importance=TRUE, proximity=TRUE, na.action=na.omit)
-        testset <- testset[!is.na(testset$spatial_lag),]
+        model <- randomForest (formula("dep_class_7 ~ spatial_lag_square"), data=trainset,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        testset <- testset[!is.na(testset$spatial_lag_square) & !is.na(testset$dep_class_7),]
       } else if (variable == "volume"){
         model <- randomForest (formula("dep_class_7 ~ calls"), data=trainset, importance=TRUE, proximity=TRUE, na.action=na.omit)
         testset <- testset[!is.na(testset$calls),]
@@ -261,7 +261,7 @@ calculate_rf_bin_f1 <- function (variable){
         model <- randomForest (formula("dep_class_7 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
         testset <- testset[!is.na(testset$calls) & !is.na(testset$region_based_rate) & !is.na(testset$page_rank) & !is.na(testset$eigen_cent) & !is.na(testset$entropy) & !is.na(testset$dep01) ,]
       } else if (variable == "past_lag"){
-        model <- randomForest (formula("dep_class_7 ~ dep01 + spatial_lag"), mtry=3,data=trainset,na.action=na.omit, importance=TRUE, proximity=TRUE,)
+        model <- randomForest (formula("dep_class_7 ~ dep01 + spatial_lag"), mtry=3,data=trainset,na.action=na.omit, importance=TRUE, proximity=TRUE)
         testset <- testset[!is.na(testset$spatial_lag) & !is.na(testset$dep01) ,]
       } else if (variable == "past_lag_cdr"){
         model <- randomForest (formula("dep_class_7 ~ calls + region_based_rate + page_rank + eigen_cent + entropy + dep01 + spatial_lag"), data=trainset, importance=TRUE, proximity=TRUE, mtry=3,na.action=na.omit)
@@ -282,7 +282,12 @@ calculate_rf_bin_f1 <- function (variable){
         model <- randomForest (formula("dep_class_7 ~ closeness + betweenness"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
         testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness),]
       } else if (variable == "street_oa"){
-        model <- randomForest (formula("dep_class_7 ~ closeness + betweenness + commercial + third_places + comm_service"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        ee<- tryCatch(model <- randomForest (formula("dep_class_7 ~ closeness + betweenness + commercial + third_places + comm_service"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit),
+                      error = function(e){
+                        print("error.. going to the next one.")
+                      })
+        if (inherits(ee, "error")) next
+                
         testset <- testset[!is.na(testset$betweenness) & !is.na(testset$closeness) & !is.na(testset$commercial),]
       } else if (variable == "cdr"){
         model <- randomForest (formula("dep_class_7 ~ region_based_rate + calls + page_rank + eigen_cent + entropy"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
@@ -299,10 +304,18 @@ calculate_rf_bin_f1 <- function (variable){
         model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
         testset <- testset[!is.na(testset$spatial_lag_square) & !is.na(testset$closeness),]
       } else if (variable == "street+oa+lag"){
-        model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness + commercial + third_places + comm_service"), data=trainset,mtry=3, importance=TRUE, proximity=TRUE, na.action=na.omit)
+        ee<- tryCatch(model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness + commercial + third_places + comm_service"), data=trainset,mtry=3, importance=TRUE, proximity=TRUE, na.action=na.omit),
+                      error = function(e){
+                        print("error.. going to the next one.")
+                      })
+        if (inherits(ee, "error")) next
         testset <- testset[!is.na(testset$spatial_lag_square) & !is.na(testset$commercial),]
       }else if (variable == "cdr+osm+lag"){
-        model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness + commercial + third_places + comm_service + region_based_rate + calls + page_rank + eigen_cent + entropy + cluster3"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit)
+        ee<- tryCatch(model <- randomForest (formula("dep_class_7 ~ spatial_lag_square + closeness + betweenness + commercial + third_places + comm_service + region_based_rate + calls + page_rank + eigen_cent + entropy + cluster3"), data=trainset, mtry=3,importance=TRUE, proximity=TRUE, na.action=na.omit),
+                      error = function(e){
+                        print("error.. going to the next one.")
+                      })
+        if (inherits(ee, "error")) next
         testset <- testset[!is.na(testset$calls) & !is.na(testset$commercial) & !is.na(testset$closeness) & !is.na(testset$spatial_lag_square),]
       } 
       
@@ -529,10 +542,28 @@ eigen_cent_f1 <- calculate_rf_bin_f1 ("eigen_cent")
 entropy_f1 <- calculate_rf_bin_f1 ("entropy")
 page_rank_f1 <- calculate_rf_bin_f1 ("page_rank")
 cdr_f1 <- calculate_rf_bin_f1 ("cdr")
+
 vol_f1 <- calculate_rf_bin_f1 ("volume")
 betweenness_f1 <- calculate_rf_bin_f1 ("betweenness")
 closeness_f1 <- calculate_rf_bin_f1 ("closeness")
 final_f1 <- calculate_rf_bin_f1 ("cdr+osm+lag")
+
+past_cdr <- calculate_rf_bin_f1 ("past_cdr")
+past_lag <- calculate_rf_bin_f1 ("past_lag")
+past_lag_cdr <- calculate_rf_bin_f1 ("past_lag_cdr")
+cdr_lag <- calculate_rf_bin_f1 ("cdr_lag")
+cdr_k2 <- calculate_rf_bin_f1 ("cdr_k2")
+cdr_k3 <- calculate_rf_bin_f1 ("cdr_k3")
+street_network <- calculate_rf_bin_f1 ("street_network")
+street_oa <- calculate_rf_bin_f1 ("street_oa")
+street_oa_lag <- calculate_rf_bin_f1 ("street+oa+lag")
+street_lag <- calculate_rf_bin_f1 ("street+lag")
+
+write.csv(vol_f1, "data")
+
+
+
+
 
 f1_table <- matrix(nrow=13, ncol=8)
 colnames(f1_table) <- c("", "1_poor","2","3","4","5","6","7_rich")
