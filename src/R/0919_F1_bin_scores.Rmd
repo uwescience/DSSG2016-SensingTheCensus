@@ -259,3 +259,19 @@ f1_table[12,] <- unlist(c(c("cdr+osm+lag"), final_f1[4, 2:8]))
 f1_table[13,] <- unlist(c(c("past"), past_f1[4, 2:8]))
 
 ```
+
+
+#writing
+```{r}
+write.csv(rand_f1, "data/results/by_bin/rand_f1.csv")
+write.csv(past_f1, "data/results/by_bin/past_f1.csv")
+write.csv(density_f1, "data/results/by_bin/density_f1.csv")
+write.csv(spatial_lag_f1, "data/results/by_bin/spatial_lag_f1.csv")
+write.csv(intro_f1, "data/results/by_bin/intro_f1.csv")
+write.csv(eigen_cent_f1, "data/results/by_bin/eigen_cent_f1.csv")
+write.csv(page_rank_f1, "data/results/by_bin/page_rank_f1.csv")
+write.csv(cdr_f1, "data/results/by_bin/cdr_f1.csv")
+write.csv(rand_f1, "data/results/by_bin/rand_f1.csv")
+write.csv(vol_f1, "data/results/by_bin/vol_f1.csv")
+```
+
