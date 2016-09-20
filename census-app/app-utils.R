@@ -5,7 +5,7 @@ amenities = list("milan" = milan_amenities, "mexico_city" = mexico_amenities)
 
 
 pal <- function(x) {
-  n = 10
+  n = 7
   quant_list = quantile(x, probs = seq(0, 1, 1/n))
   if (length(unique(quant_list)) == n+1)
     colorQuantile(c("black", "#99FFCC"), x, n = n, na.color = "black")
@@ -16,7 +16,7 @@ pal <- function(x) {
   }
 
 pal2 <- function(x) {
-  n = 10
+  n = 7
   quant_list = quantile(x, probs = seq(0, 1, 1/n))
   
   if (length(unique(quant_list)) == n+1) 

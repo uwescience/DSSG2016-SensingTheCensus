@@ -1,10 +1,13 @@
 shinyUI(
   bootstrapPage(
     tags$head(
+      #' App custom styles
       includeCSS("www/css/styles.css"),
+      #' Scripts to sync maps
       includeScript("www/js/L.Map.Sync.js"),
       includeScript("www/js/sync_maps.js")
     ),
+    #' Main container
     fluidRow(class="map-container",
              #' Left map panel
              column(6, class="left-side",
