@@ -44,9 +44,24 @@ street = read_delim("data/OSM/centrality_sez.csv", delim = ",",col_names = TRUE 
 oa <-  read_delim("data/OSM/offering_advantage_sez.csv", delim = ",",col_names = TRUE ) 
 deprivation <- read_delim("data/census/temporal_deprivation.csv", delim = ",",col_names = TRUE ) 
 
+
+## Only for Plotting...
+census2 = readOGR("data/GeoJSON/milano_census_sez.geojson", "OGRGeoJSON")  %>% spTransform(CRS("+proj=utm +zone=32 +datum=WGS84"))
+cluster2 <- read_delim("data/CDR/hash/k2_cluster.csv", delim=",", col_names=TRUE)
+colnames(cluster2) <- c("SEZ2011", "cluster")
+census2@data <- census@data %>% left_join(cluster2, by = c("SEZ2011"))
+pal <- c("blue", "green", "red")
+plot(census, col=pal[census@data$cluster], bg="white",lwd=0.2)
+
+cluster3 <- read_delim("data/CDR/hash/k3_cluster.csv", delim=",", col_names=TRUE)
+colnames(cluster3) <- c("SEZ2011", "cluster3")
+census2@data <- census2@data %>% left_join(cluster3, by = c("SEZ2011"))
+pal <- c("blue", "green", "red")
+plot(census2, col=pal[census2@data$cluster3], bg="white",lwd=0.2)
+
 census@data <- census@data %>% left_join(street, by = c("SEZ2011"))
 census@data <- census@data %>% left_join(raw, by = c("SEZ2011"))
-census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"))
+# census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"))
 
 # Super categories for Offering Advantage
 super_oa <- data.frame(matrix(nrow=length(oa$SEZ2011), ncol=4))
@@ -158,7 +173,7 @@ deprivation$dep_class <- as.factor(deprivation$dep_class)
 
 # Classifying poverty index based on quantile
 probs = c(0.13, 2.27, 15.87, 84.13, 97.73, 99.87)/100
-classes <- quantile(deprivation$dep11, probs = probs)
+classes <- quantile(deprivation$dep11, probs = probs, na.rm = TRUE)
 deprivation$dep_class_3 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.13%"], 1, {ifelse(x >= classes["99.87%"], 3, 2)})})
 
 deprivation$dep_class_5 <- sapply(deprivation$dep11, function(x) {ifelse(x < classes["0.13%"], 1, {ifelse(x < classes["2.27%"], 2, {ifelse(x < classes["97.73%"], 3, {ifelse(x < classes["99.87%"], 4, 5)})})})})
@@ -169,7 +184,7 @@ deprivation$dep_class_3 <- as.factor(deprivation$dep_class_3)
 deprivation$dep_class_5 <- as.factor(deprivation$dep_class_5)
 deprivation$dep_class_7 <- as.factor(deprivation$dep_class_7)
 
-census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"="SEZ"))
+census@data <- census@data %>% left_join(deprivation, by = c("SEZ2011"))
 
 # census@data <- census@data %>% left_join(street, by = c("ACE"))
 # census@data <- census@data %>% left_join(oa, by = c("ACE"))
@@ -214,7 +229,7 @@ if (sha$p.value > 0.05) {
 
 # Spaital-Lag Baseline based on 2001 deprivation index
 ```{r}
-census@data$spatial_lag <- NA
+census@data$spatial_lag_square <- NA
 
 trueCentroids = gCentroid(census,byid=TRUE, id = as.vector(census@data$SEZ2011))
 popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles = F, R = NULL))
@@ -223,6 +238,23 @@ popdists <- as.matrix(rdist.earth(cbind(trueCentroids$x, trueCentroids$y), miles
 for (i in 1:length(trueCentroids)){
   print(i)
   k <- sapply(popdists[i,], function(x) 1/(x*x))
+  k[is.infinite(k)] <- 0 
+  k <- sapply(k, function(x) x/sum(k))  
+  
+  census@data$spatial_lag_square[i] <- sum(census@data$dep01 * k, na.rm = TRUE)
+}
+
+sha <- shapiro.test(sample(census@data$spatial_lag, 5000, replace=FALSE))
+if (sha$p.value > 0.05) {
+  census@data$spatial_lag_square <- log(census@data$spatial_lag_square)
+}
+
+census@data$spatial_lag <- NA
+
+# calculating spatial lag
+for (i in 1:length(trueCentroids)){
+  print(i)
+  k <- sapply(popdists[i,], function(x) 1/(x))
   k[is.infinite(k)] <- 0 
   k <- sapply(k, function(x) x/sum(k))  
   
